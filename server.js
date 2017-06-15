@@ -1,6 +1,6 @@
 const express = require( 'express' );
 const path = require( 'path' );
-const fbscraper = new require( 'FBScraper' )();
+const fbscraper = require( 'FBScraper' );
 
 const port = process.env.PORT || 8080;
 const app = express();
