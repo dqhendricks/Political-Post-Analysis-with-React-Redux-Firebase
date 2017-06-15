@@ -1,1 +1,1 @@
-Personal project analyzing facebook political post data. Data is scraped and processed server side using facebook graft API and saved into a Firebase noSQL database each night. The result is then displayed in a single page React, Redux, Firebase, Semantic UI App.
+Personal project analyzing facebook political post data. Data is scraped and processed server side using node.js and facebook graft API, then saved into a Firebase noSQL database each night. The result is then displayed in a single page React, Redux, Firebase, Semantic UI App.
