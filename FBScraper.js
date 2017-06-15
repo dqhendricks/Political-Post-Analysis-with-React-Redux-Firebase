@@ -1,5 +1,5 @@
 class FBScraper {
-	start {
+	start() {
 		console.log( 'test' );
 	}
 }
