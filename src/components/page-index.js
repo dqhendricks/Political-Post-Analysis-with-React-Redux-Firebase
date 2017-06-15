@@ -6,7 +6,6 @@ import { fetchPages } from '../actions';
 
 class PageIndex extends Component {
 	componentDidMount() {
-		console.log( 'test1' );
 		this.props.fetchPages();
 	}
 	
