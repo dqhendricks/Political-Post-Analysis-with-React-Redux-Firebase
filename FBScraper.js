@@ -4,4 +4,4 @@ class FBScraper {
 	}
 }
 
-export default new FBScraper();
+module.exports = new FBScraper();
