@@ -2,7 +2,7 @@ class FBScraper {
 	constructor() {
 		this.firebaseAdmin = require( 'firebase-admin' );
 		this.firebaseServiceAccount = require( './src/political-post-analysis-firebase-adminsdk-rdi0e-6781839410.js' );
-		debug.log( firebaseServiceAccount );
+		console.log( firebaseServiceAccount );
 		
 		this.firebaseAdmin.initializeApp( {
 			credential: this.firebaseAdmin.credential.cert( this.firebaseServiceAccount ),
