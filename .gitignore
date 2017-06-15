@@ -2,7 +2,7 @@
 bundle.js
 npm-debug.log
 .DS_Store
-/src/political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json
+#/src/political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json
 
 # IntelliJ
 *.iml
