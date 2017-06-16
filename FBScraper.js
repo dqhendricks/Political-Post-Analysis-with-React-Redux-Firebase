@@ -88,7 +88,7 @@ class FBScraper {
 	}
 	
 	facebookRequest( path, callback, fields = null, parameters = {}, method = 'GET' ) {
-		if ( this.facebookToken ) parameters.facebookToken = this.facebookToken;
+		if ( this.facebookToken ) parameters.access_token = this.facebookToken;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
 			return `${ key }=${ value}`;
