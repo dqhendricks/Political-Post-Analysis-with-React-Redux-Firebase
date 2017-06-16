@@ -79,7 +79,7 @@ class FBScraper {
 	}
 	
 	propertyNeedsUpdate( object, key, response, property ) {
-		return ( !( key in object ) || object[key][property] != response[property] );
+		return ( ( property in response ) && ( !( key in object ) || object[key][property] != response[property] ) );
 	}
 	
 	facebookRequest( path, callback, fields = null, options = {}, method = 'GET' ) {
