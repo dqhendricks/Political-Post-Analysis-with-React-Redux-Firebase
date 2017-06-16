@@ -10,16 +10,29 @@ class FBScraper {
 		} );
 		
 		this.firebaseDatabase = this.firebaseAdmin.database();
+		const pagesRef = this.firebaseDatabase.ref( 'pages' );
+		pagesRef.on ( 'value', ( snapshot ) => {
+			this.pages = snapshot.val();
+			console.log( this.pages );
+		}
 		// facebook
 		this.request = require( 'request' );
 		this.facebookToken = null;
 	}
 	
 	start() {
-		this.getToken( this.test );
+		this.getToken();
 	}
 	
-	test( err, httpResponse, body ) {
+	getToken() {
+		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( body ) => {
+			console.log( body.access_token );
+			this.facebookToken = body.access_token;
+			getPages();
+		} );
+	}
+	
+	getPages() {
 		
 	}
 	
@@ -37,15 +50,6 @@ class FBScraper {
 			} else {
 				callback( body );
 			}
-		} );
-	}
-	
-	getToken( callback ) {
-		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( body ) => {
-			console.log( body );
-			console.log( body.accessToken );
-			this.facebookToken = body.accessToken;
-			callback();
 		} );
 	}
 }
