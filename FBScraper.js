@@ -83,12 +83,12 @@ class FBScraper {
 	}
 	
 	facebookRequest( path, callback, fields = null, modifiers = null, method = 'GET' ) {
-		var arguments = {};
-		if ( this.facebookToken ) arguments.facebookToken = this.facebookToken;
-		if ( fields ) arguments.fields = fields.join();
-		if ( modifiers ) arguments = Object.assign( arguments, modifiers );
-		arguments = _.values( _.map( arguments, ( value, key ) => {
-			arguments[key] = `${ key }=${ value}`;
+		var parameters = {};
+		if ( this.facebookToken ) parameters.facebookToken = this.facebookToken;
+		if ( fields ) parameters.fields = fields.join();
+		if ( modifiers ) parameters = Object.assign( parameters, modifiers );
+		parameters = _.values( _.map( parameters, ( value, key ) => {
+			parameters[key] = `${ key }=${ value}`;
 		} ) ).join( '&' );
 		const url = `https://graph.facebook.com/${ path }?${ arguments }`);
 		options = {
