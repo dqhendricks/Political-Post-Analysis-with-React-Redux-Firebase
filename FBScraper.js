@@ -1,3 +1,5 @@
+const _ = require( 'lodash' );
+
 class FBScraper {
 	constructor() {
 		// firebase
@@ -10,10 +12,10 @@ class FBScraper {
 		} );
 		
 		this.firebaseDatabase = this.firebaseAdmin.database();
+		
 		const pagesRef = this.firebaseDatabase.ref( 'pages' );
 		pagesRef.on ( 'value', ( snapshot ) => {
 			this.pages = snapshot.val();
-			console.log( this.pages );
 		} );
 		// facebook
 		this.request = require( 'request' );
@@ -25,23 +27,28 @@ class FBScraper {
 	}
 	
 	getToken() {
-		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( body ) => {
-			console.log( body.access_token );
+		const url = `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`;
+		
+		this.facebookRequest( url, ( body ) => {
 			this.facebookToken = body.access_token;
-			this.getPages();
+			this.cyclePages();
 		} );
 	}
 	
-	getPages() {
-		
+	cyclePages() {
+		_.forIn( this.pages, ( value, key, object ) => {
+			console.log( value );
+		} );
 	}
 	
 	facebookRequest( path, callback, method = 'GET' ) {
+		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' );
 		const options = {
-			url: `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ),
+			url: url,
 			method: method,
 			json: true
 		};
+		
 		this.request( options, ( err, httpResponse, body ) => {
 			if ( err ) {
 				console.log( `Request error: ${ err }` );
