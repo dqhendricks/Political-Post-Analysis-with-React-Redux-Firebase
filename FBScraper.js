@@ -16,7 +16,7 @@ class FBScraper {
 	}
 	
 	start() {
-		getToken( test );
+		this.getToken( this.test );
 	}
 	
 	test( err, httpResponse, body ) {
@@ -33,7 +33,7 @@ class FBScraper {
 	}
 	
 	getToken( callback ) {
-		facebookRequest( `/oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( response ) => {
+		this.facebookRequest( `/oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( response ) => {
 			debug.log( response );
 			this.facebookToken = response;
 			callback();
