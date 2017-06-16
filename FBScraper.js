@@ -29,7 +29,6 @@ class FBScraper {
 			method: method,
 			json: true
 		};
-		console.log( options.url );
 		this.request( options, callback );
 	}
 	
@@ -40,7 +39,7 @@ class FBScraper {
 			} else if ( httpResponse.statusCode != '200' ) {
 				console.log( `HTTP error: ${ httpResponse.statusCode }` );
 			} else {
-				console.log( body.accessToken );
+				console.log( body );
 				this.facebookToken = body.accessToken;
 			}
 			callback();
