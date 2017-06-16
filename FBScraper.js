@@ -84,12 +84,11 @@ class FBScraper {
 	
 	facebookRequest( path, callback, fields = null, options = null, method = 'GET' ) {
 		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ) + ( ( fields ) ? `&fields=${ fields.join() }` : '' );
-		options = {
+		options = Object.assign( options, {
 			url: url,
 			method: method,
 			json: true,
-			...options
-		};
+		} );
 		
 		this.request( options, ( err, httpResponse, body ) => {
 			if ( err ) {
