@@ -91,7 +91,7 @@ class FBScraper {
 			parameters[key] = `${ key }=${ value}`;
 		} ) ).join( '&' );
 		const url = `https://graph.facebook.com/${ path }?${ parameters }`;
-		options = {
+		const options = {
 			url: url,
 			method: method,
 			json: true,
