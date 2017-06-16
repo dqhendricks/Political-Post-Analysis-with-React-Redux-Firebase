@@ -18,6 +18,10 @@ class FBScraper {
 		this.pagesRef.on ( 'value', ( snapshot ) => {
 			this.pages = snapshot.val();
 		} );
+		this.postsRef = this.firebaseDatabase.ref( 'posts' );
+		this.postsRef.on ( 'value', ( snapshot ) => {
+			this.posts = snapshot.val();
+		} );
 		// facebook
 		this.request = require( 'request' );
 		this.facebookToken = null;
@@ -36,8 +40,8 @@ class FBScraper {
 	getToken() {
 		const url = `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`;
 		
-		this.facebookRequest( url, ( body ) => {
-			this.facebookToken = body.access_token;
+		this.facebookRequest( url, ( response ) => {
+			this.facebookToken = response.access_token;
 			this.cyclePages();
 		} );
 	}
@@ -45,31 +49,46 @@ class FBScraper {
 	cyclePages() {
 		_.forIn( this.pages, ( value, key, object ) => {
 			this.updatePageData( key );
+			this.cyclePosts( key );
 		} );
 	}
 	
-	updatePageData( key ) {
-		this.facebookRequest( `/${ key }`, ( body ) => {
-			const updateData = {};
-			if ( this.posts[key].about != body.about ) updateData[`${ body.id }/about`] = body.about;
-			if ( this.posts[key].category != body.category ) updateData[`${ body.id }/category`] = body.category;
-			if ( this.posts[key].fan_count != body.fan_count ) updateData[`${ body.id }/fan_count`] = body.fan_count;
-			if ( this.posts[key].link != body.link ) updateData[`${ body.id }/link`] = body.link;
-			if ( this.posts[key].name != body.name ) updateData[`${ body.id }/name`] = body.name;
-			if ( this.posts[key].picture != body.picture ) updateData[`${ body.id }/picture`] = body.picture.data.url;
-			if ( this.posts[key].talking_about_count != body.talking_about_count ) updateData[`${ body.id }/talking_about_count`] = body.talking_about_count;
-			if ( this.posts[key].website != body.website ) updateData[`${ body.id }/website`] = body.website;
-			
-			if ( _.size( updateData ) > 0 ) this.pagesRef.update( updateData );
-		}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
+	cyclePosts( key ) {
+		const fields = [ 'created_time', 'from', 'link', 'message', 'message_tags', 'name', 'picture', 'shares', 'permalink_url' ];
+		this.facebookRequest( `/${ key }/posts`, ( response ) => {
+			response.data.forEach( ( post ) => {
+				const updateData = {};
+				fields.forEach( ( field ) => {
+					if ( this.propertyNeedsUpdate( this.posts, post.id, post, field ) ) updateData[`${ post.id }/${ field }`] = post[field];
+				}
+				if ( !( post.id in this.posts ) || this.posts[post.id].from_id != post.from.id ) updateData[`${ post.id }/from_id`] = post.from.id;
+				if ( _.size( updateData ) > 0 ) this.postsRef.update( updateData );
+			}
+		}, fields, { limit: 100 } );
 	}
 	
-	facebookRequest( path, callback, fields = null, method = 'GET' ) {
+	updatePageData( key ) {
+		const fields = [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ];
+		this.facebookRequest( `/${ key }`, ( response ) => {
+			const updateData = {};
+			fields.forEach( ( field ) => {
+				if ( this.propertyNeedsUpdate( this.pages, key, response, field ) ) updateData[`${ response.id }/${ field }`] = response[field];
+			}
+			if ( _.size( updateData ) > 0 ) this.pagesRef.update( updateData );
+		}, fields );
+	}
+	
+	propertyNeedsUpdate( object, key, response, property ) {
+		return ( !( key in object ) || object[key][property] != response[property] );
+	}
+	
+	facebookRequest( path, callback, fields = null, options = null, method = 'GET' ) {
 		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ) + ( ( fields ) ? `&fields=${ fields.join() }` : '' );
-		const options = {
+		options = {
 			url: url,
 			method: method,
-			json: true
+			json: true,
+			...options
 		};
 		
 		this.request( options, ( err, httpResponse, body ) => {
