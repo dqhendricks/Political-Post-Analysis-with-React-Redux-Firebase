@@ -51,16 +51,16 @@ class FBScraper {
 	updatePageData( key ) {
 		this.facebookRequest( `/${ key }`, ( body ) => {
 			const updateData = {};
-			updateData[`${ body.id }/about`] = body.about;
-			updateData[`${ body.id }/category`] = body.category;
-			updateData[`${ body.id }/fan_count`] = body.fan_count;
-			updateData[`${ body.id }/link`] = body.link;
-			updateData[`${ body.id }/name`] = body.name;
-			updateData[`${ body.id }/picture`] = body.picture.data.url;
-			updateData[`${ body.id }/talking_about_count`] = body.talking_about_count;
-			updateData[`${ body.id }/website`] = body.website;
+			if ( this.posts[key].about != body.about ) updateData[`${ body.id }/about`] = body.about;
+			if ( this.posts[key].category != body.category ) updateData[`${ body.id }/category`] = body.category;
+			if ( this.posts[key].fan_count != body.fan_count ) updateData[`${ body.id }/fan_count`] = body.fan_count;
+			if ( this.posts[key].link != body.link ) updateData[`${ body.id }/link`] = body.link;
+			if ( this.posts[key].name != body.name ) updateData[`${ body.id }/name`] = body.name;
+			if ( this.posts[key].picture != body.picture ) updateData[`${ body.id }/picture`] = body.picture.data.url;
+			if ( this.posts[key].talking_about_count != body.talking_about_count ) updateData[`${ body.id }/talking_about_count`] = body.talking_about_count;
+			if ( this.posts[key].website != body.website ) updateData[`${ body.id }/website`] = body.website;
 			
-			this.pagesRef.update( updateData );
+			if ( _.size( updateData ) > 0 ) this.pagesRef.update( updateData );
 		}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
 	}
 	
