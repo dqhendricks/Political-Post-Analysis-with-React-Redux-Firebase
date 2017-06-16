@@ -48,7 +48,7 @@ class FBScraper {
 		this.facebookRequest( url, ( response ) => {
 			this.facebookToken = response.access_token;
 			this.cyclePages();
-		} );
+		}, null, parameters );
 	}
 	
 	cyclePages() {
