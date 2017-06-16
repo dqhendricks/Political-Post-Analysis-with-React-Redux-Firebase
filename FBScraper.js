@@ -47,9 +47,10 @@ class FBScraper {
 			this.facebookRequest( `/${ key }`, ( body ) => {
 				console.log( body );
 				
-				this.pagesRef.update( {
-					`${ body.id }/about`: body.about
-				} );
+				const updateData = {};
+				updateData[`${ body.id }/about`] = body.about;
+				
+				this.pagesRef.update( updateData );
 				
 				
 			}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
