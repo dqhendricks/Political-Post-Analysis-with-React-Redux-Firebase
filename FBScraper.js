@@ -28,7 +28,7 @@ class FBScraper {
 		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( body ) => {
 			console.log( body.access_token );
 			this.facebookToken = body.access_token;
-			getPages();
+			this.getPages();
 		} );
 	}
 	
