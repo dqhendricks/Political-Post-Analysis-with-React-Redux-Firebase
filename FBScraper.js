@@ -90,7 +90,7 @@ class FBScraper {
 		parameters = _.values( _.map( parameters, ( value, key ) => {
 			parameters[key] = `${ key }=${ value}`;
 		} ) ).join( '&' );
-		const url = `https://graph.facebook.com/${ path }?${ arguments }`);
+		const url = `https://graph.facebook.com/${ path }?${ parameters }`;
 		options = {
 			url: url,
 			method: method,
