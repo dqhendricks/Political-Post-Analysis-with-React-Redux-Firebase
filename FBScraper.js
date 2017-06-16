@@ -38,7 +38,12 @@ class FBScraper {
 	}
 	
 	getToken() {
-		const url = `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`;
+		const url = `oauth/access_token`;
+		const parameters = {
+			client_id = process.env.FACEBOOK_APP_ID,
+			client_secret = process.env.FACEBOOK_APP_SECRET,
+			grant_type = 'client_credentials'
+		};
 		
 		this.facebookRequest( url, ( response ) => {
 			this.facebookToken = response.access_token;
@@ -82,17 +87,15 @@ class FBScraper {
 		return ( ( property in response ) && ( !( key in object ) || object[key][property] != response[property] ) );
 	}
 	
-	facebookRequest( path, callback, fields = null, modifiers = null, method = 'GET' ) {
-		var parameters = {};
+	facebookRequest( path, callback, fields = null, parameters = {}, method = 'GET' ) {
 		if ( this.facebookToken ) parameters.facebookToken = this.facebookToken;
 		if ( fields ) parameters.fields = fields.join();
-		if ( modifiers ) parameters = Object.assign( parameters, modifiers );
 		console.log( parameters );
 		parameters = _.values( _.map( parameters, ( value, key ) => {
 			parameters[key] = `${ key }=${ value}`;
 		} ) ).join( '&' );
-		console.log( parameters );
-		const url = `https://graph.facebook.com/${ path }?${ parameters }`;
+		if ( parameters.length > 0 ) parameters = `?${ parameters }`;
+		const url = `https://graph.facebook.com/${ path }${ parameters }`;
 		console.log( url );
 		const options = {
 			url: url,
