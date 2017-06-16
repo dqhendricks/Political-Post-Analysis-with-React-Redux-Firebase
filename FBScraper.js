@@ -29,19 +29,23 @@ class FBScraper {
 			method: method,
 			json: true
 		};
-		this.request( options, callback );
-	}
-	
-	getToken( callback ) {
-		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( err, httpResponse, body ) => {
+		this.request( options, ( err, httpResponse, body ) => {
 			if ( err ) {
 				console.log( `Request error: ${ err }` );
 			} else if ( httpResponse.statusCode != '200' ) {
 				console.log( `HTTP error: ${ httpResponse.statusCode }` );
 			} else {
+				body = JSON.parse( body );
 				console.log( body );
-				this.facebookToken = body.accessToken;
+				callback( err, httpResponse, body );
 			}
+		} );
+	}
+	
+	getToken( callback ) {
+		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( err, httpResponse, body ) => {
+			console.log( body.accessToken );
+			this.facebookToken = body.accessToken;
 			callback();
 		} );
 	}
