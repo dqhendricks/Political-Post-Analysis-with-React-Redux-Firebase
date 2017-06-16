@@ -14,7 +14,7 @@ class FBScraper {
 		pagesRef.on ( 'value', ( snapshot ) => {
 			this.pages = snapshot.val();
 			console.log( this.pages );
-		}
+		} );
 		// facebook
 		this.request = require( 'request' );
 		this.facebookToken = null;
