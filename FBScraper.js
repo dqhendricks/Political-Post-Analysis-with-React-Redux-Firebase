@@ -90,9 +90,8 @@ class FBScraper {
 	facebookRequest( path, callback, fields = null, parameters = {}, method = 'GET' ) {
 		if ( this.facebookToken ) parameters.facebookToken = this.facebookToken;
 		if ( fields ) parameters.fields = fields.join();
-		console.log( parameters );
 		parameters = _.values( _.map( parameters, ( value, key ) => {
-			parameters[key] = `${ key }=${ value}`;
+			return `${ key }=${ value}`;
 		} ) ).join( '&' );
 		if ( parameters.length > 0 ) parameters = `?${ parameters }`;
 		const url = `https://graph.facebook.com/${ path }${ parameters }`;
