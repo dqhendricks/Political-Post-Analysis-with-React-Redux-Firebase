@@ -63,7 +63,7 @@ class FBScraper {
 				} );
 				if ( !( post.id in this.posts ) || this.posts[post.id].from_id != post.from.id ) updateData[`${ post.id }/from_id`] = post.from.id;
 				if ( _.size( updateData ) > 0 ) this.postsRef.update( updateData );
-			}
+			} );
 		}, fields, { limit: 100 } );
 	}
 	
