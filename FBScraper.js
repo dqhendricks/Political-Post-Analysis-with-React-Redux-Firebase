@@ -29,15 +29,16 @@ class FBScraper {
 			method: method,
 			json: true
 		};
+		console.log( options.url );
 		this.request( options, callback );
 	}
 	
 	getToken( callback ) {
 		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( err, httpResponse, body ) => {
-			if ( typeof err != 'undefined' ) {
-				console.log( err );
+			if ( err ) {
+				console.log( `Request error: ${ err }` );
 			} else if ( httpResponse.statusCode != '201' ) {
-				console.log( `Status error: ${ httpResponse.statusCode }` );
+				console.log( `HTTP error: ${ httpResponse.statusCode }` );
 			} else {
 				console.log( body.accessToken );
 				this.facebookToken = body.accessToken;
