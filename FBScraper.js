@@ -82,13 +82,20 @@ class FBScraper {
 		return ( ( property in response ) && ( !( key in object ) || object[key][property] != response[property] ) );
 	}
 	
-	facebookRequest( path, callback, fields = null, options = {}, method = 'GET' ) {
-		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ) + ( ( fields ) ? `&fields=${ fields.join() }` : '' );
-		options = Object.assign( options, {
+	facebookRequest( path, callback, fields = null, modifiers = null, method = 'GET' ) {
+		var arguments = {};
+		if ( this.facebookToken ) arguments.facebookToken = this.facebookToken;
+		if ( fields ) arguments.fields = fields.join();
+		if ( modifiers ) arguments = Object.assign( arguments, modifiers );
+		arguments = _.values( _.map( arguments, ( value, key ) => {
+			arguments[key] = `${ key }=${ value}`;
+		} ) ).join( '&' );
+		const url = `https://graph.facebook.com/${ path }?${ arguments }`);
+		options = {
 			url: url,
 			method: method,
 			json: true,
-		} );
+		};
 		
 		this.request( options, ( err, httpResponse, body ) => {
 			if ( err ) {
