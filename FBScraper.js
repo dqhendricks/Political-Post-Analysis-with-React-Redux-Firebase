@@ -60,7 +60,7 @@ class FBScraper {
 				const updateData = {};
 				fields.forEach( ( field ) => {
 					if ( this.propertyNeedsUpdate( this.posts, post.id, post, field ) ) updateData[`${ post.id }/${ field }`] = post[field];
-				}
+				} );
 				if ( !( post.id in this.posts ) || this.posts[post.id].from_id != post.from.id ) updateData[`${ post.id }/from_id`] = post.from.id;
 				if ( _.size( updateData ) > 0 ) this.postsRef.update( updateData );
 			}
@@ -73,7 +73,7 @@ class FBScraper {
 			const updateData = {};
 			fields.forEach( ( field ) => {
 				if ( this.propertyNeedsUpdate( this.pages, key, response, field ) ) updateData[`${ response.id }/${ field }`] = response[field];
-			}
+			} );
 			if ( _.size( updateData ) > 0 ) this.pagesRef.update( updateData );
 		}, fields );
 	}
