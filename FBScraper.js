@@ -23,7 +23,12 @@ class FBScraper {
 	}
 	
 	start() {
-		this.getToken();
+		const timer = setInterval( () => {
+			if ( this.pages ) {
+				this.getToken();
+				clearInterval( timer );
+			}
+		}, 100 );
 	}
 	
 	getToken() {
