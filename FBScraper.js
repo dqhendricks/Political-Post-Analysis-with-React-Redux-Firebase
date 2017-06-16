@@ -44,7 +44,7 @@ class FBScraper {
 	
 	cyclePages() {
 		_.forIn( this.pages, ( value, key, object ) => {
-			facebookRequest( `/${ key }`, ( body ) => {
+			this.facebookRequest( `/${ key }`, ( body ) => {
 				console.log( body );
 			} );
 		} );
