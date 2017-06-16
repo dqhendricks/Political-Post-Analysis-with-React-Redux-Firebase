@@ -40,9 +40,9 @@ class FBScraper {
 	getToken() {
 		const url = `oauth/access_token`;
 		const parameters = {
-			client_id = process.env.FACEBOOK_APP_ID,
-			client_secret = process.env.FACEBOOK_APP_SECRET,
-			grant_type = 'client_credentials'
+			client_id: process.env.FACEBOOK_APP_ID,
+			client_secret: process.env.FACEBOOK_APP_SECRET,
+			grant_type: 'client_credentials'
 		};
 		
 		this.facebookRequest( url, ( response ) => {
