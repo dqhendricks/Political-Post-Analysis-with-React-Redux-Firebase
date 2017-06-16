@@ -37,7 +37,7 @@ class FBScraper {
 		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( err, httpResponse, body ) => {
 			if ( err ) {
 				console.log( `Request error: ${ err }` );
-			} else if ( httpResponse.statusCode != '201' ) {
+			} else if ( httpResponse.statusCode != '200' ) {
 				console.log( `HTTP error: ${ httpResponse.statusCode }` );
 			} else {
 				console.log( body.accessToken );
