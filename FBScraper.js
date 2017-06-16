@@ -44,17 +44,24 @@ class FBScraper {
 	
 	cyclePages() {
 		_.forIn( this.pages, ( value, key, object ) => {
-			this.facebookRequest( `/${ key }`, ( body ) => {
-				console.log( body );
-				
-				const updateData = {};
-				updateData[`${ body.id }/about`] = body.about;
-				
-				this.pagesRef.update( updateData );
-				
-				
-			}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
+			this.updatePageData( key );
 		} );
+	}
+	
+	updatePageData( key ) {
+		this.facebookRequest( `/${ key }`, ( body ) => {
+			const updateData = {};
+			updateData[`${ body.id }/about`] = body.about;
+			updateData[`${ body.id }/category`] = body.category;
+			updateData[`${ body.id }/fan_count`] = body.fan_count;
+			updateData[`${ body.id }/link`] = body.link;
+			updateData[`${ body.id }/name`] = body.name;
+			updateData[`${ body.id }/picture`] = body.picture.url;
+			updateData[`${ body.id }/talking_about_count`] = body.talking_about_count;
+			updateData[`${ body.id }/website`] = body.website;
+			
+			this.pagesRef.update( updateData );
+		}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
 	}
 	
 	facebookRequest( path, callback, fields = null, method = 'GET' ) {
