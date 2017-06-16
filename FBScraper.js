@@ -14,8 +14,8 @@ class FBScraper {
 		
 		this.firebaseDatabase = this.firebaseAdmin.database();
 		
-		const pagesRef = this.firebaseDatabase.ref( 'pages' );
-		pagesRef.on ( 'value', ( snapshot ) => {
+		this.pagesRef = this.firebaseDatabase.ref( 'pages' );
+		this.pagesRef.on ( 'value', ( snapshot ) => {
 			this.pages = snapshot.val();
 		} );
 		// facebook
@@ -46,12 +46,18 @@ class FBScraper {
 		_.forIn( this.pages, ( value, key, object ) => {
 			this.facebookRequest( `/${ key }`, ( body ) => {
 				console.log( body );
-			} );
+				
+				this.pagesRef.update( {
+					`${ body.id }/about`: body.about
+				} );
+				
+				
+			}, [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ] );
 		} );
 	}
 	
-	facebookRequest( path, callback, method = 'GET' ) {
-		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' );
+	facebookRequest( path, callback, fields = null, method = 'GET' ) {
+		const url = `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ) + ( ( fields ) ? `&fields=${ fields.join() }` : '' );
 		const options = {
 			url: url,
 			method: method,
