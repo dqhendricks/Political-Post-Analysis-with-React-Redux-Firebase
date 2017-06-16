@@ -34,7 +34,7 @@ class FBScraper {
 	
 	getToken( callback ) {
 		this.facebookRequest( `/oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( response ) => {
-			debug.log( response );
+			console.log( response );
 			this.facebookToken = response;
 			callback();
 		} );
