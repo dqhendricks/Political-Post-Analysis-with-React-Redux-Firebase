@@ -87,10 +87,13 @@ class FBScraper {
 		if ( this.facebookToken ) parameters.facebookToken = this.facebookToken;
 		if ( fields ) parameters.fields = fields.join();
 		if ( modifiers ) parameters = Object.assign( parameters, modifiers );
+		console.log( parameters );
 		parameters = _.values( _.map( parameters, ( value, key ) => {
 			parameters[key] = `${ key }=${ value}`;
 		} ) ).join( '&' );
+		console.log( parameters );
 		const url = `https://graph.facebook.com/${ path }?${ parameters }`;
+		console.log( url );
 		const options = {
 			url: url,
 			method: method,
