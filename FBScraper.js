@@ -46,7 +46,7 @@ class FBScraper {
 		_.forIn( this.pages, ( value, key, object ) => {
 			facebookRequest( `/${ key }`, ( body ) => {
 				console.log( body );
-			}
+			} );
 		} );
 	}
 	
