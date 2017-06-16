@@ -56,7 +56,7 @@ class FBScraper {
 			updateData[`${ body.id }/fan_count`] = body.fan_count;
 			updateData[`${ body.id }/link`] = body.link;
 			updateData[`${ body.id }/name`] = body.name;
-			updateData[`${ body.id }/picture`] = body.picture.url;
+			updateData[`${ body.id }/picture`] = body.picture.data.url;
 			updateData[`${ body.id }/talking_about_count`] = body.talking_about_count;
 			updateData[`${ body.id }/website`] = body.website;
 			
