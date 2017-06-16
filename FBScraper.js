@@ -54,7 +54,7 @@ class FBScraper {
 	}
 	
 	cyclePosts( key ) {
-		const fields = [ 'created_time', 'from', 'link', 'message', 'message_tags', 'name', 'picture', 'shares', 'permalink_url' ];
+		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'shares', 'permalink_url' ];
 		this.facebookRequest( `/${ key }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
 				const updateData = {};
@@ -68,7 +68,7 @@ class FBScraper {
 	}
 	
 	updatePageData( key ) {
-		const fields = [ 'about', 'category', 'fan_count', 'link', 'name', 'picture', 'talking_about_count', 'website' ];
+		const fields = [ 'about', 'category', 'fan_count', 'id', 'link', 'name', 'picture', 'talking_about_count', 'website' ];
 		this.facebookRequest( `/${ key }`, ( response ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
