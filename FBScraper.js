@@ -25,7 +25,7 @@ class FBScraper {
 	
 	facebookRequest( path, callback, method = 'GET' ) {
 		const options = {
-			url: `graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ),
+			url: `https://graph.facebook.com/${ path }` + ( ( this.facebookToken ) ? `?access_token=${ this.facebookToken }` : '' ),
 			method: method,
 			json: true
 		};
@@ -33,7 +33,7 @@ class FBScraper {
 	}
 	
 	getToken( callback ) {
-		this.facebookRequest( `/oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( response ) => {
+		this.facebookRequest( `oauth/access_token?client_id=${ process.env.FACEBOOK_APP_ID }&client_secret=${ process.env.FACEBOOK_APP_SECRET }&grant_type=client_credentials`, ( response ) => {
 			console.log( response );
 			this.facebookToken = response;
 			callback();
