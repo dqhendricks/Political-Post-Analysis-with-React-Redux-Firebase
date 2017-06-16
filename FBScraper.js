@@ -1,6 +1,7 @@
 const _ = require( 'lodash' );
 
 class FBScraper {
+	
 	constructor() {
 		// firebase
 		this.firebaseAdmin = require( 'firebase-admin' );
@@ -23,6 +24,7 @@ class FBScraper {
 	}
 	
 	start() {
+		// timer that waits for this.pages to populate before starting
 		const timer = setInterval( () => {
 			if ( this.pages ) {
 				this.getToken();
@@ -42,7 +44,9 @@ class FBScraper {
 	
 	cyclePages() {
 		_.forIn( this.pages, ( value, key, object ) => {
-			console.log( value );
+			facebookRequest( `/${ key }`, ( body ) => {
+				console.log( body );
+			}
 		} );
 	}
 	
