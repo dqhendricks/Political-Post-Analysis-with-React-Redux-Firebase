@@ -40,7 +40,6 @@ class FBScraper {
 		}, 100 );
 	}
 	
-	// test
 	listenToFirebasePosts() {
 		this.postsRef.off();
 		this.posts = null;
