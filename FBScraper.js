@@ -104,10 +104,13 @@ class FBScraper {
 	}
 	
 	updateRecentPosts() {
+		console.log( 'test1' );
 		_.forIn( this.posts, ( value, key, object ) => {
+			console.log( 'test2' );
 			this.updateReactions( this.postReactionsRef, key );
 			this.updatePostComments( key );
 		} );
+		console.log( this.posts );
 	}
 	
 	updateReactions( databaseReference, key, after = null ) {
