@@ -19,7 +19,11 @@ class FBScraper {
 			this.pages = snapshot.val();
 		} );
 		this.postsRef = this.firebaseDatabase.ref( 'posts' );
-		this.postsRef.on ( 'value', ( snapshot ) => {
+		var date = new Date();
+		date.setDate( date.getDate() - 7 );
+		date = date.toISOString().replace( /\./, '+' );
+		console.log( date );
+		this.postsRef.orderByChild( 'created_time' ).startAt( date ).on ( 'value', ( snapshot ) => {
 			this.posts = snapshot.val();
 		} );
 		// facebook
@@ -54,12 +58,17 @@ class FBScraper {
 	cyclePages() {
 		_.forIn( this.pages, ( value, key, object ) => {
 			this.updatePageData( key );
-			this.cyclePosts( key );
+			this.addNewPosts( key );
+			setTimeout( this.updateRecentPosts, 1000 * 5 )
 		} );
 	}
 	
-	cyclePosts( key ) {
-		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'shares', 'permalink_url' ];
+	updateRecentPosts() {
+		
+	}
+	
+	addNewPosts( key ) {
+		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url' ];
 		this.facebookRequest( `/${ key }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
 				const updateData = {};
