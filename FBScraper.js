@@ -73,7 +73,7 @@ class FBScraper {
 	}
 	
 	updatePageData( key ) {
-		const fields = [ 'about', 'category', 'fan_count', 'id', 'link', 'name', 'picture', 'talking_about_count', 'website' ];
+		const fields = [ 'about', 'category', 'fan_count', 'id', 'link', 'name', 'picture', 'website' ];
 		this.facebookRequest( `/${ key }`, ( response ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
