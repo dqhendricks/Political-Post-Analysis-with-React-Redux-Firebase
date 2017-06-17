@@ -19,13 +19,6 @@ class FBScraper {
 			this.pages = snapshot.val();
 		} );
 		this.postsRef = this.firebaseDatabase.ref( 'posts' );
-		var date = new Date();
-		date.setDate( date.getDate() - 7 );
-		date = date.toISOString().replace( /\./, '+' );
-		console.log( date );
-		this.postsRef.orderByChild( 'created_time' ).startAt( date ).on ( 'value', ( snapshot ) => {
-			this.posts = snapshot.val();
-		} );
 		// facebook
 		this.request = require( 'request' );
 		this.facebookToken = null;
@@ -33,12 +26,25 @@ class FBScraper {
 	
 	start() {
 		// timer that waits for this.pages to populate before starting
+		this.listenToFirebasePosts();
 		const timer = setInterval( () => {
-			if ( this.pages ) {
+			if ( this.pages && this.posts ) {
 				this.getToken();
 				clearInterval( timer );
 			}
 		}, 100 );
+	}
+	
+	listenToFirebasePosts() {
+		this.postsRef.off();
+		this.posts = null;
+		var date = new Date();
+		date.setDate( date.getDate() - 7 );
+		date = date.toISOString().replace( /\..+/, '+0000' );
+		console.log( date );
+		this.postsRef.orderByChild( 'created_time' ).startAt( date ).on( 'value', ( snapshot ) => {
+			this.posts = snapshot.val();
+		} );
 	}
 	
 	getToken() {
@@ -59,12 +65,14 @@ class FBScraper {
 		_.forIn( this.pages, ( value, key, object ) => {
 			this.updatePageData( key );
 			this.addNewPosts( key );
-			setTimeout( this.updateRecentPosts, 1000 * 5 )
 		} );
+		setTimeout( this.updateRecentPosts, 1000 * 5 );
 	}
 	
 	updateRecentPosts() {
-		
+		_.forIn( this.posts, ( value, key, object ) => {
+			
+		} );
 	}
 	
 	addNewPosts( key ) {
