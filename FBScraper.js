@@ -19,11 +19,10 @@ class FBScraper {
 	
 	millisecondsTillStartTime() {
 		const startTime = new Date();
-		startTime.setHours( 22 ); // 10pm
+		startTime.setHours( 24 );
 		startTime.setMinutes( 0 );
 		startTime.setSeconds( 0 );
 		startTime.setMilliseconds( 0 );
-		console.log( startTime.toLocaleTimeString() );
 		return ( startTime.getTime() - new Date().getTime() );
 	}
 	
@@ -31,7 +30,7 @@ class FBScraper {
 		firebaseDataStore.updateEarliestPostDate();
 		firebaseDataStore.getPosts();
 		const timer = setInterval( () => {
-			if ( firebaseDataStore.pages && firebaseDataStore.posts ) {
+			if ( firebaseDataStore.pages ) {
 				clearInterval( timer );
 				facebookAPI.getToken( this.cyclePages.bind( this ) );
 			}
