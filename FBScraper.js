@@ -1,116 +1,89 @@
 const _ = require( 'lodash' );
+const facebookAPI = require( './FacebookAPI' );
+const firebaseDataStore = require( './FirebaseDataStore' );
 
 class FBScraper {
 	
 	constructor() {
-		this.numberOfUpdateDays = 7;
-		// firebase
-		this.firebaseAdmin = require( 'firebase-admin' );
-		this.firebaseServiceAccount = require( './political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json' );
 		
-		this.firebaseAdmin.initializeApp( {
-			credential: this.firebaseAdmin.credential.cert( this.firebaseServiceAccount ),
-			databaseURL: 'https://political-post-analysis.firebaseio.com'
-		} );
-		
-		this.firebaseDatabase = this.firebaseAdmin.database();
-		
-		this.pagesRef = this.firebaseDatabase.ref( 'pages' );
-		this.pagesRef.on ( 'value', ( snapshot ) => {
-			this.pages = snapshot.val();
-		} );
-		this.postsRef = this.firebaseDatabase.ref( 'posts' );
-		this.usersRef = this.firebaseDatabase.ref( 'users' );
-		this.postReactionsRef = this.firebaseDatabase.ref( 'post_reactions' );
-		this.commentsRef = this.firebaseDatabase.ref( 'comments' );
-		this.commentReactionsRef = this.firebaseDatabase.ref( 'comment_reactions' );
-		// facebook
-		this.request = require( 'request' );
-		this.facebookToken = null;
 	}
 	
 	start() {
-		// timer that waits for this.pages to populate before starting
-		this.listenToFirebasePosts();
+		const midnight = new Date();
+		midnight.setHours( 24 );
+		midnight.setMinutes( 0 );
+		midnight.setSeconds( 0 );
+		midnight.setMilliseconds( 0 );
+		setTimeout( () => {
+			this.iteration();
+			setInterval( () => {
+				this.iteration();
+			}, 1000 * 60 * 60 * 24 );
+		}, midnight.getTime() - new Date().getTime() );
+	}
+	
+	iteration() {
+		firebaseDataStore.updateEarliestPostDate();
+		firebaseDataStore.getPosts();
 		const timer = setInterval( () => {
-			if ( this.pages && this.posts ) {
-				this.getToken();
+			if ( firebaseDataStore.pages && firebaseDataStore.posts ) {
 				clearInterval( timer );
+				facebookAPI.getToken( this.cyclePages.bind( this ) );
 			}
 		}, 100 );
 	}
 	
-	listenToFirebasePosts() {
-		this.postsRef.off();
-		this.posts = null;
-		var date = new Date();
-		date.setDate( date.getDate() - this.numberOfUpdateDays ); // update last 7 days of posts only
-		date = date.toISOString().replace( /\..+/, '+0000' );
-		this.postsRef.orderByChild( 'created_time' ).startAt( date ).on( 'value', ( snapshot ) => {
-			this.posts = snapshot.val();
-		} );
-	}
-	
-	getToken() {
-		const url = `oauth/access_token`;
-		const parameters = {
-			client_id: process.env.FACEBOOK_APP_ID,
-			client_secret: process.env.FACEBOOK_APP_SECRET,
-			grant_type: 'client_credentials'
-		};
-		
-		this.facebookRequest( url, ( response ) => {
-			this.facebookToken = response.access_token;
-			this.cyclePages();
-		}, null, parameters );
-	}
-	
 	cyclePages() {
-		_.forIn( this.pages, ( value, key, object ) => {
+		_.forIn( firebaseDataStore.pages, ( value, key, object ) => {
 			this.updatePageData( key );
 			this.addNewPosts( key );
 		} );
-		setTimeout( this.updateRecentPosts, 1000 * 5 );
+		var timer = setInterval( () => {
+			if ( facebookAPI.isQueueFinished() ) {
+				clearInterval( timer );
+				firebaseDataStore.getPosts();
+				var timer = setInterval( () => {
+					if ( firebaseDataStore.posts ) {
+						clearInterval( timer );
+						this.updateRecentPosts();
+					}
+				}, 100 );
+			}
+		}, 100 );
 	}
 	
 	updatePageData( key ) {
 		const fields = [ 'about', 'category', 'fan_count', 'id', 'link', 'name', 'picture', 'website' ];
-		this.facebookRequest( `/${ key }`, ( response ) => {
+		facebookAPI.request( `/${ key }`, ( response ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
-				if ( this.propertyNeedsUpdate( this.pages, key, response, field ) ) updateData[`${ response.id }/${ field }`] = response[field];
+				if ( this.propertyNeedsUpdate( firebaseDataStore.pages, response.id, response, field ) ) updateData[`pages/${ response.id }/${ field }`] = response[field];
 			} );
-			if ( _.size( updateData ) > 0 ) this.pagesRef.update( updateData );
+			if ( _.size( updateData ) > 0 ) firebaseDataStore.update( updateData );
 		}, fields );
 	}
 	
 	addNewPosts( key ) {
-		var date = new Date();
-		date.setDate( date.getDate() - this.numberOfUpdateDays ); // update last 7 days of posts only
-		date = date.toISOString().replace( /\..+/, '+0000' );
-		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url' ];
-		this.facebookRequest( `/${ key }/posts`, ( response ) => {
+		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url', 'shares' ];
+		facebookAPI.request( `${ key }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
-				if ( post.created_time >= date ) {
+				if ( post.created_time >= this.earliestPostDate ) {
 					const updateData = {};
 					fields.forEach( ( field ) => {
-						if ( this.propertyNeedsUpdate( this.posts, post.id, post, field ) ) updateData[`${ post.id }/${ field }`] = post[field];
+						if ( this.propertyNeedsUpdate( firebaseDataStore.posts, post.id, post, field ) ) updateData[`posts/${ post.id }/${ field }`] = post[field];
 					} );
-					if ( !( post.id in this.posts ) || this.posts[post.id].from_id != post.from.id ) updateData[`${ post.id }/from_id`] = post.from.id;
-					if ( _.size( updateData ) > 0 ) this.postsRef.update( updateData );
+					if ( !( post.id in firebaseDataStore.posts ) || firebaseDataStore.posts[post.id].from_id != post.from.id ) updateData[`posts/${ post.id }/from_id`] = post.from.id;
+					if ( _.size( updateData ) > 0 ) firebaseDataStore.update( updateData );
 				}
 			} );
 		}, fields, { limit: 100 } );
 	}
 	
 	updateRecentPosts() {
-		console.log( 'test1' );
-		_.forIn( this.posts, ( value, key, object ) => {
-			console.log( 'test2' );
+		_.forIn( firebaseDataStore.posts, ( value, key, object ) => {
 			this.updateReactions( this.postReactionsRef, key );
 			this.updatePostComments( key );
 		} );
-		console.log( this.posts );
 	}
 	
 	updateReactions( databaseReference, key, after = null ) {
@@ -120,31 +93,31 @@ class FBScraper {
 			limit: 100
 		};
 		if ( after ) parameters.after = after;
-		this.facebookRequest( `/${ key }/reactions`, ( response ) => {
+		facebookAPI.request( `${ key }/reactions`, ( response ) => {
 			response.data.forEach( ( reaction ) => {
 				
 				// save/update reaction
 				const reactionKey = `${ key }_${ reaction.id }`;
 				const updateReactionData = {};
 				reactionFields.forEach( ( field ) => {
-					if ( field in reaction ) updateReactionData[`${ reactionKey }/${ field }`] = reaction[field];
+					if ( field in reaction ) updateReactionData[`post_reactions/${ reactionKey }/${ field }`] = reaction[field];
 				} );
-				updateReactionData[`${ reactionKey }/user_id`] = reaction.id;
-				updateReactionData[`${ reactionKey }/post_id`] = key;
-				updateReactionData[`${ reactionKey }/page_id`] = this.posts[key].from.id;
+				updateReactionData[`post_reactions/${ reactionKey }/user_id`] = reaction.id;
+				updateReactionData[`post_reactions/${ reactionKey }/post_id`] = key;
+				updateReactionData[`post_reactions/${ reactionKey }/page_id`] = key.substr( 0, key.indexOf( '_' ) );
 				
-				databaseReference.update( updateReactionData );
+				firebaseDataStore.update( updateReactionData );
 				
 				// save/update user
 				const updateUserData = {};
 				userFields.forEach( ( field ) => {
-					if ( field in reaction ) updateUserData[`${ reaction.id }/${ field }`] = reaction[field];
+					if ( field in reaction ) updateUserData[`users/${ reaction.id }/${ field }`] = reaction[field];
 				} );
 				
-				this.usersRef.update( updateUserData );
+				firebaseDataStore.update( updateUserData );
 			} );
-			if ( 'next' in response.paging ) this.updatePostReactions( key, response.paging.cursors.after );
-		}, fields, parameters );
+			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
+		}, reactionFields, parameters );
 	}
 	
 	updatePostComments( key, after = null ) {
@@ -153,71 +126,47 @@ class FBScraper {
 			limit: 100
 		};
 		if ( after ) parameters.after = after;
-		this.facebookRequest( `/${ key }/comments`, ( response ) => {
+		facebookAPI.request( `${ key }/comments`, ( response ) => {
 			response.data.forEach( ( comment ) => {
 				
 				// save/update comment
 				const updateData = {};
 				fields.forEach( ( field ) => {
-					if ( field in comment ) updateData[`${ comment.id }/${ field }`] = comment[field];
+					if ( field in comment ) updateData[`comments/${ comment.id }/${ field }`] = comment[field];
 				} );
-				updateData[`${ comment.id }/user_id`] = comment.from.id;
-				updateData[`${ comment.id }/post_id`] = key;
-				updateData[`${ comment.id }/page_id`] = this.posts[key].from.id;
+				updateData[`comments/${ comment.id }/user_id`] = comment.from.id;
+				updateData[`comments/${ comment.id }/post_id`] = key;
+				updateData[`comments/${ comment.id }/page_id`] = key.substr( 0, key.indexOf( '_' ) );
 				
-				this.postCommentsRef.update( updateData );
+				firebaseDataStore.update( updateData );
 				
 				// save/update comment comments
 				if ( comment.comment_count > 0 ) this.updatePostComments( comment.id );
 				
 				// save/update comment reactions
-				this.updateReactions( this.commentReactionsRef, key );
+				// (can't do this because of request limits)
+				//this.updateReactions( this.commentReactionsRef, key );
 				
 				// save/update user
 				this.updateUser( comment.from.id );
 			} );
-			if ( 'next' in response.paging ) this.updatePostReactions( key, response.paging.cursors.after );
+			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updatePostComments( key, response.paging.cursors.after );
 		}, fields, parameters );
 	}
 	
 	updateUser( key ) {
 		const fields = [ 'id', 'link', 'name', 'picture' ];
-		this.facebookRequest( `/${ key }`, ( response ) => {
+		facebookAPI.request( `${ key }`, ( response ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
-				if ( field in response ) updateData[`${ response.id }/${ field }`] = response[field];
+				if ( field in response ) updateData[`users/${ response.id }/${ field }`] = response[field];
 			} );
-			this.usersRef.update( updateData );
+			firebaseDataStore.update( updateData );
 		}, fields );
 	}
 	
 	propertyNeedsUpdate( object, key, response, property ) {
-		return ( ( property in response ) && ( !( key in object ) || object[key][property] != response[property] ) );
-	}
-	
-	facebookRequest( path, callback, fields = null, parameters = {}, method = 'GET' ) {
-		if ( this.facebookToken ) parameters.access_token = this.facebookToken;
-		if ( fields ) parameters.fields = fields.join();
-		parameters = _.values( _.map( parameters, ( value, key ) => {
-			return `${ key }=${ value}`;
-		} ) ).join( '&' );
-		if ( parameters.length > 0 ) parameters = `?${ parameters }`;
-		const url = `https://graph.facebook.com/${ path }${ parameters }`;
-		const options = {
-			url: url,
-			method: method,
-			json: true,
-		};
-		
-		this.request( options, ( err, httpResponse, body ) => {
-			if ( err ) {
-				console.log( `Request error: ${ err }` );
-			} else if ( httpResponse.statusCode != '200' ) {
-				console.log( `HTTP error: ${ httpResponse.statusCode }` );
-			} else {
-				callback( body );
-			}
-		} );
+		return ( ( property in response ) && ( !( key in object ) || !( property in object[key] ) || object[key][property] != response[property] ) );
 	}
 }
 
