@@ -67,7 +67,7 @@ class FBScraper {
 		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url', 'shares' ];
 		facebookAPI.request( `${ key }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
-				if ( post.created_time >= this.earliestPostDate ) {
+				if ( post.created_time >= firebaseDataStore.earliestPostDate ) {
 					const updateData = {};
 					fields.forEach( ( field ) => {
 						if ( this.propertyNeedsUpdate( firebaseDataStore.posts, post.id, post, field ) ) updateData[`posts/${ post.id }/${ field }`] = post[field];

@@ -3,7 +3,7 @@ const _ = require( 'lodash' );
 class FirebaseDataStore {
 	
 	constructor() {
-		this.numberOfUpdateDays = 2;
+		this.numberOfUpdateDays = 3;
 		this.firebaseAdmin = require( 'firebase-admin' );
 		this.firebaseServiceAccount = require( './political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json' );
 		
