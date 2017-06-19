@@ -24,7 +24,7 @@ class FBScraper {
 		startTime.setSeconds( 0 );
 		startTime.setMilliseconds( 0 );
 		console.log( date.toISOString() );
-		return ( startTime.getTime() - new Date().getTime() ):
+		return ( startTime.getTime() - new Date().getTime() );
 	}
 	
 	iteration() {
