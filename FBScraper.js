@@ -84,6 +84,12 @@ class FBScraper {
 			this.updateReactions( key );
 			this.updatePostComments( key );
 		} );
+		var timer = setInterval( () => {
+			if ( facebookAPI.isQueueFinished() ) {
+				clearInterval( timer );
+				this.postScrapeProcessing();
+			}
+		}, 100 );
 	}
 	
 	updateReactions( key, after = null ) {
@@ -163,6 +169,10 @@ class FBScraper {
 	
 	propertyNeedsUpdate( object, key, response, property ) {
 		return ( ( property in response ) && ( !( key in object ) || !( property in object[key] ) || object[key][property] != response[property] ) );
+	}
+	
+	postScrapeProcessing() {
+		console.log( 'post scrape processing begin' );
 	}
 }
 
