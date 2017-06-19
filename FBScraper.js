@@ -9,17 +9,21 @@ class FBScraper {
 	}
 	
 	start() {
-		const midnight = new Date();
-		midnight.setHours( 24 );
-		midnight.setMinutes( 0 );
-		midnight.setSeconds( 0 );
-		midnight.setMilliseconds( 0 );
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
 				this.iteration();
 			}, 1000 * 60 * 60 * 24 );
-		}, midnight.getTime() - new Date().getTime() );
+		}, this.millisecondsTillStartTime() );
+	}
+	
+	millisecondsTillStartTime() {
+		const startTime = new Date();
+		startTime.setHours( 22 ); // 10pm
+		startTime.setMinutes( 0 );
+		startTime.setSeconds( 0 );
+		startTime.setMilliseconds( 0 );
+		return ( startTime.getTime() - new Date().getTime() ):
 	}
 	
 	iteration() {
