@@ -81,12 +81,12 @@ class FBScraper {
 	
 	updateRecentPosts() {
 		_.forIn( firebaseDataStore.posts, ( value, key, object ) => {
-			this.updateReactions( this.postReactionsRef, key );
+			this.updateReactions( key );
 			this.updatePostComments( key );
 		} );
 	}
 	
-	updateReactions( databaseReference, key, after = null ) {
+	updateReactions( key, after = null ) {
 		const reactionFields = [ 'id', 'link', 'name', 'picture', 'type' ];
 		const userFields = [ 'id', 'link', 'name', 'picture' ];
 		const parameters = {
@@ -142,10 +142,6 @@ class FBScraper {
 				
 				// save/update comment comments
 				if ( comment.comment_count > 0 ) this.updatePostComments( comment.id );
-				
-				// save/update comment reactions
-				// (can't do this because of request limits)
-				//this.updateReactions( this.commentReactionsRef, key );
 				
 				// save/update user
 				this.updateUser( comment.from.id );
