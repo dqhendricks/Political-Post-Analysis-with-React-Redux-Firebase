@@ -23,7 +23,7 @@ class FBScraper {
 		startTime.setMinutes( 0 );
 		startTime.setSeconds( 0 );
 		startTime.setMilliseconds( 0 );
-		console.log( startTime.toISOString() );
+		console.log( startTime.toLocaleTimeString() );
 		return ( startTime.getTime() - new Date().getTime() );
 	}
 	
