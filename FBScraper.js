@@ -19,7 +19,7 @@ class FBScraper {
 	
 	millisecondsTillStartTime() {
 		const startTime = new Date();
-		startTime.setHours( 24 );
+		startTime.setHours( 23 );
 		startTime.setMinutes( 0 );
 		startTime.setSeconds( 0 );
 		startTime.setMilliseconds( 0 );
