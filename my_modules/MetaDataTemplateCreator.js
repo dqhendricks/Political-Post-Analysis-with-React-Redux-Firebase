@@ -1,5 +1,6 @@
-{
-	pages: ( () => { 
+
+class MetaDataTemplateCreator {
+	pages () { 
 		return {
 			total_posts: 0,
 			total_love_posts: 0,
@@ -13,8 +14,9 @@
 			average_users_commenting_24: 0,
 			average_zero_like_comments: 0,
 		};
-	} ),
-	posts: ( () => { 
+	}
+	
+	posts () { 
 		return {
 			total_reactions: 0,
 			total_likes: 0,
@@ -38,8 +40,9 @@
 			page_id: '',
 			created_time: ''
 		};
-	} ),
-	users: ( () => { 
+	}
+	
+	users () { 
 		return {
 			total_reactions: 0,
 			total_conservative_likes: 0,
@@ -56,5 +59,7 @@
 			total_comment_likes: 0,
 			average_likes_per_comment: 0
 		};
-	} )
+	}
 }
+
+module.exports = new MetaDataTemplateCreator();
