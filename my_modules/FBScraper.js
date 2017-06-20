@@ -141,7 +141,7 @@ class FBScraper {
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		facebookAPI.request( `${ key }/reactions`, ( response ) => {
-			const pageID = key.substr( 0, key.indexOf( '_' );
+			const pageID = key.substr( 0, key.indexOf( '_' ) );
 			response.data.forEach( ( reaction ) => {
 				const reactionID = `${ key }_${ reaction.id }`;
 				facebookDataProcessor.addUser( reaction.id );
