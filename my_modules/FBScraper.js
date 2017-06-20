@@ -116,7 +116,7 @@ class FBScraper {
 			this.updatePostComments( id, id );
 		} );
 		// once finished updating post data, start doing any after scrape processing of the data
-		callOnScrapeFinished( () => {
+		this.callOnScrapeFinished( () => {
 			facebookDataProcessor.afterScrapeProcessing();
 		} );
 	}
