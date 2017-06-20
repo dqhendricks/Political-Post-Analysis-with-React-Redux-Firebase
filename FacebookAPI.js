@@ -47,27 +47,48 @@ class FacebookAPI {
 		return ( this.activeRequestCount == 0 && this.requestQueue.length == 0 );
 	}
 	
+	callOnEmptyQueue( callback ) {
+		var timer = setInterval( () => {
+			if ( this.isQueueFinished() ) {
+				clearInterval( timer );
+				callback();
+			}
+		}, 1000 );
+	}
+	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
-			if ( this.activeRequestCount <= 0 ) {
+			if ( this.activeRequestCount <= 1 ) {
 				const currentRequest = this.requestQueue.shift();
 				console.log( currentRequest.options.url );
 				this.activeRequestCount++;
+				var callAnswered = false;
 				request( currentRequest.options, ( err, httpResponse, body ) => {
-					this.activeRequestCount--;
-					if ( this.isQueueFinished() ) {
-						console.log( 'end facebook request queue' );
-					}
-					if ( err ) {
-						console.log( `Request error: ${ err }` );
-					} else if ( httpResponse.statusCode != '200' ) {
-						console.log( `HTTP error: ${ httpResponse.statusCode }` );
-					} else if ( 'error' in body ) {
-						console.log( `Facebook error: ${ body.error }` );
-					} else {
-						currentRequest.callback( body );
+					if ( !callAnswered ) {
+						this.activeRequestCount--;
+						callAnswered = true;
+						if ( this.isQueueFinished() ) {
+							console.log( 'end facebook request queue' );
+						}
+						if ( err ) {
+							console.log( `Request error: ${ err }` );
+						} else if ( httpResponse.statusCode != '200' ) {
+							console.log( `HTTP error: ${ httpResponse.statusCode }` );
+						} else if ( 'error' in body ) {
+							console.log( `Facebook error: ${ body.error }` );
+						} else {
+							currentRequest.callback( body );
+						}
 					}
 				} );
+				setTimeout( () => {
+					if ( !callAnswered ) {
+						this.activeRequestCount--;
+						callAnswered = true;
+						console.log( `Retrying call: ${ currentRequest.options.url }` );
+						this.requestQueue.unshift( currentRequest );
+					}
+				}, 30 * 1000 );
 			}
 		}
 	}

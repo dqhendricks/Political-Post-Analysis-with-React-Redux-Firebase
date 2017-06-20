@@ -1,41 +1,102 @@
 const _ = require( 'lodash' );
+firebaseAdmin = require( 'firebase-admin' );
 
 class FirebaseDataStore {
 	
 	constructor() {
-		this.numberOfUpdateDays = 3;
-		this.firebaseAdmin = require( 'firebase-admin' );
+		this.pages = null;
+		this.posts = null;
+		
+		this.currentTransactionCount = 0;
+
 		this.firebaseServiceAccount = require( './political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json' );
 		
-		this.firebaseAdmin.initializeApp( {
-			credential: this.firebaseAdmin.credential.cert( this.firebaseServiceAccount ),
+		firebaseAdmin.initializeApp( {
+			credential: firebaseAdmin.credential.cert( this.firebaseServiceAccount ),
 			databaseURL: 'https://political-post-analysis.firebaseio.com'
 		} );
 		
-		this.firebaseDatabase = this.firebaseAdmin.database();
+		this.firebaseDatabase = firebaseAdmin.database();
 		this.firebaseDatabaseRef = this.firebaseDatabase.ref();
-		
-		const pagesRef = this.firebaseDatabase.ref( 'pages' );
-		pagesRef.on ( 'value', ( snapshot ) => {
-			this.pages = snapshot.val();
+	}
+	
+	update( data, callback ) {
+		this.currentTransactionCount++;
+		this.firebaseDatabaseRef.update( data, () => {
+			this.currentTransactionCount--;
+			if ( callback ) callback();
 		} );
 	}
 	
-	update( data ) {
-		this.firebaseDatabaseRef.update( data );
+	isBusy() {
+		return ( this.currentTransactionCount != 0 );
 	}
 	
-	updateEarliestPostDate() {
-		const date = new Date();
-		date.setDate( date.getDate() - this.numberOfUpdateDays ); // update last X days of posts only
-		this.earliestPostDate = date.toISOString().replace( /\..+/, '+0000' );
+	callOnNotBusy( callback ) {
+		var timer = setInterval( () => {
+			if ( !this.isBusy() ) {
+				clearInterval( timer );
+				callback();
+			}
+		}, 1000 );
+	}
+	
+	fetchPages( callback ) {
+		this.currentTransactionCount++;
+		this.firebaseDatabase.ref( 'pages' ).once( 'value', ( snapshot ) => {
+			this.currentTransactionCount--;
+			this.pages = snapshot.val();
+			callback();
+		} );
+	}
+	
+	fetchPostsRange( earliestPostDate = null, latestPostDate = null, callback = null ) {
+		this.currentTransactionCount++;
+		var dbRef = this.firebaseDatabase.ref( 'posts' ).orderByChild( 'created_time' )
+		if ( earliestPostDate ) dbRef = dbRef.startAt( earliestPostDate );
+		if ( latestPostDate ) dbRef = dbRef.endAt( latestPostDate );
+		
+		dbRef.once( 'value', ( snapshot ) => {
+			this.currentTransactionCount--;
+			this.posts = snapshot.val();
+			if ( callback ) callback();
+		} );
+	}
+	
+	fetchOnce( path, callback, orderField = null, equalTo = null ) {
+		this.currentTransactionCount++;
+		var dbRef = this.firebaseDatabase.ref( path );
+		if ( orderField ) {
+			dbRef = dbRef.orderByChild( orderField );
+		} else {
+			dbRef = dbRef.orderByKey();
+		}
+		if ( equalTo ) dbRef = dbRef.equalTo( equalTo );
+		dbRef.once( 'value', ( snapshot ) => {
+			this.currentTransactionCount--;
+			callback( snapshot.val(), snapshot.numChildren() );
+		} );
+	}
+	
+	getPages() {
+		return this.pages;
 	}
 	
 	getPosts() {
-		this.posts = null;
-		this.firebaseDatabase.ref( 'posts' ).orderByChild( 'created_time' ).startAt( this.earliestPostDate ).once( 'value', ( snapshot ) => {
-			this.posts = snapshot.val();
-			if ( !this.posts ) this.posts = {};
+		return this.posts;
+	}
+	
+	fetchChunk( path, callback, startIndex = 0, numberOfRecords = 250, orderBy = null ) {
+		var dbRef = this.firebaseDatabase.ref( path );
+		if ( !orderBy ) {
+			dbRef = dbRef.orderByKey();
+		} else {
+			dbRef = dbRef.orderByChild( orderBy );
+		}
+		this.currentTransactionCount++;
+		dbRef.limitToFirst( startIndex + numberOfRecords ).limitToLast( numberOfRecords ).once( 'value', ( snapshot ) => {
+			this.currentTransactionCount--;
+			callback( snapshot.val(), snapshot.numChildren() );
 		} );
 	}
 }
