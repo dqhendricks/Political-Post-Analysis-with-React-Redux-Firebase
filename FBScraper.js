@@ -79,7 +79,7 @@ class FBScraper {
 					fields.forEach( ( field ) => {
 						if ( field in post ) updateData[`posts/${ post.id }/${ field }`] = post[field];
 					} );
-					if ( from in post ) updateData[`posts/${ post.id }/page_id`] = post.from.id;
+					if ( 'from' in post ) updateData[`posts/${ post.id }/page_id`] = post.from.id;
 					this.addedPosts[post.id] = post;
 					firebaseDataStore.update( updateData );
 				} else if ( post.created_time < this.earliestPostDate ) {
@@ -114,7 +114,7 @@ class FBScraper {
 				reactionFields.forEach( ( field ) => {
 					if ( field in reaction ) updateReactionData[`post_reactions/${ reactionKey }/${ field }`] = reaction[field];
 				} );
-				if ( id in reaction ) updateReactionData[`post_reactions/${ reactionKey }/user_id`] = reaction.id;
+				if ( 'id' in reaction ) updateReactionData[`post_reactions/${ reactionKey }/user_id`] = reaction.id;
 				updateReactionData[`post_reactions/${ reactionKey }/post_id`] = key;
 				updateReactionData[`post_reactions/${ reactionKey }/page_id`] = key.substr( 0, key.indexOf( '_' ) );
 				
