@@ -3,7 +3,7 @@ const _ = require( 'lodash' );
 class FBDataProcessor {
 	
 	constructor() {
-		this.metaDataTemplates = require( './metaDataTemplates' );
+		this.metaDataTemplateCreator = require( './MetaDataTemplateCreator' );
 	}
 	
 	resetData( earliestPostDate, latestPostDate ) {
@@ -19,12 +19,12 @@ class FBDataProcessor {
 	}
 	
 	addPage( page ) {
-		this.data.pages[page.id] = this.metaDataTemplates.pages();
+		this.data.pages[page.id] = this.metaDataTemplateCreator.pages();
 		this.data.pages[page.id].affiliation_score = page.affiliation_score;
 	}
 	
 	addPost( post ) {
-		this.data.posts[post.id] = this.metaDataTemplates.posts();
+		this.data.posts[post.id] = this.metaDataTemplateCreator.posts();
 		this.data.posts[post.id].last_allowed_comment_time = this.getPostLastAllowedCommentTime( post );
 		this.data.posts[post.id].created_time = post.created_time;
 		this.data.posts[post.id].page_id = post.from.id;
@@ -52,7 +52,7 @@ class FBDataProcessor {
 	}
 	
 	addUser( userID ) {
-		if ( !( userID in this.data.users ) ) this.data.users[userID] = this.metaDataTemplates.users();
+		if ( !( userID in this.data.users ) ) this.data.users[userID] = this.metaDataTemplateCreator.users();
 	}
 	
 	addReaction( reaction, reactionID, postID, pageID ) {
