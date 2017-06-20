@@ -93,10 +93,10 @@ class FBDataProcessor {
 	}
 	
 	addComment( comment, postID, pageID ) {
-		const postHour = this.getPostHour( comment, postID );
+		const commentHour = this.getCommentHour( comment, postID );
 		// post
 		this.data.posts[postID].total_comments_24++;
-		this.data.posts[postID].hourly_total_comments[postHour]++;
+		this.data.posts[postID].hourly_total_comments[commentHour]++;
 		if ( comment.like_count == 0 ) this.data.posts[postID].zero_like_comments++;
 		this.data.posts[postID].users_commenting[comment.from.id] = true;
 		// user
@@ -110,12 +110,12 @@ class FBDataProcessor {
 		}
 		if ( comment.like_count < 5 ) this.data.users[comment.from.id].total_comments_under_5_likes++;
 		this.data.users[comment.from.id].total_comment_likes += comment.like_count;
-		if ( postHour == 0 ) this.data.users[comment.from.id].total_comments_within_first_hour++;
+		if ( commentHour == 0 ) this.data.users[comment.from.id].total_comments_within_first_hour++;
 		// comments
 		this.data.comments[comment.id] = true;
 	}
 	
-	getPostHour( comment, postID ) {
+	getCommentHour( comment, postID ) {
 		var postCreationTime = new Date( this.data.posts[postID].created_time.replace( /\..+/, '.000Z' ) ).getTime();
 		var commentCreationTime = new Date( comment.created_time.replace( /\..+/, '.000Z' ) ).getTime();
 		return Math.floor( ( commentCreationTime - postCreationTime ) / ( 1000 * 60 * 60 ) );
