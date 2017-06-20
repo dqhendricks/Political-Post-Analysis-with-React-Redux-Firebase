@@ -64,9 +64,10 @@ class FBScraper {
 		}, fields );
 	}
 	
-	addNewPosts( key ) {
+	addNewPosts( key, after = null ) {
 		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url', 'shares' ];
 		const parameters = { limit: 100 };
+		if ( after ) parameters.after = after;
 		var earliestPostReached = false;
 		facebookAPI.request( `${ key }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
@@ -78,8 +79,11 @@ class FBScraper {
 					if ( from in post ) updateData[`posts/${ post.id }/page_id`] = post.from.id;
 					this.addedPosts[post.id] = post;
 					firebaseDataStore.update( updateData );
+				} else if ( post.created_time < this.earliestPostDate ) {
+					earliestPostReached = true;
 				}
 			} );
+			if ( !earliestPostReached && ( 'paging' in response ) && ( 'next' in response.paging ) ) this.addNewPosts( key, response.paging.cursors.after );
 		}, fields, parameters );
 	}
 	
