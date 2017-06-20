@@ -1,5 +1,5 @@
 const firebaseAdmin = require( 'firebase-admin' );
-const firebaseServiceAccount = require( './political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json' );
+const firebaseServiceAccount = require( './my_modules/political-post-analysis-firebase-adminsdk-rdi0e-6781839410.json' );
 
 firebaseAdmin.initializeApp( {
 	credential: firebaseAdmin.credential.cert( firebaseServiceAccount ),

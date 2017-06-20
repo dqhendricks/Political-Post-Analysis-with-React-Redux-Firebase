@@ -11,6 +11,6 @@ app.get( '*', ( req, res ) => {
 app.listen( port );
 
 // worker
-const fbScraper = require( './FBScraper' );
+const fbScraper = require( './my_modules/FBScraper' );
 
 fbScraper.start();

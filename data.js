@@ -1,5 +1,5 @@
 const _ = require( 'lodash' );
-const facebookDataProcessor = require( './FBDataProcessor' );
+const facebookDataProcessor = require( './my_modules/FBDataProcessor' );
 
 facebookDataProcessor.start();
 
