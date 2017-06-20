@@ -52,7 +52,7 @@ class MetaDataTemplateCreator {
 			pages_interacted_with: {},
 			both_liberal_and_conservative_interaction: false,
 			total_comments: 0,
-			total_comments_within_first_hour: 0
+			total_comments_within_first_hour: 0,
 			duplicate_comments: 0,
 			comment_starts: {},
 			total_comments_under_5_likes: 0,
