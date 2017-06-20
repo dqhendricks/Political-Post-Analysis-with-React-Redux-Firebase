@@ -14,7 +14,7 @@ class FBDataProcessor {
 			posts: {},
 			users: {},
 			comments: {},
-			post_reacts: {}
+			post_reactions: {}
 		};
 	}
 	

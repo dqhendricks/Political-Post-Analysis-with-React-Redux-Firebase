@@ -10,14 +10,11 @@ class FBScraper {
 	}
 	
 	start() {
-		
-		// do first iteration at set time, then every 24 hours after that
-		setTimeout( () => {
+		// do first iteration, then every 24 hours after that
+		this.iteration();
+		setInterval( () => {
 			this.iteration();
-			setInterval( () => {
-				this.iteration();
-			}, 1000 * 60 * 60 * 24 );
-		}, this.millisecondsTillStartTime() );
+		}, 1000 * 60 * 60 * 24 );
 	}
 	
 	millisecondsTillStartTime() {
