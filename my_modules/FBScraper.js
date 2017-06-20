@@ -177,7 +177,7 @@ class FBScraper {
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		facebookAPI.request( `${ key }/comments`, ( response ) => {
-			const pageID = postID.substr( 0, postID.indexOf( '_' );
+			const pageID = postID.substr( 0, postID.indexOf( '_' ) );
 			response.data.forEach( ( comment ) => {
 				if ( facebookDataProcessor.validCommentCreationTime( comment, postID ) ) {
 					facebookDataProcessor.addUser( comment.from.id );
