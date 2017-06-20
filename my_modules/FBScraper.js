@@ -162,7 +162,7 @@ class FBScraper {
 				} );
 				if ( 'id' in reaction ) updateReactionData[`post_reactions/${ reactionID }/user_id`] = reaction.id;
 				updateReactionData[`post_reactions/${ reactionID }/post_id`] = key;
-				updateReactionData[`post_reactions/${ reactionID }/page_id`] = pageID );
+				updateReactionData[`post_reactions/${ reactionID }/page_id`] = pageID;
 				
 				firebaseDataStore.update( updateReactionData );
 			} );
