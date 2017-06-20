@@ -58,7 +58,7 @@ class FBScraper {
 		facebookAPI.request( `/${ key }`, ( page ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
-				if ( field in page ) updateData[`pages/${ response.id }/${ field }`] = page[field];
+				if ( field in page ) updateData[`pages/${ page.id }/${ field }`] = page[field];
 			} );
 			firebaseDataStore.update( updateData );
 		}, fields );
