@@ -145,7 +145,7 @@ class FBScraper {
 				fields.forEach( ( field ) => {
 					if ( field in comment ) updateData[`comments/${ comment.id }/${ field }`] = comment[field];
 				} );
-				if ( from in comment ) updateData[`comments/${ comment.id }/user_id`] = comment.from.id;
+				if ( 'from' in comment ) updateData[`comments/${ comment.id }/user_id`] = comment.from.id;
 				updateData[`comments/${ comment.id }/post_id`] = key;
 				updateData[`comments/${ comment.id }/page_id`] = key.substr( 0, key.indexOf( '_' ) );
 				
