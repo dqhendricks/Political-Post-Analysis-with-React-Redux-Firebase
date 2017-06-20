@@ -41,28 +41,6 @@ class FirebaseDataStore {
 		}, 1000 );
 	}
 	
-	fetchPages( callback ) {
-		this.currentTransactionCount++;
-		this.firebaseDatabase.ref( 'pages' ).once( 'value', ( snapshot ) => {
-			this.currentTransactionCount--;
-			this.pages = snapshot.val();
-			callback();
-		} );
-	}
-	
-	fetchPostsRange( earliestPostDate = null, latestPostDate = null, callback = null ) {
-		this.currentTransactionCount++;
-		var dbRef = this.firebaseDatabase.ref( 'posts' ).orderByChild( 'created_time' )
-		if ( earliestPostDate ) dbRef = dbRef.startAt( earliestPostDate );
-		if ( latestPostDate ) dbRef = dbRef.endAt( latestPostDate );
-		
-		dbRef.once( 'value', ( snapshot ) => {
-			this.currentTransactionCount--;
-			this.posts = snapshot.val();
-			if ( callback ) callback();
-		} );
-	}
-	
 	fetchOnce( path, callback, orderField = null, equalTo = null ) {
 		this.currentTransactionCount++;
 		var dbRef = this.firebaseDatabase.ref( path );
@@ -78,12 +56,10 @@ class FirebaseDataStore {
 		} );
 	}
 	
-	getPages() {
-		return this.pages;
-	}
-	
-	getPosts() {
-		return this.posts;
+	valueExists( path, field, equalTo, callback ) {
+		this.firebaseDatabase.ref( path ).orderByChild( field ).equalTo( equalTo ).limitToFirst( 1 ).once( 'value', ( snapshot ) => {
+			callback( snapshot.val() != null );
+		} );
 	}
 	
 	fetchChunk( path, callback, startIndex = 0, numberOfRecords = 250, orderBy = null ) {
