@@ -29,5 +29,6 @@ databaseRef.set( {
 		}
 	}
 }, () => {
+	console.log( 'data has now been reset' );
 	process.exit();
 } );
