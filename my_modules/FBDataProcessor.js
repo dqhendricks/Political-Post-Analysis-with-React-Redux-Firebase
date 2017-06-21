@@ -132,7 +132,7 @@ class FBDataProcessor {
 		console.log( 'users' );
 		_.forIn( this.data.users, ( user, id ) => {
 			if ( user.total_comment_likes != 0 ) this.data.users[id].average_likes_per_comment = user.total_comments / user.total_comment_likes;
-			_.forIn( user.comment_starts, ( commentDuplicates, id ) {
+			_.forIn( user.comment_starts, ( commentDuplicates ) {
 				if ( commentDuplicates > 1 ) this.data.users[id].duplicate_comments += commentDuplicates;
 			} );
 			delete this.data.users[id].comment_starts;
