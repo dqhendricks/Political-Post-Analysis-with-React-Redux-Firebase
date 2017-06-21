@@ -9,10 +9,6 @@ firebaseAdmin.initializeApp( {
 const firebaseDatabase = firebaseAdmin.database();
 const databaseRef = firebaseDatabase.ref();
 
-var date = new Date();
-date.setDate( date.getDate() ); // update last X days of posts only
-date = date.toISOString().replace( /\..+/, '+0000' );
-
 databaseRef.set( {
 	pages: {
 		"5550296508": {
@@ -32,4 +28,6 @@ databaseRef.set( {
 			name: "The New York Times"
 		}
 	}
+}, () => {
+	process.exit();
 } );

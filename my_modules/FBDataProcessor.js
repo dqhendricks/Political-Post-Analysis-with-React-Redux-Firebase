@@ -270,6 +270,7 @@ class FBDataProcessor {
 			fs.unlinkSync( oldFileName );
 			fs.renameSync( newFileName, oldFileName );
 		}
+		delete this.oldData;
 		
 		console.log( 'cycle finished' );
 	}

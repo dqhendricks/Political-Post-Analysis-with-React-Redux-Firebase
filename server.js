@@ -9,8 +9,3 @@ app.get( '*', ( req, res ) => {
 	res.sendFile( path.resolve( __dirname, 'index.html' ) );
 } );
 app.listen( port );
-
-// worker
-const fbScraper = require( './my_modules/FBScraper' );
-
-fbScraper.start();
