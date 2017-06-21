@@ -10,19 +10,19 @@ class FBScraper {
 	}
 	
 	start() {
-		// do first iteration, then every 24 hours after that
-		this.iteration();
-		setInterval( () => {
+		// do first iteration at midnight UTC, then every 24 hours after that
+		setTimeout( () => {
 			this.iteration();
-		}, 1000 * 60 * 60 * 24 );
+			setInterval( () => {
+				this.iteration();
+			}, 1000 * 60 * 60 * 24 );
+		}, this.millisecondsTillStartTime() );
 	}
 	
 	millisecondsTillStartTime() {
-		const startTime = new Date();
-		startTime.setHours( 3 ); // 5 = 10pm
-		startTime.setMinutes( 0 );
-		startTime.setSeconds( 0 );
-		startTime.setMilliseconds( 0 );
+		var startTime = new Date();
+		startTime.setTime( Date.parse( startTime.toISOString().replace( /T.+/, 'T00:00:00.000Z' ) ) ); // get current day, midnight UTC
+		startTime.setTime( startTime.getTime() + ( 1 * 24 * 60 * 60 * 1000 ) ); // get tonight's, midnight UTC
 		return ( startTime.getTime() - new Date().getTime() );
 	}
 	
