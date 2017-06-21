@@ -132,19 +132,19 @@ class FBDataProcessor {
 		console.log( 'users' );
 		_.forIn( this.data.users, ( user, id ) => {
 			if ( user.total_comment_likes != 0 ) this.data.users[id].average_likes_per_comment = user.total_comments / user.total_comment_likes;
-			_.forIn( user.comment_starts, ( commentDuplicates ) {
+			_.forIn( user.comment_starts, ( commentDuplicates ) => {
 				if ( commentDuplicates > 1 ) this.data.users[id].duplicate_comments += commentDuplicates;
 			} );
 			delete this.data.users[id].comment_starts;
 			const affiliation_interactions = { left: false, right: false };
-			_.forIn( user.pages_interacted_with, ( value, pageID ) {
+			_.forIn( user.pages_interacted_with, ( value, pageID ) => {
 				this.data.users[id].total_pages_interacted_with++;
 				if ( this.data.pages[pageID].affiliation_score == 1 ) {
 					affiliation_interactions.right = true;
 				} else {
 					affiliation_interactions.left = true;
 				}
-			}
+			} );
 			if ( affiliation_interactions.left && affiliation_interactions.right ) this.data.users[id].both_liberal_and_conservative_interaction = true;
 			const total_affiliation_likes = user.total_conservative_likes + user.total_liberal_likes;
 			if ( total_affiliation_likes > 0 ) this.data.users[id].affiliation_score = user.total_conservative_likes / total_affiliation_likes;
