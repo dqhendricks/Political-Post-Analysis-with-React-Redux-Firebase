@@ -1,12 +1,12 @@
 const _ = require( 'lodash' );
 const facebookAPI = require( './FacebookAPI' );
-const firebaseDataStore = require( './FirebaseDataStore' );
-const facebookDataProcessor = require( './FBDataProcessor' );
+const databaseAPI = require( './DatabaseAPI' );
 
 class FBScraper {
 	
 	constructor() {
-		
+		this.daysToScrape = 1;
+		this.daysOfRecordsToPreserve = 7;
 	}
 	
 	start() {
@@ -27,37 +27,36 @@ class FBScraper {
 	}
 	
 	iteration() {
-		// this.data is used to tally meta data, as well as a deletion list for next update so we don't have to download the whole database each time
+		this.posts = {};
 		this.scrapeCount = 0;
-		this.updatePostDateRange();
-		facebookDataProcessor.resetData( this.earliestPostDate, this.latestPostDate );
-		firebaseDataStore.fetchOnce( 'pages', ( pages ) => {
+		this.updatePostDateRanges();
+		databaseAPI.request( 'pages', ( pages ) => {
 			facebookAPI.getToken( () => {
 				this.cyclePages( pages );
 			} );
 		} );
 	}
 	
-	updatePostDateRange() {
+	updatePostDateRanges() {
 		// examine posts posted between 1 and 2 days ago, starting at UTC midnight
 		var date = new Date();
 		date.setTime( Date.parse( date.toISOString().replace( /T.+/, 'T00:00:00.000Z' ) ) ); // get current day, midnight UTC
 		date.setTime( date.getTime() - ( 1 * 24 * 60 * 60 * 1000 ) ); // get yesterday, midnight UTC
 		this.latestPostDate = date.toISOString().replace( /\..+/, '.0000' );
-		date.setTime( date.getTime() - ( 1 * 24 * 60 * 60 * 1000 ) ); // get two days ago, midnight UTC
+		date.setTime( date.getTime() - ( this.daysToScrape * 24 * 60 * 60 * 1000 ) ); // get earliest scrape date, midnight UTC
 		this.earliestPostDate = date.toISOString().replace( /\..+/, '.0000' );
+		date.setTime( date.getTime() - ( ( this.daysOfRecordsToPreserve - this.daysToScrape ) * 24 * 60 * 60 * 1000 ) ); // get post cull date, midnight UTC
+		this.earliestPostCullDate = date.toISOString().replace( /\..+/, '.0000' );
 	}
 	
 	cyclePages( pages ) {
 		// going through database pages to update page data and add latest posts
 		_.forIn( pages, ( page, id ) => {
-			facebookDataProcessor.addPage( page );
-			
 			this.updatePageData( id );
 			this.addNewPosts( id );
 		} );
 		// once finished updating page data, cycle through newly added posts to update data in those
-		facebookAPI.callOnEmptyQueue( () => {
+		this.callOnScrapeFinished( () => {
 			this.updateAddedPosts();
 		} );
 	}
@@ -68,32 +67,34 @@ class FBScraper {
 		facebookAPI.request( `/${ id }`, ( page ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
-				if ( field in page ) updateData[`pages/${ page.id }/${ field }`] = page[field];
+				if ( field in page ) updateData[field] = page[field];
 			} );
 			
-			firebaseDataStore.update( updateData );
+			databaseAPI.post( `pages/${ id }`, updateData );
 			this.scrapeCount--;
 		}, fields );
 	}
 	
 	addNewPosts( pageID, after = null ) {
 		this.scrapeCount++;
-		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'message_tags', 'name', 'picture', 'permalink_url', 'shares' ];
+		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'name', 'picture', 'permalink_url', 'shares' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		var earliestPostReached = false;
 		facebookAPI.request( `${ pageID }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
-				facebookDataProcessor.addPost( post );
+				post.last_allowed_comment_time = this.getPostLastAllowedCommentTime( post );
+				this.posts[post.id] = post;
 				
 				if ( post.created_time >= this.earliestPostDate && post.created_time <= this.latestPostDate ) {
 					const updateData = {};
 					fields.forEach( ( field ) => {
-						if ( field in post ) updateData[`posts/${ post.id }/${ field }`] = post[field];
+						if ( field in post ) updateData[field] = post[field];
 					} );
-					if ( 'from' in post ) updateData[`posts/${ post.id }/page_id`] = post.from.id;
+					if ( 'from' in post ) updateData['page_id'] = post.from.id;
+					if ( 'shares' in post ) updateData['shares'] = post.shares.count;
 
-					firebaseDataStore.update( updateData );
+					databaseAPI.requestPost( `posts/${ post.id }`, updateData );
 				} else if ( post.created_time < this.earliestPostDate ) {
 					earliestPostReached = true;
 				}
@@ -103,24 +104,40 @@ class FBScraper {
 		}, fields, parameters );
 	}
 	
+	getPostLastAllowedCommentTime( post ) {
+		var date = new Date( post.created_time.replace( /\..+/, '.000Z' ) );
+		date.setTime( date.getTime() + ( 1 * 24 * 60 * 60 * 1000 ) ); // add 24 hours to creation time
+		return date.toISOString().replace( /\..+/, '.0000' );
+	}
+	
+	validCommentCreationTime( comment, postID ) {
+		return ( this.posts[postID].last_allowed_comment_time >= comment.created_time );
+	}
+	
 	updateAddedPosts() {
 		// cycle through newly added posts to update reactions and comments in those
-		_.forIn( facebookDataProcessor.getPosts(), ( post, id ) => {
+		_.forIn( this.posts, ( post, id ) => {
 			this.updateReactions( id );
 		} );
 		// separated into two cycles because reactions can populate user records without second api call
-		_.forIn( facebookDataProcessor.getPosts(), ( post, id ) => {
+		_.forIn( this.posts, ( post, id ) => {
 			this.updatePostComments( id, id );
 		} );
 		// once finished updating post data, start doing any after scrape processing of the data
 		this.callOnScrapeFinished( () => {
-			facebookDataProcessor.afterScrapeProcessing();
+			delete this.posts;
+			const parameters = {
+				earliestPostCullDate: this.earliestPostCullDate,
+				latestPostDate: this.latestPostCullDate
+			}
+			databaseAPI.request( 'process', null, null, parameters, 'POST' ); 
+			console.log( 'scrape finished' );
 		} );
 	}
 	
 	callOnScrapeFinished( callback ) {
 		var timer = setInterval( () => {
-			if ( this.isScrapeFinished() ) {
+			if ( this.isScrapeFinished() && !databaseAPI.isBusy() ) {
 				clearInterval( timer );
 				callback();
 			}
@@ -141,27 +158,25 @@ class FBScraper {
 			const pageID = key.substr( 0, key.indexOf( '_' ) );
 			response.data.forEach( ( reaction ) => {
 				const reactionID = `${ key }_${ reaction.id }`;
-				facebookDataProcessor.addUser( reaction.id );
-				facebookDataProcessor.addReaction( reaction, reactionID, key, pageID );
 				
 				// save/update user
 				const updateUserData = {};
 				userFields.forEach( ( field ) => {
-					if ( field in reaction ) updateUserData[`users/${ reaction.id }/${ field }`] = reaction[field];
+					if ( field in reaction ) updateUserData[field] = reaction[field];
 				} );
 				
-				firebaseDataStore.update( updateUserData );
+				databaseAPI.requestPut( 'users', updateUserData );
 				
 				// save/update reaction
 				const updateReactionData = {};
 				reactionFields.forEach( ( field ) => {
-					if ( field in reaction ) updateReactionData[`post_reactions/${ reactionID }/${ field }`] = reaction[field];
+					if ( field in reaction ) updateReactionData[field] = reaction[field];
 				} );
-				if ( 'id' in reaction ) updateReactionData[`post_reactions/${ reactionID }/user_id`] = reaction.id;
-				updateReactionData[`post_reactions/${ reactionID }/post_id`] = key;
-				updateReactionData[`post_reactions/${ reactionID }/page_id`] = pageID;
+				if ( 'id' in reaction ) updateReactionData['user_id'] = reaction.id;
+				updateReactionData['post_id'] = key;
+				updateReactionData['page_id'] = pageID;
 				
-				firebaseDataStore.update( updateReactionData );
+				databaseAPI.requestPut( 'post_reactions', updateReactionData );
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
 			this.scrapeCount--;
@@ -176,29 +191,24 @@ class FBScraper {
 		facebookAPI.request( `${ key }/comments`, ( response ) => {
 			const pageID = postID.substr( 0, postID.indexOf( '_' ) );
 			response.data.forEach( ( comment ) => {
-				if ( facebookDataProcessor.validCommentCreationTime( comment, postID ) ) {
-					facebookDataProcessor.addUser( comment.from.id );
-					facebookDataProcessor.addComment( comment, postID, pageID );
+				if ( this.validCommentCreationTime( comment, postID ) ) {
 					
 					// save/update comment
 					const updateData = {};
 					fields.forEach( ( field ) => {
-						if ( field in comment ) updateData[`comments/${ comment.id }/${ field }`] = comment[field];
+						if ( field in comment ) updateData[field] = comment[field];
 					} );
-					if ( 'from' in comment ) updateData[`comments/${ comment.id }/user_id`] = comment.from.id;
-					updateData[`comments/${ comment.id }/post_id`] = postID;
-					updateData[`comments/${ comment.id }/page_id`] = pageID;
+					if ( 'from' in comment ) updateData['user_id'] = comment.from.id;
+					updateData['post_id'] = postID;
+					updateData['page_id'] = pageID;
 					
-					firebaseDataStore.update( updateData );
+					databaseAPI.requestPut( 'comments', updateData );
 					
 					// save/update comment comments
 					if ( comment.comment_count > 0 ) this.updatePostComments( comment.id, postID );
 					
 					// save/update user
-					if ( !( comment.from.id in this.addedUsers ) ) {
-						this.addedUsers[comment.from.id] = true;
-						this.updateUser( comment.from.id );
-					}
+					this.updateUser( comment.from.id );
 				}
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updatePostComments( key, postID, response.paging.cursors.after );
@@ -212,9 +222,9 @@ class FBScraper {
 		facebookAPI.request( `${ key }`, ( user ) => {
 			const updateData = {};
 			fields.forEach( ( field ) => {
-				if ( field in user ) updateData[`users/${ user.id }/${ field }`] = user[field];
+				if ( field in user ) updateData[field] = user[field];
 			} );
-			firebaseDataStore.update( updateData );
+			databaseAPI.requestPut( 'users', updateData );
 			this.scrapeCount--;
 		}, fields );
 	}

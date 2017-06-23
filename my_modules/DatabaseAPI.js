@@ -1,10 +1,10 @@
 const _ = require( 'lodash' );
 request = require( 'request' );
 
-class FacebookAPI {
+class DatabaseAPI {
 	
 	constructor() {
-		this.token = null;
+		this.token = process.env.DATABASE_API_TOKEN;
 		this.requestQueue = [];
 		this.activeRequestCount = 0;
 		setInterval( () => {
@@ -12,35 +12,38 @@ class FacebookAPI {
 		}, 25 );
 	}
 	
-	getToken( callback = null ) {
-		const url = `oauth/access_token`;
-		const parameters = {
-			client_id: process.env.FACEBOOK_APP_ID,
-			client_secret: process.env.FACEBOOK_APP_SECRET,
-			grant_type: 'client_credentials'
-		};
-		
-		this.request( url, ( response ) => {
-			console.log( 'start' );
-			this.token = response.access_token;
-			if ( callback ) callback();
-		}, null, parameters );
+	requestPost( path, data, callback = null, parameters = {} ) {
+		parameters.data = JSON.stringify( data );
+		this.request( path, callback, null, parameters, method = 'POST' )
+	}
+	
+	requestPut( path, data, callback = null, parameters = {} ) {
+		parameters.data = JSON.stringify( data );
+		this.request( path, callback, null, parameters, method = 'PUT' )
+	}
+	
+	requestDelete( path, callback = null, parameters = {} ) {
+		this.request( path, callback, null, parameters, method = 'DELETE' )
 	}
 	
 	request( path, callback, fields = null, parameters = {}, method = 'GET' ) {
-		if ( this.token ) parameters.access_token = this.token;
+		if ( this.token ) parameters.token = this.token;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
 			return `${ key }=${ value}`;
 		} ) ).join( '&' );
 		if ( parameters.length > 0 ) parameters = `?${ parameters }`;
-		const url = `https://graph.facebook.com/${ path }${ parameters }`;
+		const url = `http://postanalysisapi.dustinhendricks.com/${ path }${ parameters }`;
 		const options = {
 			url: url,
 			method: method,
 			json: true,
 		};
 		this.requestQueue.push( { options, callback } );
+	}
+	
+	isBusy() {
+		return ( this.requestQueue.length == 0 && this.activeRequestCount == 0 );
 	}
 	
 	_requestQueueProcess() {
@@ -62,7 +65,7 @@ class FacebookAPI {
 						} else if ( httpResponse.statusCode != '200' ) {
 							console.log( `HTTP error: ${ httpResponse.statusCode }` );
 						} else if ( 'error' in body ) {
-							console.log( `Facebook error: ${ body.error }` );
+							console.log( `Database error: ${ body.error }` );
 						} else {
 							currentRequest.callback( body );
 						}
@@ -81,4 +84,4 @@ class FacebookAPI {
 	}
 }
 
-module.exports = new FacebookAPI();
+module.exports = new DatabaseAPI();
