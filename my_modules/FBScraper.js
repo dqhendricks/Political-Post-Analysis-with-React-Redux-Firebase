@@ -51,6 +51,10 @@ class FBScraper {
 		this.earliestPostCullDate = date.toISOString().replace( /\..+/, '.0000' );
 	}
 	
+	convertFacebookTimeToDatabaseTime( time ) {
+		return time.replace( /T/, ' ' ).replace( /\..+/, '' );
+	}
+	
 	cyclePages( pages ) {
 		// going through database pages to update page data and add latest posts
 		_.forIn( pages, ( page, id ) => {
@@ -95,6 +99,7 @@ class FBScraper {
 					} );
 					if ( 'from' in post ) updateData['page_id'] = post.from.id;
 					if ( 'shares' in post ) updateData['shares'] = post.shares.count;
+					updateData['created_time_mysql'] = this.convertFacebookTimeToDatabaseTime( post.created_time );
 
 					databaseAPI.requestPost( `posts/${ post.id }`, updateData );
 				} else if ( post.created_time < this.earliestPostDate ) {
@@ -203,6 +208,7 @@ class FBScraper {
 					if ( 'from' in comment ) updateData['user_id'] = comment.from.id;
 					updateData['post_id'] = postID;
 					updateData['page_id'] = pageID;
+					updateData['created_time_mysql'] = this.convertFacebookTimeToDatabaseTime( comment.created_time );
 					
 					databaseAPI.requestPost( 'comments', updateData );
 					
