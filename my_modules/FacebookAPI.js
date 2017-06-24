@@ -43,6 +43,10 @@ class FacebookAPI {
 		this.requestQueue.push( { options, callback } );
 	}
 	
+	isQueueFinished() {
+		return ( this.requestQueue.length == 0 && this.activeRequestCount == 0 );
+	}
+	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
 			if ( this.activeRequestCount <= 1 ) {
