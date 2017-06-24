@@ -75,7 +75,7 @@ class FBScraper {
 				if ( field in page ) updateData[field] = page[field];
 			} );
 			
-			databaseAPI.post( `pages/${ id }`, updateData );
+			databaseAPI.requestPost( `pages/${ id }`, updateData );
 			this.scrapeCount--;
 		}, fields );
 	}
