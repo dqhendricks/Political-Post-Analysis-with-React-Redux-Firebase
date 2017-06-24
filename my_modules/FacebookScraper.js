@@ -238,4 +238,4 @@ class FacebookScraper {
 	}
 }
 
-module.exports = new FBScraper();
+module.exports = new FacebookScraper();
