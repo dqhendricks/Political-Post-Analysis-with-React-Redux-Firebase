@@ -23,7 +23,9 @@ class FBScraper {
 		var startTime = new Date();
 		startTime.setTime( Date.parse( startTime.toISOString().replace( /T.+/, 'T00:00:00.000Z' ) ) ); // get current day, midnight UTC
 		startTime.setTime( startTime.getTime() + ( 1 * 24 * 60 * 60 * 1000 ) ); // get tonight's, midnight UTC
-		return ( startTime.getTime() - new Date().getTime() );
+		startTime = startTime.getTime() - new Date().getTime()
+		console.log( startTime / ( 1000 * 60 * 60 ) );
+		return startTime;
 	}
 	
 	iteration() {
