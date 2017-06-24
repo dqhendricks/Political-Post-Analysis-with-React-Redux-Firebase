@@ -57,9 +57,6 @@ class DatabaseAPI {
 					if ( !callAnswered ) {
 						this.activeRequestCount--;
 						callAnswered = true;
-						if ( this.isQueueFinished() ) {
-							console.log( 'end facebook request queue' );
-						}
 						if ( err ) {
 							console.log( `Request error: ${ err }` );
 						} else if ( httpResponse.statusCode != '200' ) {
