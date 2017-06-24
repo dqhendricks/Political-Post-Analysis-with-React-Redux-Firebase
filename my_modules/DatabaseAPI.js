@@ -26,7 +26,7 @@ class DatabaseAPI {
 		this.request( path, callback, null, parameters, 'DELETE' )
 	}
 	
-	request( path, callback, fields = null, parameters = {}, 'GET' ) {
+	request( path, callback, fields = null, parameters = {}, method = 'GET' ) {
 		if ( this.token ) parameters.token = this.token;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
