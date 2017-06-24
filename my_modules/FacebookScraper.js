@@ -2,7 +2,7 @@ const _ = require( 'lodash' );
 const facebookAPI = require( './FacebookAPI' );
 const databaseAPI = require( './DatabaseAPI' );
 
-class FBScraper {
+class FacebookScraper {
 	
 	constructor() {
 		this.daysToScrape = 1;

@@ -11,6 +11,6 @@ app.get( '*', ( req, res ) => {
 app.listen( port );
 
 // worker
-const fbScraper = require( './my_modules/FBScraper' );
+const facebookScraper = require( './my_modules/FacebookScraper' );
 // process runs every 24 hours, scraping FB and updating the database
-fbScraper.start();
+facebookScraper.start();
