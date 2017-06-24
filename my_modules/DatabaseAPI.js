@@ -14,19 +14,19 @@ class DatabaseAPI {
 	
 	requestPost( path, data, callback = null, parameters = {} ) {
 		parameters.data = JSON.stringify( data );
-		this.request( path, callback, null, parameters, method = 'POST' )
+		this.request( path, callback, null, parameters, 'POST' )
 	}
 	
 	requestPut( path, data, callback = null, parameters = {} ) {
 		parameters.data = JSON.stringify( data );
-		this.request( path, callback, null, parameters, method = 'PUT' )
+		this.request( path, callback, null, parameters, 'PUT' )
 	}
 	
 	requestDelete( path, callback = null, parameters = {} ) {
-		this.request( path, callback, null, parameters, method = 'DELETE' )
+		this.request( path, callback, null, parameters, 'DELETE' )
 	}
 	
-	request( path, callback, fields = null, parameters = {}, method = 'GET' ) {
+	request( path, callback, fields = null, parameters = {}, 'GET' ) {
 		if ( this.token ) parameters.token = this.token;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
