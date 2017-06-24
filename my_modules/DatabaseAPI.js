@@ -13,20 +13,14 @@ class DatabaseAPI {
 	}
 	
 	requestPost( path, data, callback = null, parameters = {} ) {
-		parameters.data = JSON.stringify( data );
-		this.request( path, callback, null, parameters, 'POST' )
-	}
-	
-	requestPut( path, data, callback = null, parameters = {} ) {
-		parameters.data = JSON.stringify( data );
-		this.request( path, callback, null, parameters, 'PUT' )
+		this.request( path, callback, null, parameters, 'POST', { data: JSON.stringify( data ) } );
 	}
 	
 	requestDelete( path, callback = null, parameters = {} ) {
-		this.request( path, callback, null, parameters, 'DELETE' )
+		this.request( path, callback, null, parameters, 'DELETE' );
 	}
 	
-	request( path, callback, fields = null, parameters = {}, method = 'GET' ) {
+	request( path, callback, fields = null, parameters = {}, method = 'GET', form = {} ) {
 		if ( this.token ) parameters.token = this.token;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
@@ -38,6 +32,7 @@ class DatabaseAPI {
 			url: url,
 			method: method,
 			json: true,
+			form: form
 		};
 		this.requestQueue.push( { options, callback } );
 	}
@@ -50,7 +45,7 @@ class DatabaseAPI {
 		if ( this.requestQueue.length > 0 ) {
 			if ( this.activeRequestCount <= 1 ) {
 				const currentRequest = this.requestQueue.shift();
-				console.log( currentRequest.options.url );
+				//console.log( currentRequest.options.url );
 				this.activeRequestCount++;
 				var callAnswered = false;
 				request( currentRequest.options, ( err, httpResponse, body ) => {
@@ -64,7 +59,7 @@ class DatabaseAPI {
 						} else if ( 'error' in body ) {
 							console.log( `Database error: ${ body.error }` );
 						} else {
-							currentRequest.callback( body );
+							if ( currentRequest.callback ) currentRequest.callback( body );
 						}
 					}
 				} );

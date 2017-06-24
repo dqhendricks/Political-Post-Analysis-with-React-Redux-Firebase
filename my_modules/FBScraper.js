@@ -11,15 +11,12 @@ class FBScraper {
 	
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
-		this.iteration();
-		/*
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
 				this.iteration();
 			}, 1000 * 60 * 60 * 24 );
 		}, this.millisecondsTillStartTime() );
-		*/
 	}
 	
 	millisecondsTillStartTime() {
@@ -37,7 +34,7 @@ class FBScraper {
 		this.updatePostDateRanges();
 		databaseAPI.request( 'pages', ( pages ) => {
 			facebookAPI.getToken( () => {
-				this.cyclePages( pages );
+				this.cyclePages( pages.data );
 			} );
 		} );
 	}
@@ -170,7 +167,7 @@ class FBScraper {
 					if ( field in reaction ) updateUserData[field] = reaction[field];
 				} );
 				
-				databaseAPI.requestPut( 'users', updateUserData );
+				databaseAPI.requestPost( 'users', updateUserData );
 				
 				// save/update reaction
 				const updateReactionData = {};
@@ -181,7 +178,7 @@ class FBScraper {
 				updateReactionData['post_id'] = key;
 				updateReactionData['page_id'] = pageID;
 				
-				databaseAPI.requestPut( 'post_reactions', updateReactionData );
+				databaseAPI.requestPost( 'post_reactions', updateReactionData );
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
 			this.scrapeCount--;
@@ -207,7 +204,7 @@ class FBScraper {
 					updateData['post_id'] = postID;
 					updateData['page_id'] = pageID;
 					
-					databaseAPI.requestPut( 'comments', updateData );
+					databaseAPI.requestPost( 'comments', updateData );
 					
 					// save/update comment comments
 					if ( comment.comment_count > 0 ) this.updatePostComments( comment.id, postID );
@@ -229,7 +226,7 @@ class FBScraper {
 			fields.forEach( ( field ) => {
 				if ( field in user ) updateData[field] = user[field];
 			} );
-			databaseAPI.requestPut( 'users', updateData );
+			databaseAPI.requestPost( 'users', updateData );
 			this.scrapeCount--;
 		}, fields );
 	}
