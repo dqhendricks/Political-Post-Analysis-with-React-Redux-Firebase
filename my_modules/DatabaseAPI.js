@@ -43,7 +43,7 @@ class DatabaseAPI {
 	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
-			if ( this.activeRequestCount <= 1 ) {
+			if ( this.activeRequestCount <= 2 ) {
 				const currentRequest = this.requestQueue.shift();
 				//console.log( currentRequest.options.url );
 				this.activeRequestCount++;
@@ -53,9 +53,15 @@ class DatabaseAPI {
 						this.activeRequestCount--;
 						callAnswered = true;
 						if ( err ) {
-							console.log( `Request error: ${ err }` );
+							this.requestQueue.unshift( currentRequest );
+							console.log( `Request error: ${ err }. Retrying call.` );
+							console.log( currentRequest.options.url );
+							console.log( body );
 						} else if ( httpResponse.statusCode != '200' ) {
-							console.log( `HTTP error: ${ httpResponse.statusCode }` );
+							this.requestQueue.unshift( currentRequest );
+							console.log( `HTTP error: ${ httpResponse.statusCode }. Retrying call.` );
+							console.log( currentRequest.options.url );
+							console.log( body );
 						} else if ( 'error' in body ) {
 							console.log( `Database error: ${ body.error }` );
 						} else {

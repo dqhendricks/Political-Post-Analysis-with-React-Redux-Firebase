@@ -127,21 +127,22 @@ class FacebookScraper {
 	updateAddedPosts() {
 		// cycle through newly added posts to update reactions and comments in those
 		_.forIn( this.posts, ( post, id ) => {
-			this.updateReactions( id );
-		} );
-		// separated into two cycles because reactions can populate user records without second api call
-		_.forIn( this.posts, ( post, id ) => {
 			this.updatePostComments( id, id );
 		} );
-		// once finished updating post data, start doing any after scrape processing of the data
 		this.callOnScrapeFinished( () => {
-			delete this.posts;
-			const parameters = {
-				earliestPostCullDate: this.earliestPostCullDate,
-				latestPostDate: this.latestPostCullDate
-			}
-			databaseAPI.request( 'process', null, null, parameters, 'POST' ); 
-			console.log( 'scrape finished' );
+			_.forIn( this.posts, ( post, id ) => {
+				this.updateReactions( id );
+			} );
+			// once finished updating post data, start doing any after scrape processing of the data
+			this.callOnScrapeFinished( () => {
+				delete this.posts;
+				const parameters = {
+					earliestPostCullDate: this.earliestPostCullDate,
+					latestPostDate: this.latestPostCullDate
+				}
+				databaseAPI.request( 'process', null, null, parameters, 'POST' ); 
+				console.log( 'scrape finished' );
+			} );
 		} );
 	}
 	
@@ -175,18 +176,19 @@ class FacebookScraper {
 					if ( field in reaction ) updateUserData[field] = reaction[field];
 				} );
 				
-				databaseAPI.requestPost( 'users', updateUserData );
+				databaseAPI.requestPost( `users/${ reaction.id }`, updateUserData );
 				
 				// save/update reaction
 				const updateReactionData = {};
 				reactionFields.forEach( ( field ) => {
 					if ( field in reaction ) updateReactionData[field] = reaction[field];
 				} );
+				updateReactionData['id'] = reactionID;
 				if ( 'id' in reaction ) updateReactionData['user_id'] = reaction.id;
 				updateReactionData['post_id'] = key;
 				updateReactionData['page_id'] = pageID;
 				
-				databaseAPI.requestPost( 'post_reactions', updateReactionData );
+				databaseAPI.requestPost( `post_reactions/${ reactionID }`, updateReactionData );
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
 			this.scrapeCount--;
@@ -214,7 +216,7 @@ class FacebookScraper {
 					updateData['page_id'] = pageID;
 					updateData['created_time_mysql'] = this.convertFacebookTimeToDatabaseTime( comment.created_time );
 					
-					databaseAPI.requestPost( 'comments', updateData );
+					databaseAPI.requestPost( `comments/${ comment.id }`, updateData );
 					
 					// save/update comment comments
 					if ( comment.comment_count > 0 ) this.updatePostComments( comment.id, postID );
@@ -236,7 +238,7 @@ class FacebookScraper {
 			fields.forEach( ( field ) => {
 				if ( field in user ) updateData[field] = user[field];
 			} );
-			databaseAPI.requestPost( 'users', updateData );
+			databaseAPI.requestPost( `users/${ user.id }`, updateData );
 			this.scrapeCount--;
 		}, fields );
 	}

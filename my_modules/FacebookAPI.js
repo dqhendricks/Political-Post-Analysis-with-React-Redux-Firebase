@@ -49,7 +49,7 @@ class FacebookAPI {
 	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
-			if ( this.activeRequestCount <= 1 ) {
+			if ( this.activeRequestCount <= 2 ) {
 				const currentRequest = this.requestQueue.shift();
 				//console.log( currentRequest.options.url );
 				this.activeRequestCount++;
@@ -62,15 +62,23 @@ class FacebookAPI {
 							console.log( 'end facebook request queue' );
 						}
 						if ( err ) {
-							console.log( `Request error: ${ err }` );
-						} else if ( httpResponse.statusCode != '200' ) {
-							console.log( `HTTP error: ${ httpResponse.statusCode }` );
+							this.requestQueue.unshift( currentRequest );
+							console.log( `Request error: ${ err }. Retrying call.` );
 							console.log( currentRequest.options.url );
 							console.log( body );
+						} else if ( httpResponse.statusCode != '200' ) {
+							if ( body.error.code == 100 ) {
+								// skip users who prevent scraping. will add all but their picture in post processing
+								console.log( 'Data can\'t be scraped: ' + currentRequest.options.url );
+							} else {
+								this.requestQueue.unshift( currentRequest );
+								console.log( `HTTP error: ${ httpResponse.statusCode }. Retrying call.` );
+								console.log( currentRequest.options.url );
+								console.log( body );
+							}
 						} else if ( 'error' in body ) {
 							console.log( `Facebook error: ${ body.error }\n${ currentRequest.options.url }` );
 						} else {
-							console.log( body );
 							currentRequest.callback( body );
 						}
 					}
@@ -79,7 +87,7 @@ class FacebookAPI {
 					if ( !callAnswered ) {
 						this.activeRequestCount--;
 						callAnswered = true;
-						console.log( `Retrying call: ${ currentRequest.options.url }` );
+						console.log( `Timed Out. Retrying call: ${ currentRequest.options.url }` );
 						this.requestQueue.unshift( currentRequest );
 					}
 				}, 30 * 1000 );
