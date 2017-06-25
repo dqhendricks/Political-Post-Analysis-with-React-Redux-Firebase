@@ -199,8 +199,6 @@ class FacebookScraper {
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		
-		console.log( 'outside' );
-		console.log( key );
 		facebookAPI.request( `${ key }/comments`, ( response ) => {
 			const pageID = postID.substr( 0, postID.indexOf( '_' ) );
 			response.data.forEach( ( comment ) => {
@@ -219,11 +217,7 @@ class FacebookScraper {
 					databaseAPI.requestPost( 'comments', updateData );
 					
 					// save/update comment comments
-					if ( comment.comment_count > 0 ) {
-						console.log( 'inside' );
-						console.log( comment.id );
-						this.updatePostComments( comment.id, postID );
-					}
+					if ( comment.comment_count > 0 ) this.updatePostComments( comment.id, postID );
 					
 					// save/update user
 					this.updateUser( comment.from.id );
