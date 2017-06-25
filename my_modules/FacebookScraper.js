@@ -131,7 +131,6 @@ class FacebookScraper {
 		} );
 		// separated into two cycles because reactions can populate user records without second api call
 		_.forIn( this.posts, ( post, id ) => {
-			console.log( id );
 			this.updatePostComments( id, id );
 		} );
 		// once finished updating post data, start doing any after scrape processing of the data
@@ -199,6 +198,9 @@ class FacebookScraper {
 		const fields = [ 'comment_count', 'created_time', 'from', 'id', 'message', 'parent', 'permalink_url', 'like_count' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
+		
+		console.log( 'outside' );
+		console.log( key );
 		facebookAPI.request( `${ key }/comments`, ( response ) => {
 			const pageID = postID.substr( 0, postID.indexOf( '_' ) );
 			response.data.forEach( ( comment ) => {
@@ -217,7 +219,11 @@ class FacebookScraper {
 					databaseAPI.requestPost( 'comments', updateData );
 					
 					// save/update comment comments
-					if ( comment.comment_count > 0 ) this.updatePostComments( comment.id, postID );
+					if ( comment.comment_count > 0 ) {
+						console.log( 'inside' );
+						console.log( comment.id );
+						this.updatePostComments( comment.id, postID );
+					}
 					
 					// save/update user
 					this.updateUser( comment.from.id );
