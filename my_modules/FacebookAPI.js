@@ -70,6 +70,7 @@ class FacebookAPI {
 						} else if ( 'error' in body ) {
 							console.log( `Facebook error: ${ body.error }\n${ currentRequest.options.url }` );
 						} else {
+							console.log( body );
 							currentRequest.callback( body );
 						}
 					}
