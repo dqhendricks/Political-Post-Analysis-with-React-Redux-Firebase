@@ -92,11 +92,10 @@ class FacebookScraper {
 		var earliestPostReached = false;
 		facebookAPI.request( `${ pageID }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
-				console.log( JSON.stringify( post ) )
-				post.last_allowed_comment_time = this.getPostLastAllowedCommentTime( post );
-				this.posts[post.id] = post;
-				
 				if ( post.created_time >= this.earliestPostDate && post.created_time <= this.latestPostDate ) {
+					post.last_allowed_comment_time = this.getPostLastAllowedCommentTime( post );
+					this.posts[post.id] = post;
+					
 					const updateData = {};
 					fields.forEach( ( field ) => {
 						if ( field in post ) updateData[field] = post[field];
@@ -132,6 +131,7 @@ class FacebookScraper {
 		} );
 		// separated into two cycles because reactions can populate user records without second api call
 		_.forIn( this.posts, ( post, id ) => {
+			console.log( id );
 			this.updatePostComments( id, id );
 		} );
 		// once finished updating post data, start doing any after scrape processing of the data
