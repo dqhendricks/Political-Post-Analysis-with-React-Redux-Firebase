@@ -64,9 +64,9 @@ class FacebookAPI {
 						if ( err ) {
 							console.log( `Request error: ${ err }` );
 						} else if ( httpResponse.statusCode != '200' ) {
-							console.log( `HTTP error: ${ httpResponse.statusCode }\n${ currentRequest.options }` );
+							console.log( `HTTP error: ${ httpResponse.statusCode }\n${ currentRequest.options.url }` );
 						} else if ( 'error' in body ) {
-							console.log( `Facebook error: ${ body.error }\n${ currentRequest.options }` );
+							console.log( `Facebook error: ${ body.error }\n${ currentRequest.options.url }` );
 						} else {
 							currentRequest.callback( body );
 						}
