@@ -92,6 +92,7 @@ class FacebookScraper {
 		var earliestPostReached = false;
 		facebookAPI.request( `${ pageID }/posts`, ( response ) => {
 			response.data.forEach( ( post ) => {
+				console.log( JSON.stringify( post ) )
 				post.last_allowed_comment_time = this.getPostLastAllowedCommentTime( post );
 				this.posts[post.id] = post;
 				
