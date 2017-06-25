@@ -35,6 +35,7 @@ class FacebookAPI {
 		} ) ).join( '&' );
 		if ( parameters.length > 0 ) parameters = `?${ parameters }`;
 		const url = `https://graph.facebook.com/${ path }${ parameters }`;
+		console.log( url );
 		const options = {
 			url: url,
 			method: method,
