@@ -43,22 +43,21 @@ class FacebookAPI {
 		this.requestQueue.push( { options, callback } );
 	}
 	
-	isQueueFinished() {
+	isBusy() {
 		return ( this.requestQueue.length == 0 && this.activeRequestCount == 0 );
 	}
 	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
 			if ( this.activeRequestCount <= 2 ) {
+				this.activeRequestCount++;
 				const currentRequest = this.requestQueue.shift();
 				//console.log( currentRequest.options.url );
-				this.activeRequestCount++;
 				var callAnswered = false;
 				request( currentRequest.options, ( err, httpResponse, body ) => {
 					if ( !callAnswered ) {
-						this.activeRequestCount--;
 						callAnswered = true;
-						if ( this.isQueueFinished() ) {
+						if ( !this.isBusy() ) {
 							console.log( 'end facebook request queue' );
 						}
 						if ( err ) {
@@ -81,14 +80,15 @@ class FacebookAPI {
 						} else {
 							currentRequest.callback( body );
 						}
+						this.activeRequestCount--;
 					}
 				} );
 				setTimeout( () => {
 					if ( !callAnswered ) {
-						this.activeRequestCount--;
 						callAnswered = true;
 						console.log( `Timed Out. Retrying call: ${ currentRequest.options.url }` );
 						this.requestQueue.unshift( currentRequest );
+						this.activeRequestCount--;
 					}
 				}, 30 * 1000 );
 			}

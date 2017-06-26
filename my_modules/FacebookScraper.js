@@ -30,7 +30,6 @@ class FacebookScraper {
 	
 	iteration() {
 		this.posts = {};
-		this.scrapeCount = 0;
 		this.updatePostDateRanges();
 		databaseAPI.request( 'pages', ( pages ) => {
 			facebookAPI.getToken( () => {
@@ -68,7 +67,6 @@ class FacebookScraper {
 	}
 	
 	updatePageData( id ) {
-		this.scrapeCount++;
 		const fields = [ 'about', 'category', 'fan_count', 'id', 'link', 'name', 'picture', 'website' ];
 		facebookAPI.request( `/${ id }`, ( page ) => {
 			const updateData = {};
@@ -77,12 +75,10 @@ class FacebookScraper {
 			} );
 			
 			databaseAPI.requestPost( `pages/${ id }`, updateData );
-			this.scrapeCount--;
 		}, fields );
 	}
 	
 	addNewPosts( pageID, after = null ) {
-		this.scrapeCount++;
 		const fields = [ 'created_time', 'from', 'id', 'link', 'message', 'name', 'picture', 'permalink_url', 'shares' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
@@ -107,7 +103,6 @@ class FacebookScraper {
 				}
 			} );
 			if ( !earliestPostReached && ( 'paging' in response ) && ( 'next' in response.paging ) ) this.addNewPosts( pageID, response.paging.cursors.after );
-			this.scrapeCount--;
 		}, fields, parameters );
 	}
 	
@@ -145,19 +140,14 @@ class FacebookScraper {
 	
 	callOnScrapeFinished( callback ) {
 		var timer = setInterval( () => {
-			if ( this.isScrapeFinished() && !databaseAPI.isBusy() ) {
+			if ( !facebookAPI.isBusy() && !databaseAPI.isBusy() ) {
 				clearInterval( timer );
 				callback();
 			}
 		}, 1000 );
 	}
 	
-	isScrapeFinished() {
-		return ( this.scrapeCount == 0 );
-	}
-	
 	updateReactions( key, after = null ) {
-		this.scrapeCount++;
 		const reactionFields = [ 'id', 'link', 'name', 'picture', 'type' ];
 		const userFields = [ 'id', 'link', 'name', 'picture' ];
 		const parameters = { limit: 100 };
@@ -188,12 +178,10 @@ class FacebookScraper {
 				databaseAPI.requestPost( `post_reactions/${ reactionID }`, updateReactionData );
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
-			this.scrapeCount--;
 		}, reactionFields, parameters );
 	}
 	
 	updatePostComments( key, postID, after = null ) {
-		this.scrapeCount++;
 		const fields = [ 'comment_count', 'created_time', 'from', 'id', 'message', 'parent', 'permalink_url', 'like_count' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
@@ -223,12 +211,10 @@ class FacebookScraper {
 				}
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updatePostComments( key, postID, response.paging.cursors.after );
-			this.scrapeCount--;
 		}, fields, parameters );
 	}
 	
 	updateUser( key ) {
-		this.scrapeCount++;
 		const fields = [ 'id', 'link', 'name', 'picture' ];
 		facebookAPI.request( `${ key }`, ( user ) => {
 			const updateData = {};
@@ -236,7 +222,6 @@ class FacebookScraper {
 				if ( field in user ) updateData[field] = user[field];
 			} );
 			databaseAPI.requestPost( `users/${ user.id }`, updateData );
-			this.scrapeCount--;
 		}, fields );
 	}
 }
