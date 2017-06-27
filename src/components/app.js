@@ -15,12 +15,10 @@ class App extends Component {
 				</Container>
 				<Segment.Group raised>
 					<Segment>
-						<Container text textAlign='left'>
-							<Header as='h3'>
-								Overall Conclusions
-								<Header.Subheader>Test</Header.Subheader>
-							</Header>
-						</Container>
+						<Header as='h3'>
+							Overall Conclusions
+							<Header.Subheader>Test</Header.Subheader>
+						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
@@ -72,12 +70,10 @@ class App extends Component {
 				</Segment.Group>
 				<Segment.Group raised>
 					<Segment>
-						<Container text textAlign='left'>
-							<Header as='h3'>
-								Custom Research
-								<Header.Subheader>Test</Header.Subheader>
-							</Header>
-						</Container>
+						<Header as='h3'>
+							Custom Research
+							<Header.Subheader>Test</Header.Subheader>
+						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
