@@ -8,13 +8,17 @@ class App extends Component {
 		return (
 			<div className="spacingDiv">
 				<Container text>
-					<Header as='h1'>Facebook Data Scrape and Analysis</Header>
-					<p>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</p>
+					<Header as='h1'>
+						Facebook Data Scrape and Analysis
+						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
+					</Header>
 				</Container>
 				<Segment.Group raised>
 					<Segment>
-						<Header as='h3'>Overall Conclusions</Header>
-						<p>Test</p>
+						<Header as='h3'>
+							Overall Conclusions
+							<Header.Subheader>Test</Header.Subheader>
+						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
@@ -24,7 +28,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header as='h5'>Name + Link</Item.Header>
+											<Item.Header>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
@@ -39,7 +43,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header as='h5'>Name + Link</Item.Header>
+											<Item.Header>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
@@ -54,7 +58,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header as='h5'>Name + Link</Item.Header>
+											<Item.Header>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
@@ -66,8 +70,10 @@ class App extends Component {
 				</Segment.Group>
 				<Segment.Group raised>
 					<Segment>
-						<Header as='h3'>Custom Research</Header>
-						<p>Test</p>
+						<Header as='h3'>
+							Custom Research
+							<Header.Subheader>Test</Header.Subheader>
+						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
