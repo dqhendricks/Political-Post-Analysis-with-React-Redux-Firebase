@@ -66,7 +66,7 @@ class FacebookAPI {
 							console.log( currentRequest.options.url );
 							console.log( body );
 						} else if ( httpResponse.statusCode != '200' ) {
-							if ( error in body && code in body.error && body.error.code == 100 ) {
+							if ( 'error' in body && 'code' in body.error && body.error.code == 100 ) {
 								// skip users who prevent scraping. will add all but their picture in post processing
 								console.log( 'Data can\'t be scraped: ' + currentRequest.options.url );
 							} else {

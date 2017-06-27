@@ -143,6 +143,7 @@ class FacebookScraper {
 	}
 	
 	timedObjectIterator( object, delay, callback ) {
+		// to help solve memory issues
 		this.timedObjectIterators++;
 		var i = 0;
 		const keys = Object.keys( object );
