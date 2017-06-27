@@ -49,7 +49,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Segment secondary attached="top">
-								<Header as='h4' block>
+								<Header as='h4'>
 									<Icon name='newspaper' color='grey' />
 									<Header.Content>Posts</Header.Content>
 								</Header>
@@ -69,7 +69,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Segment secondary attached="top">
-								<Header as='h4' block>
+								<Header as='h4'>
 									<Icon name='users' color='grey' />
 									<Header.Content>Users</Header.Content>
 								</Header>
@@ -102,7 +102,7 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Segment attached="top" secondary clearing>
-								<Header as='h4' block floated='left'>
+								<Header as='h4' floated='left'>
 									<Icon name='feed' color='grey' />
 									<Header.Content>Pages</Header.Content>
 								</Header>
@@ -156,7 +156,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Segment attached="top" secondary clearing>
-								<Header as='h4' block floated='left'>
+								<Header as='h4' floated='left'>
 									<Icon name='newspaper' color='grey' />
 									<Header.Content>Posts</Header.Content>
 								</Header>
