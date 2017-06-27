@@ -24,7 +24,7 @@ class App extends Component {
 						<Segment>
 							<Header as='h4' block>Pages</Header>
 							<div className="scrollingDiv">
-								<Item.Group>
+								<Item.Group divided>
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
@@ -37,9 +37,9 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4'>Posts</Header>
+							<Header as='h4' block>Posts</Header>
 							<div className="scrollingDiv">
-								<Item.Group>
+								<Item.Group divided>
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
@@ -52,9 +52,9 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4'>Users</Header>
+							<Header as='h4' block>Users</Header>
 							<div className="scrollingDiv">
-								<Item.Group>
+								<Item.Group divided>
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
@@ -79,7 +79,7 @@ class App extends Component {
 						<Segment>
 							<Header as='h4' block>Pages</Header>
 							<div className="scrollingDiv">
-								<Table basic='very' celled>
+								<Table celled>
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -104,9 +104,9 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4'>Posts</Header>
+							<Header as='h4' block>Posts</Header>
 							<div className="scrollingDiv">
-								<Table basic='very' celled>
+								<Table celled>
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -131,9 +131,9 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4'>Users</Header>
+							<Header as='h4' block>Users</Header>
 							<div className="scrollingDiv">
-								<Table basic='very' celled>
+								<Table celled>
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
