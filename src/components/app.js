@@ -9,11 +9,8 @@ class App extends Component {
 			<div className="spacingDiv">
 				<Container text>
 					<Header as='h1'>
-						<Icon name='facebook' size='massive' color='grey' />
-						<Header.Content>
-							Facebook Data Scrape and Analysis
-							<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
-						</Header.Content>
+						Facebook Data Scrape and Analysis
+						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
 					</Header>
 				</Container>
 				<Segment.Group raised>
@@ -21,7 +18,7 @@ class App extends Component {
 						<Header as='h3'>
 							<Icon name='idea' size='huge' color='grey' />
 							<Header.Content>
-								Overall Conclusions
+								Conclusions
 								<Header.Subheader>Test</Header.Subheader>
 							</Header.Content>
 						</Header>
