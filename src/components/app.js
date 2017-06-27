@@ -22,7 +22,7 @@ class App extends Component {
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Header as='h4'>Pages</Header>
+							<Header as='h4' block>Pages</Header>
 							<div className="scrollingDiv">
 								<Item.Group>
 									<Item>
@@ -77,29 +77,31 @@ class App extends Component {
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Header as='h4'>Pages</Header>
-							<Table basic='very' celled>
-								<Table.Header>
-									<Table.Row>
-										<Table.HeaderCell>Name</Table.HeaderCell>
-										<Table.HeaderCell>Total Posts</Table.HeaderCell>
-									</Table.Row>
-								</Table.Header>
-								<Table.Body className="scrollingDiv">
-									<Table.Row>
-										<Table.Cell>
-											<Header as='h5' image>
-												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-												<Header.Content>
-													Page Name
-													<Header.Subheader>Page Summary Info</Header.Subheader>
-												</Header.Content>
-											</Header>
-										</Table.Cell>
-										<Table.Cell>43</Table.Cell>
-									</Table.Row>
-								</Table.Body>
-							</Table>
+							<Header as='h4' block>Pages</Header>
+							<div className="scrollingDiv">
+								<Table basic='very' celled>
+									<Table.Header>
+										<Table.Row>
+											<Table.HeaderCell>Name</Table.HeaderCell>
+											<Table.HeaderCell>Total Posts</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body className="scrollingDiv">
+										<Table.Row>
+											<Table.Cell>
+												<Header as='h5' image>
+													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+													<Header.Content>
+														Page Name
+														<Header.Subheader>Page Summary Info</Header.Subheader>
+													</Header.Content>
+												</Header>
+											</Table.Cell>
+											<Table.Cell>43</Table.Cell>
+										</Table.Row>
+									</Table.Body>
+								</Table>
+							</div>
 						</Segment>
 						<Segment>
 							<Header as='h4'>Posts</Header>
