@@ -206,10 +206,10 @@ class App extends Component {
 									<Icon name='users' color='grey' />
 									<Header.Content>Users</Header.Content>
 								</Header>
-								<Button icon floated='right' size="mini">
+								<Button icon floated='right' size="tiny">
 									<Icon name='sort' />
 								</Button>
-								<Button icon floated='right' size="mini">
+								<Button icon floated='right' size="tiny">
 									<Icon name='search' />
 								</Button>
 							</Segment>
