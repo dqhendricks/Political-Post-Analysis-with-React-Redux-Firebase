@@ -19,16 +19,18 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4'>Pages</Header>
-							<Item.Group>
-								<Item>
-									<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
-									<Item.Content>
-										<Item.Header>Name + Link</Item.Header>
-										<Item.Meta>Award Name</Item.Meta>
-										<Item.Description>Award Description</Item.Description>
-									</Item.Content>
-								</Item>
-							</Item.Group>
+							<div className="scrollingDiv">
+								<Item.Group>
+									<Item>
+										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
+										<Item.Content>
+											<Item.Header>Name + Link</Item.Header>
+											<Item.Meta>Award Name</Item.Meta>
+											<Item.Description>Award Description</Item.Description>
+										</Item.Content>
+									</Item>
+								</Item.Group>
+							</div>
 						</Segment>
 						<Segment>Middle</Segment>
 						<Segment>Bottom</Segment>
@@ -42,28 +44,30 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4'>Pages</Header>
-							<Table basic='very' celled>
-								<Table.Header>
-									<Table.Row>
-										<Table.HeaderCell>Name</Table.HeaderCell>
-										<Table.HeaderCell>Total Posts</Table.HeaderCell>
-									</Table.Row>
-								</Table.Header>
-								<Table.Body>
-									<Table.Row>
-										<Table.Cell>
-											<Header as='h5' image>
-												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-												<Header.Content>
-													Page Name
-													<Header.Subheader>Page Summary Info</Header.Subheader>
-												</Header.Content>
-											</Header>
-										</Table.Cell>
-										<Table.Cell>43</Table.Cell>
-									</Table.Row>
-								</Table.Body>
-							</Table>
+							<div className="scrollingDiv">
+								<Table basic='very' celled>
+									<Table.Header>
+										<Table.Row>
+											<Table.HeaderCell>Name</Table.HeaderCell>
+											<Table.HeaderCell>Total Posts</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										<Table.Row>
+											<Table.Cell>
+												<Header as='h5' image>
+													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+													<Header.Content>
+														Page Name
+														<Header.Subheader>Page Summary Info</Header.Subheader>
+													</Header.Content>
+												</Header>
+											</Table.Cell>
+											<Table.Cell>43</Table.Cell>
+										</Table.Row>
+									</Table.Body>
+								</Table>
+							</div>
 						</Segment>
 						<Segment>Middle</Segment>
 						<Segment>Bottom</Segment>
