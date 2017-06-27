@@ -32,8 +32,36 @@ class App extends Component {
 								</Item.Group>
 							</div>
 						</Segment>
-						<Segment>Middle</Segment>
-						<Segment>Bottom</Segment>
+						<Segment>
+							<Header as='h4'>Posts</Header>
+							<div className="scrollingDiv">
+								<Item.Group>
+									<Item>
+										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
+										<Item.Content>
+											<Item.Header>Name + Link</Item.Header>
+											<Item.Meta>Award Name</Item.Meta>
+											<Item.Description>Award Description</Item.Description>
+										</Item.Content>
+									</Item>
+								</Item.Group>
+							</div>
+						</Segment>
+						<Segment>
+							<Header as='h4'>Users</Header>
+							<div className="scrollingDiv">
+								<Item.Group>
+									<Item>
+										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
+										<Item.Content>
+											<Item.Header>Name + Link</Item.Header>
+											<Item.Meta>Award Name</Item.Meta>
+											<Item.Description>Award Description</Item.Description>
+										</Item.Content>
+									</Item>
+								</Item.Group>
+							</div>
+						</Segment>
 					</Segment.Group>
 				</Segment.Group>
 				<Segment.Group raised>
@@ -45,7 +73,7 @@ class App extends Component {
 						<Segment>
 							<Header as='h4'>Pages</Header>
 							<div className="scrollingDiv">
-								<Table basic='very' celled columns={3}>
+								<Table basic='very' celled>
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -62,7 +90,6 @@ class App extends Component {
 														<Header.Subheader>Page Summary Info</Header.Subheader>
 													</Header.Content>
 												</Header>
-												<p>Test stuff here.</p>
 											</Table.Cell>
 											<Table.Cell>43</Table.Cell>
 										</Table.Row>
@@ -70,8 +97,59 @@ class App extends Component {
 								</Table>
 							</div>
 						</Segment>
-						<Segment>Middle</Segment>
-						<Segment>Bottom</Segment>
+						<Segment>
+							<Header as='h4'>Posts</Header>
+							<div className="scrollingDiv">
+								<Table basic='very' celled>
+									<Table.Header>
+										<Table.Row>
+											<Table.HeaderCell>Name</Table.HeaderCell>
+											<Table.HeaderCell>Total Comments</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										<Table.Row>
+											<Table.Cell>
+												<Header as='h5' image>
+													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+													<Header.Content>
+														Post Name
+														<Header.Subheader>Post Summary Info</Header.Subheader>
+													</Header.Content>
+												</Header>
+											</Table.Cell>
+											<Table.Cell>43</Table.Cell>
+										</Table.Row>
+									</Table.Body>
+								</Table>
+							</div>
+						</Segment>
+						<Segment>
+							<Header as='h4'>Users</Header>
+							<div className="scrollingDiv">
+								<Table basic='very' celled>
+									<Table.Header>
+										<Table.Row>
+											<Table.HeaderCell>Name</Table.HeaderCell>
+											<Table.HeaderCell>Total Comments</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										<Table.Row>
+											<Table.Cell>
+												<Header as='h5' image>
+													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+													<Header.Content>
+														User Name
+													</Header.Content>
+												</Header>
+											</Table.Cell>
+											<Table.Cell>43</Table.Cell>
+										</Table.Row>
+									</Table.Body>
+								</Table>
+							</div>
+						</Segment>
 					</Segment.Group>
 				</Segment.Group>
 			</div>
