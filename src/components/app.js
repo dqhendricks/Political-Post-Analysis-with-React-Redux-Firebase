@@ -9,7 +9,7 @@ class App extends Component {
 			<div className="spacingDiv">
 				<Container text>
 					<Header as='h1'>
-						<Icon name='facebook' size='massive' />
+						<Icon name='facebook' size='massive' color='grey' />
 						<Header.Content>
 							Facebook Data Scrape and Analysis
 							<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
@@ -19,7 +19,7 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='idea' size='huge' />
+							<Icon name='idea' size='huge' color='grey' />
 							<Header.Content>
 								Overall Conclusions
 								<Header.Subheader>Test</Header.Subheader>
@@ -29,7 +29,7 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='feed' size='big' />
+								<Icon name='feed' color='grey' />
 								<Header.Content>Pages</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -47,7 +47,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='newspaper' size='big' />
+								<Icon name='newspaper' color='grey' />
 								<Header.Content>Posts</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -65,7 +65,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='users' size='big' />
+								<Icon name='users' color='grey' />
 								<Header.Content>Users</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -86,7 +86,7 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='lab' size='huge' />
+							<Icon name='lab' size='huge' color='grey' />
 							<Header.Content>
 								Custom Research
 								<Header.Subheader>Test</Header.Subheader>
@@ -96,7 +96,7 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='feed' size='big' />
+								<Icon name='feed' color='grey' />
 								<Header.Content>Pages</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -126,7 +126,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='newspaper' size='big' />
+								<Icon name='newspaper' color='grey' />
 								<Header.Content>Posts</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -156,7 +156,7 @@ class App extends Component {
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='users' size='big' />
+								<Icon name='users' color='grey' />
 								<Header.Content>Users</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
