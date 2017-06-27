@@ -24,7 +24,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header>Name + Link</Item.Header>
+											<Item.Header as='h5'>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
@@ -39,7 +39,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header>Name + Link</Item.Header>
+											<Item.Header as='h5'>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
@@ -54,7 +54,7 @@ class App extends Component {
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 										<Item.Content>
-											<Item.Header>Name + Link</Item.Header>
+											<Item.Header as='h5'>Name + Link</Item.Header>
 											<Item.Meta>Award Name</Item.Meta>
 											<Item.Description>Award Description</Item.Description>
 										</Item.Content>
