@@ -95,14 +95,14 @@ class App extends Component {
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Button icon floated='right' size="mini">
-								<Icon name='sort' />
-							</Button>
-							<Button icon floated='right' size="mini">
-								<Icon name='search' />
-							</Button>
 							<Header as='h4' block>
 								<Icon name='feed' color='grey' />
+								<Button icon floated='right' size="mini">
+									<Icon name='sort' />
+								</Button>
+								<Button icon floated='right' size="mini">
+									<Icon name='search' />
+								</Button>
 								<Header.Content>Pages</Header.Content>
 							</Header>
 							<Table celled>
@@ -147,16 +147,16 @@ class App extends Component {
 							</Table>
 						</Segment>
 						<Segment>
+							<Header as='h4' block>
+								<Icon name='newspaper' color='grey' />
+								<Header.Content>Posts</Header.Content>
+							</Header>
 							<Button icon floated='right' size="mini">
 								<Icon name='sort' />
 							</Button>
 							<Button icon floated='right' size="mini">
 								<Icon name='search' />
 							</Button>
-							<Header as='h4' block>
-								<Icon name='newspaper' color='grey' />
-								<Header.Content>Posts</Header.Content>
-							</Header>
 							<Table celled>
 								<Table.Header>
 									<Table.Row>
