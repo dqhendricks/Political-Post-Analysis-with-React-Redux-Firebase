@@ -201,7 +201,7 @@ class App extends Component {
 							</Table>
 						</Segment>
 						<Segment>
-							<Segment attached="top" secondary>
+							<Segment attached="top" secondary clearing>
 								<Header as='h4' floated='left'>
 									<Icon name='users' color='grey' />
 									<Header.Content>Users</Header.Content>
