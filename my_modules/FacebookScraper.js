@@ -126,7 +126,7 @@ class FacebookScraper {
 		} );
 		*/
 		this.callOnScrapeFinished( () => {
-			this.timedObjectIterator( this.posts, 1000 * 60, ( post, id ) => {
+			this.timedObjectIterator( this.posts, 1000 * 60 * 1.9, ( post, id ) => {
 				this.updateReactions( id );
 			} );
 			// once finished updating post data, start doing any after scrape processing of the data
