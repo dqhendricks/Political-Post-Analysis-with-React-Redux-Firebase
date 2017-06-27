@@ -147,7 +147,7 @@ class App extends Component {
 							</Table>
 						</Segment>
 						<Segment>
-							<Header as='h4' block>
+							<Header as='h4' block floated='left'>
 								<Icon name='newspaper' color='grey' />
 								<Header.Content>Posts</Header.Content>
 							</Header>
@@ -205,7 +205,7 @@ class App extends Component {
 							<Button icon floated='right' size="mini">
 								<Icon name='search' />
 							</Button>
-							<Header as='h4' block>
+							<Header as='h4' block floated='left'>
 								<Icon name='users' color='grey' />
 								<Header.Content>Users</Header.Content>
 							</Header>
