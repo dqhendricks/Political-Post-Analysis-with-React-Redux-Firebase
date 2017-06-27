@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'; // allows url r
 import promise from 'redux-promise'; // middleware waits for ajax response
 
 import reducers from './reducers';
-import PageIndex from './components/page-index';
+import App from './components/app';
 
 const createStoreWithMiddleware = applyMiddleware( promise )( createStore );
 
@@ -14,7 +14,7 @@ ReactDOM.render(
 	<Provider store={ createStoreWithMiddleware( reducers ) }>
     	<BrowserRouter>
 			<Switch>
-				<Route path="/" component={ PageIndex } />
+				<Route path="/" component={ App } />
 			</Switch>
 		</BrowserRouter>
 	</Provider>
