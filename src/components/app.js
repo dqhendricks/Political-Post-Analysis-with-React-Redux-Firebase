@@ -9,20 +9,29 @@ class App extends Component {
 			<div className="spacingDiv">
 				<Container text>
 					<Header as='h1'>
-						Facebook Data Scrape and Analysis
-						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
+						<Icon name='facebook' size='massive' />
+						<Header.Content>
+							Facebook Data Scrape and Analysis
+							<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
+						</Header.Content>
 					</Header>
 				</Container>
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							Overall Conclusions
-							<Header.Subheader>Test</Header.Subheader>
+							<Icon name='idea' size='huge' />
+							<Header.Content>
+								Overall Conclusions
+								<Header.Subheader>Test</Header.Subheader>
+							</Header.Content>
 						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Header as='h4' block>Pages</Header>
+							<Header as='h4' block>
+								<Icon name='feed' size='big' />
+								<Header.Content>Pages</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Item.Group divided>
 									<Item>
@@ -37,7 +46,10 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4' block>Posts</Header>
+							<Header as='h4' block>
+								<Icon name='newspaper' size='big' />
+								<Header.Content>Posts</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Item.Group divided>
 									<Item>
@@ -52,7 +64,10 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4' block>Users</Header>
+							<Header as='h4' block>
+								<Icon name='users' size='big' />
+								<Header.Content>Users</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Item.Group divided>
 									<Item>
@@ -71,13 +86,19 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							Custom Research
-							<Header.Subheader>Test</Header.Subheader>
+							<Icon name='lab' size='huge' />
+							<Header.Content>
+								Custom Research
+								<Header.Subheader>Test</Header.Subheader>
+							</Header.Content>
 						</Header>
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Header as='h4' block>Pages</Header>
+							<Header as='h4' block>
+								<Icon name='feed' size='big' />
+								<Header.Content>Pages</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Table celled>
 									<Table.Header>
@@ -104,7 +125,10 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4' block>Posts</Header>
+							<Header as='h4' block>
+								<Icon name='newspaper' size='big' />
+								<Header.Content>Posts</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Table celled>
 									<Table.Header>
@@ -131,7 +155,10 @@ class App extends Component {
 							</div>
 						</Segment>
 						<Segment>
-							<Header as='h4' block>Users</Header>
+							<Header as='h4' block>
+								<Icon name='users' size='big' />
+								<Header.Content>Users</Header.Content>
+							</Header>
 							<div className="scrollingDiv">
 								<Table celled>
 									<Table.Header>
