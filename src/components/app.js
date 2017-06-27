@@ -10,16 +10,16 @@ class App extends Component {
 				<Container text>
 					<Header as='h1'>
 						Facebook Data Scrape and Analysis
-						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</Header.Subheader>
+						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data. Only comments made in the first 24 hours of each post's publish date have been used.</Header.Subheader>
 					</Header>
 				</Container>
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='idea' size='massive' color='grey' inverted />
+							<Icon name='idea' color='grey' />
 							<Header.Content>
 								Conclusions
-								<Header.Subheader>Test</Header.Subheader>
+								<Header.Subheader>Conclusions made based on data collected from posts published between 2017-06-21 and 2017-06-28</Header.Subheader>
 							</Header.Content>
 						</Header>
 					</Segment>
@@ -83,10 +83,10 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='lab' size='massive' color='grey' inverted />
+							<Icon name='lab' color='grey' />
 							<Header.Content>
 								Custom Research
-								<Header.Subheader>Test</Header.Subheader>
+								<Header.Subheader>Perform custom searches and sorting on data collected from posts published between 2017-06-21 and 2017-06-28</Header.Subheader>
 							</Header.Content>
 						</Header>
 					</Segment>
