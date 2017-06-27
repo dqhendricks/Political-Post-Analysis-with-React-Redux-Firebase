@@ -15,7 +15,7 @@ class App extends Component {
 				</Container>
 				<Segment.Group raised>
 					<Segment>
-						<Container text>
+						<Container text textAlign='left'>
 							<Header as='h3'>
 								Overall Conclusions
 								<Header.Subheader>Test</Header.Subheader>
@@ -72,7 +72,7 @@ class App extends Component {
 				</Segment.Group>
 				<Segment.Group raised>
 					<Segment>
-						<Container text>
+						<Container text textAlign='left'>
 							<Header as='h3'>
 								Custom Research
 								<Header.Subheader>Test</Header.Subheader>
