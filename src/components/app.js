@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Segment, Item, Table, Image, Icon, Menu } from 'semantic-ui-react';
+import { Container, Header, Segment, Item, Table, Image, Icon, Menu, Button } from 'semantic-ui-react';
 
 class App extends Component {
 	
