@@ -28,11 +28,13 @@ class App extends Component {
 					</Segment>
 					<Segment.Group horizontal>
 						<Segment>
-							<Header as='h4' block>
-								<Icon name='feed' color='grey' />
-								<Header.Content>Pages</Header.Content>
-							</Header>
-							<div className="scrollingDiv">
+							<Segment secondary attached="top">
+								<Header as='h4'>
+									<Icon name='feed' color='grey' />
+									<Header.Content>Pages</Header.Content>
+								</Header>
+							</Segment>
+							<Segment basic className="scrollingDiv" attached="bottom">
 								<Item.Group divided>
 									<Item>
 										<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
@@ -43,7 +45,7 @@ class App extends Component {
 										</Item.Content>
 									</Item>
 								</Item.Group>
-							</div>
+							</Segment>
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
@@ -199,17 +201,19 @@ class App extends Component {
 							</Table>
 						</Segment>
 						<Segment>
-							<Button icon floated='right' size="mini">
-								<Icon name='sort' />
-							</Button>
-							<Button icon floated='right' size="mini">
-								<Icon name='search' />
-							</Button>
-							<Header as='h4' block floated='left'>
-								<Icon name='users' color='grey' />
-								<Header.Content>Users</Header.Content>
-							</Header>
-							<Table celled>
+							<Segment attached="top" secondary>
+								<Header as='h4' floated='left'>
+									<Icon name='users' color='grey' />
+									<Header.Content>Users</Header.Content>
+								</Header>
+								<Button icon floated='right' size="mini">
+									<Icon name='sort' />
+								</Button>
+								<Button icon floated='right' size="mini">
+									<Icon name='search' />
+								</Button>
+							</Segment>
+							<Table celled attached="bottom">
 								<Table.Header>
 									<Table.Row>
 										<Table.HeaderCell>Name</Table.HeaderCell>
