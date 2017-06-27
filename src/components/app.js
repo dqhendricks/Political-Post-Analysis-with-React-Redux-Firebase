@@ -16,7 +16,7 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='idea' size='huge' color='grey' inverted />
+							<Icon name='idea' size='massive' color='grey' inverted />
 							<Header.Content>
 								Conclusions
 								<Header.Subheader>Test</Header.Subheader>
@@ -26,7 +26,7 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4' block>
-								<Icon name='feed' color='grey' inverted />
+								<Icon name='feed' color='grey' />
 								<Header.Content>Pages</Header.Content>
 							</Header>
 							<div className="scrollingDiv">
@@ -83,7 +83,7 @@ class App extends Component {
 				<Segment.Group raised>
 					<Segment>
 						<Header as='h3'>
-							<Icon name='lab' size='huge' color='grey' />
+							<Icon name='lab' size='massive' color='grey' inverted />
 							<Header.Content>
 								Custom Research
 								<Header.Subheader>Test</Header.Subheader>
