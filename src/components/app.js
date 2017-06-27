@@ -45,7 +45,7 @@ class App extends Component {
 						<Segment>
 							<Header as='h4'>Pages</Header>
 							<div className="scrollingDiv">
-								<Table basic='very' celled>
+								<Table basic='very' celled columns={3}>
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -62,6 +62,7 @@ class App extends Component {
 														<Header.Subheader>Page Summary Info</Header.Subheader>
 													</Header.Content>
 												</Header>
+												<p>Test stuff here.</p>
 											</Table.Cell>
 											<Table.Cell>43</Table.Cell>
 										</Table.Row>
