@@ -99,89 +99,137 @@ class App extends Component {
 								<Icon name='feed' color='grey' />
 								<Header.Content>Pages</Header.Content>
 							</Header>
-							<div className="scrollingDiv">
-								<Table celled>
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Posts</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body className="scrollingDiv">
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>
-														Page Name
-														<Header.Subheader>Page Summary Info</Header.Subheader>
-													</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-								</Table>
-							</div>
+							<Table celled>
+								<Table.Header>
+									<Table.Row>
+										<Table.HeaderCell>Name</Table.HeaderCell>
+										<Table.HeaderCell>Total Posts</Table.HeaderCell>
+									</Table.Row>
+								</Table.Header>
+								<Table.Body className="scrollingDiv">
+									<Table.Row>
+										<Table.Cell>
+											<Header as='h5' image>
+												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+												<Header.Content>
+													Page Name
+													<Header.Subheader>Page Summary Info</Header.Subheader>
+												</Header.Content>
+											</Header>
+										</Table.Cell>
+										<Table.Cell>43</Table.Cell>
+									</Table.Row>
+								</Table.Body>
+								<Table.Footer>
+									<Table.Row>
+										<Table.HeaderCell colSpan='2'>
+											<Menu floated='right' pagination>
+												<Menu.Item as='a' icon>
+													<Icon name='left chevron' />
+												</Menu.Item>
+												<Menu.Item as='a'>1</Menu.Item>
+												<Menu.Item as='a'>2</Menu.Item>
+												<Menu.Item as='a'>3</Menu.Item>
+												<Menu.Item as='a'>4</Menu.Item>
+												<Menu.Item as='a' icon>
+													<Icon name='right chevron' />
+												</Menu.Item>
+											</Menu>
+										</Table.HeaderCell>
+									</Table.Row>
+								</Table.Footer>
+							</Table>
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
 								<Icon name='newspaper' color='grey' />
 								<Header.Content>Posts</Header.Content>
 							</Header>
-							<div className="scrollingDiv">
-								<Table celled>
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Comments</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>
-														Post Name
-														<Header.Subheader>Post Summary Info</Header.Subheader>
-													</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-								</Table>
-							</div>
+							<Table celled>
+								<Table.Header>
+									<Table.Row>
+										<Table.HeaderCell>Name</Table.HeaderCell>
+										<Table.HeaderCell>Total Comments</Table.HeaderCell>
+									</Table.Row>
+								</Table.Header>
+								<Table.Body>
+									<Table.Row>
+										<Table.Cell>
+											<Header as='h5' image>
+												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+												<Header.Content>
+													Post Name
+													<Header.Subheader>Post Summary Info</Header.Subheader>
+												</Header.Content>
+											</Header>
+										</Table.Cell>
+										<Table.Cell>43</Table.Cell>
+									</Table.Row>
+								</Table.Body>
+								<Table.Footer>
+									<Table.Row>
+										<Table.HeaderCell colSpan='2'>
+											<Menu floated='right' pagination>
+												<Menu.Item as='a' icon>
+													<Icon name='left chevron' />
+												</Menu.Item>
+												<Menu.Item as='a'>1</Menu.Item>
+												<Menu.Item as='a'>2</Menu.Item>
+												<Menu.Item as='a'>3</Menu.Item>
+												<Menu.Item as='a'>4</Menu.Item>
+												<Menu.Item as='a' icon>
+													<Icon name='right chevron' />
+												</Menu.Item>
+											</Menu>
+										</Table.HeaderCell>
+									</Table.Row>
+								</Table.Footer>
+							</Table>
 						</Segment>
 						<Segment>
 							<Header as='h4' block>
 								<Icon name='users' color='grey' />
 								<Header.Content>Users</Header.Content>
 							</Header>
-							<div className="scrollingDiv">
-								<Table celled>
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Comments</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>
-														User Name
-													</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-								</Table>
-							</div>
+							<Table celled>
+								<Table.Header>
+									<Table.Row>
+										<Table.HeaderCell>Name</Table.HeaderCell>
+										<Table.HeaderCell>Total Comments</Table.HeaderCell>
+									</Table.Row>
+								</Table.Header>
+								<Table.Body>
+									<Table.Row>
+										<Table.Cell>
+											<Header as='h5' image>
+												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+												<Header.Content>
+													User Name
+												</Header.Content>
+											</Header>
+										</Table.Cell>
+										<Table.Cell>43</Table.Cell>
+									</Table.Row>
+								</Table.Body>
+								<Table.Footer>
+									<Table.Row>
+										<Table.HeaderCell colSpan='2'>
+											<Menu floated='right' pagination>
+												<Menu.Item as='a' icon>
+													<Icon name='left chevron' />
+												</Menu.Item>
+												<Menu.Item as='a'>1</Menu.Item>
+												<Menu.Item as='a'>2</Menu.Item>
+												<Menu.Item as='a'>3</Menu.Item>
+												<Menu.Item as='a'>4</Menu.Item>
+												<Menu.Item as='a' icon>
+													<Icon name='right chevron' />
+												</Menu.Item>
+											</Menu>
+										</Table.HeaderCell>
+									</Table.Row>
+								</Table.Footer>
+							</Table>
 						</Segment>
 					</Segment.Group>
 				</Segment.Group>
