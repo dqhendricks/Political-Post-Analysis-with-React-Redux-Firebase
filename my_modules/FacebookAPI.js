@@ -44,7 +44,7 @@ class FacebookAPI {
 	}
 	
 	isBusy() {
-		return ( this.requestQueue.length == 0 && this.activeRequestCount == 0 );
+		return ( this.requestQueue.length != 0 || this.activeRequestCount != 0 );
 	}
 	
 	_requestQueueProcess() {
