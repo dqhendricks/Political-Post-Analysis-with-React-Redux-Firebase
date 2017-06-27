@@ -78,14 +78,14 @@ class App extends Component {
 					<Segment.Group horizontal>
 						<Segment>
 							<Header as='h4'>Pages</Header>
-							<div className="scrollingDiv">
-								<Table basic='very' celled>
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Posts</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
+							<Table basic='very' celled>
+								<Table.Header>
+									<Table.Row>
+										<Table.HeaderCell>Name</Table.HeaderCell>
+										<Table.HeaderCell>Total Posts</Table.HeaderCell>
+									</Table.Row>
+								</Table.Header>
+								<div className="scrollingDiv">
 									<Table.Body>
 										<Table.Row>
 											<Table.Cell>
@@ -100,8 +100,8 @@ class App extends Component {
 											<Table.Cell>43</Table.Cell>
 										</Table.Row>
 									</Table.Body>
-								</Table>
-							</div>
+								</div>
+							</Table>
 						</Segment>
 						<Segment>
 							<Header as='h4'>Posts</Header>
