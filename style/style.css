@@ -3,6 +3,6 @@
 }
 
 .scrollingDiv {
-	height: 30px;
+	height: 200px;
 	overflow-y: scroll;
 }
