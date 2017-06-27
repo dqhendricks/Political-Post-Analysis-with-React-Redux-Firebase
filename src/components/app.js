@@ -6,7 +6,7 @@ class App extends Component {
 	
 	render() {
 		return (
-			<div>
+			<div className="spacingDiv">
 				<Container text>
 					<Header as='h1'>Facebook Data Scrape and Analysis</Header>
 					<p>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</p>
