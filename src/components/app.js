@@ -85,22 +85,20 @@ class App extends Component {
 										<Table.HeaderCell>Total Posts</Table.HeaderCell>
 									</Table.Row>
 								</Table.Header>
-								<div className="scrollingDiv">
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>
-														Page Name
-														<Header.Subheader>Page Summary Info</Header.Subheader>
-													</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-								</div>
+								<Table.Body className="scrollingDiv">
+									<Table.Row>
+										<Table.Cell>
+											<Header as='h5' image>
+												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+												<Header.Content>
+													Page Name
+													<Header.Subheader>Page Summary Info</Header.Subheader>
+												</Header.Content>
+											</Header>
+										</Table.Cell>
+										<Table.Cell>43</Table.Cell>
+									</Table.Row>
+								</Table.Body>
 							</Table>
 						</Segment>
 						<Segment>
