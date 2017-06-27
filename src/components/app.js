@@ -6,7 +6,7 @@ class App extends Component {
 	
 	render() {
 		return (
-			<Container fluid>
+			<div>
 				<Container text>
 					<Header as='h1'>Facebook Data Scrape and Analysis</Header>
 					<p>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from the data.</p>
@@ -69,7 +69,7 @@ class App extends Component {
 						<Segment>Bottom</Segment>
 					</Segment.Group>
 				</Segment.Group>
-			</Container>
+			</div>
 		);
 	}
 }
