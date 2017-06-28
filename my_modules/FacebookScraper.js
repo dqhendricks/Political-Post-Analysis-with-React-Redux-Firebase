@@ -11,7 +11,6 @@ class FacebookScraper {
 	
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
-		this.iteration();
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
@@ -120,17 +119,13 @@ class FacebookScraper {
 	
 	updateAddedPosts() {
 		// cycle through newly added posts to update reactions and comments in those
-		/*
 		this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
 			this.updatePostComments( id, id );
 		} );
-		*/
 		this.callOnScrapeFinished( () => {
-			/*
 			this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
 				this.updatePostReactions( id );
 			} );
-			*/
 			// once finished updating post data, start doing any after scrape processing of the data
 			this.callOnScrapeFinished( () => {
 				delete this.posts;
