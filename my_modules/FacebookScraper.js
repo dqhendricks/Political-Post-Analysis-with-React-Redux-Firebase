@@ -127,7 +127,7 @@ class FacebookScraper {
 		*/
 		this.callOnScrapeFinished( () => {
 			this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
-				this.updateReactions( id );
+				this.updatePostReactions( id );
 			} );
 			// once finished updating post data, start doing any after scrape processing of the data
 			this.callOnScrapeFinished( () => {
@@ -143,12 +143,12 @@ class FacebookScraper {
 	}
 	
 	iterateObjectOnEmptyQueue( object, callback ) {
-		// to help solve memory issues
+		// wait for all queues to be empty before next iteration, to help solve memory issues
 		this.timedObjectIterators++;
 		var i = 0;
 		const keys = Object.keys( object );
 		var timer = setInterval( () => {
-			if ( !facebookAPI.isBusy() && !databaseAPI.isBusy() ) {
+			if ( !facebookAPI.isBusy() && !databaseAPI.isBusy() ) { // are queues empty?
 				if ( i < keys.length ) {
 					callback( object[keys[i]], keys[i] );
 					i++;
@@ -161,6 +161,7 @@ class FacebookScraper {
 	}
 	
 	callOnScrapeFinished( callback ) {
+		// wait for all scrapes to finish before continuing, to help solve memory issues
 		var timer = setInterval( () => {
 			if ( !facebookAPI.isBusy() && !databaseAPI.isBusy() && this.timedObjectIterators == 0 ) {
 				clearInterval( timer );
@@ -169,7 +170,7 @@ class FacebookScraper {
 		}, 1000 );
 	}
 	
-	updateReactions( key, after = null ) {
+	updatePostReactions( key, after = null ) {
 		const reactionFields = [ 'id', 'link', 'name', 'picture', 'type' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
@@ -189,8 +190,10 @@ class FacebookScraper {
 				updateData['page_id'] = pageID;
 				
 				databaseAPI.requestPost( `post_reactions/${ reactionID }`, updateData );
+				
+				// user data for these is saved in post processing
 			} );
-			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
+			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updatePostReactions( key, response.paging.cursors.after );
 		}, reactionFields, parameters );
 	}
 	
