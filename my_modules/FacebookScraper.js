@@ -138,7 +138,9 @@ class FacebookScraper {
 					earliestPostCullDate: this.earliestPostCullDate,
 					latestPostDate: this.latestPostCullDate
 				}
-				databaseAPI.request( 'process', null, null, parameters, 'POST' ); 
+				databaseAPI.request( 'process', ( response ) => {
+					console.log( response );
+				}, null, parameters, 'POST' ); 
 				console.log( 'scrape finished' );
 			} );
 		} );
