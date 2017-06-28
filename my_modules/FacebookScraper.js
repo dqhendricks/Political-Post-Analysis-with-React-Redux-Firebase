@@ -126,9 +126,11 @@ class FacebookScraper {
 		} );
 		*/
 		this.callOnScrapeFinished( () => {
+			/*
 			this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
 				this.updatePostReactions( id );
 			} );
+			*/
 			// once finished updating post data, start doing any after scrape processing of the data
 			this.callOnScrapeFinished( () => {
 				delete this.posts;
