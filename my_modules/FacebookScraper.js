@@ -135,12 +135,11 @@ class FacebookScraper {
 			this.callOnScrapeFinished( () => {
 				delete this.posts;
 				const parameters = {
-					earliestPostCullDate: this.earliestPostCullDate,
+					newEarliestPostTime: ,
 					latestPostDate: this.latestPostCullDate
 				}
-				databaseAPI.request( 'process', ( response ) => {
-					console.log( response );
-				}, null, parameters, 'POST', {}, true ); 
+				databaseAPI.request( 'meta_data', null, null, { key: 'newEarliestPostTime', value: this.earliestPostCullDate }, 'POST' ); 
+				databaseAPI.request( 'meta_data', null, null, { key: 'newLatestPostTime', value: this.latestPostCullDate }, 'POST' ); 
 				console.log( 'scrape finished' );
 			} );
 		} );
