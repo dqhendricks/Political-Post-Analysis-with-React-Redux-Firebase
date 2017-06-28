@@ -43,7 +43,7 @@ class DatabaseAPI {
 	
 	_requestQueueProcess() {
 		if ( this.requestQueue.length > 0 ) {
-			if ( this.activeRequestCount <= 4 ) {
+			if ( this.activeRequestCount <= 5 ) {
 				this.activeRequestCount++;
 				const currentRequest = this.requestQueue.shift();
 				//console.log( currentRequest.options.url );

@@ -171,7 +171,6 @@ class FacebookScraper {
 	
 	updateReactions( key, after = null ) {
 		const reactionFields = [ 'id', 'link', 'name', 'picture', 'type' ];
-		const userFields = [ 'id', 'link', 'name', 'picture' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		facebookAPI.request( `${ key }/reactions`, ( response ) => {
@@ -179,25 +178,17 @@ class FacebookScraper {
 			response.data.forEach( ( reaction ) => {
 				const reactionID = `${ key }_${ reaction.id }`;
 				
-				// save/update user
-				const updateUserData = {};
-				userFields.forEach( ( field ) => {
-					if ( field in reaction ) updateUserData[field] = reaction[field];
-				} );
-				
-				databaseAPI.requestPost( `users/${ reaction.id }`, updateUserData );
-				
 				// save/update reaction
-				const updateReactionData = {};
+				const updateData = {};
 				reactionFields.forEach( ( field ) => {
-					if ( field in reaction ) updateReactionData[field] = reaction[field];
+					if ( field in reaction ) updateData[field] = reaction[field];
 				} );
-				updateReactionData['id'] = reactionID;
-				if ( 'id' in reaction ) updateReactionData['user_id'] = reaction.id;
-				updateReactionData['post_id'] = key;
-				updateReactionData['page_id'] = pageID;
+				updateData['id'] = reactionID;
+				if ( 'id' in reaction ) updateData['user_id'] = reaction.id;
+				updateData['post_id'] = key;
+				updateData['page_id'] = pageID;
 				
-				databaseAPI.requestPost( `post_reactions/${ reactionID }`, updateReactionData );
+				databaseAPI.requestPost( `post_reactions/${ reactionID }`, updateData );
 			} );
 			if ( ( 'paging' in response ) && ( 'next' in response.paging ) ) this.updateReactions( key, response.paging.cursors.after );
 		}, reactionFields, parameters );
