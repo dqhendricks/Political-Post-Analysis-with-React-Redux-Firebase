@@ -134,10 +134,6 @@ class FacebookScraper {
 			// once finished updating post data, start doing any after scrape processing of the data
 			this.callOnScrapeFinished( () => {
 				delete this.posts;
-				const parameters = {
-					newEarliestPostTime: ,
-					latestPostDate: this.latestPostCullDate
-				}
 				databaseAPI.request( 'meta_data', null, null, { key: 'newEarliestPostTime', value: this.earliestPostCullDate }, 'POST' ); 
 				databaseAPI.request( 'meta_data', null, null, { key: 'newLatestPostTime', value: this.latestPostCullDate }, 'POST' ); 
 				console.log( 'scrape finished' );
