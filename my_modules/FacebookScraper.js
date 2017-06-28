@@ -119,11 +119,13 @@ class FacebookScraper {
 	
 	updateAddedPosts() {
 		// cycle through newly added posts to update reactions and comments in those
-		this.timedObjectIterator( this.posts, 1000 * 60 * 1.0, ( post, id ) => {
+		/*
+		this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
 			this.updatePostComments( id, id );
 		} );
+		*/
 		this.callOnScrapeFinished( () => {
-			this.timedObjectIterator( this.posts, 1000 * 60 * 2.0, ( post, id ) => {
+			this.iterateObjectOnEmptyQueue( this.posts, ( post, id ) => {
 				this.updateReactions( id );
 			} );
 			// once finished updating post data, start doing any after scrape processing of the data
@@ -139,20 +141,22 @@ class FacebookScraper {
 		} );
 	}
 	
-	timedObjectIterator( object, delay, callback ) {
+	iterateObjectOnEmptyQueue( object, callback ) {
 		// to help solve memory issues
 		this.timedObjectIterators++;
 		var i = 0;
 		const keys = Object.keys( object );
 		var timer = setInterval( () => {
-			if ( i < keys.length ) {
-				callback( object[keys[i]], keys[i] );
-				i++;
-			} else {
-				clearInterval( timer );
-				this.timedObjectIterators--;
+			if ( !facebookAPI.isBusy() && !databaseAPI.isBusy() ) {
+				if ( i < keys.length ) {
+					callback( object[keys[i]], keys[i] );
+					i++;
+				} else {
+					clearInterval( timer );
+					this.timedObjectIterators--;
+				}
 			}
-		}, delay );
+		}, 100 );
 	}
 	
 	callOnScrapeFinished( callback ) {

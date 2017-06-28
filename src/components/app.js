@@ -22,7 +22,7 @@ class App extends Component {
 							<Icon name='idea' color='grey' />
 							<Header.Content>
 								Conclusions
-								<Header.Subheader>Conclusions made based on data collected from posts published between 2017-06-21 and 2017-06-28</Header.Subheader>
+								<Header.Subheader>Conclusions made based on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
 							</Header.Content>
 						</Header>
 					</Segment>
@@ -95,7 +95,7 @@ class App extends Component {
 							<Icon name='lab' color='grey' />
 							<Header.Content>
 								Custom Research
-								<Header.Subheader>Perform custom searches and sorting on data collected from posts published between 2017-06-21 and 2017-06-28</Header.Subheader>
+								<Header.Subheader>Perform custom searches and sorting on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
 							</Header.Content>
 						</Header>
 					</Segment>
@@ -103,7 +103,7 @@ class App extends Component {
 						<Segment>
 							<Segment attached="top" secondary clearing>
 								<Header as='h4' floated='left'>
-									<Icon name='feed' color='grey' />
+									<Icon name='feed' color='grey' size='big' />
 									<Header.Content>Pages</Header.Content>
 								</Header>
 								<Button icon floated='right' size="mini">
@@ -125,10 +125,7 @@ class App extends Component {
 										<Table.Cell>
 											<Header as='h5' image>
 												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-												<Header.Content>
-													Page Name
-													<Header.Subheader>Page Summary Info</Header.Subheader>
-												</Header.Content>
+												<Header.Content>Page Name</Header.Content>
 											</Header>
 										</Table.Cell>
 										<Table.Cell>43</Table.Cell>
@@ -157,7 +154,7 @@ class App extends Component {
 						<Segment>
 							<Segment attached="top" secondary clearing>
 								<Header as='h4' floated='left'>
-									<Icon name='newspaper' color='grey' />
+									<Icon name='newspaper' color='grey' size='big' />
 									<Header.Content>Posts</Header.Content>
 								</Header>
 								<Button icon floated='right' size="mini">
@@ -179,10 +176,7 @@ class App extends Component {
 										<Table.Cell>
 											<Header as='h5' image>
 												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-												<Header.Content>
-													Post Name
-													<Header.Subheader>Post Summary Info</Header.Subheader>
-												</Header.Content>
+												<Header.Content>Post Name</Header.Content>
 											</Header>
 										</Table.Cell>
 										<Table.Cell>43</Table.Cell>
@@ -211,13 +205,13 @@ class App extends Component {
 						<Segment>
 							<Segment attached="top" secondary clearing>
 								<Header as='h4' floated='left'>
-									<Icon name='users' color='grey' />
+									<Icon name='users' color='grey' size='big' />
 									<Header.Content>Users</Header.Content>
 								</Header>
-								<Button icon floated='right' size="tiny">
+								<Button icon floated='right' size="mini">
 									<Icon name='sort' />
 								</Button>
-								<Button icon floated='right' size="tiny">
+								<Button icon floated='right' size="mini">
 									<Icon name='search' />
 								</Button>
 							</Segment>
@@ -233,9 +227,7 @@ class App extends Component {
 										<Table.Cell>
 											<Header as='h5' image>
 												<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-												<Header.Content>
-													User Name
-												</Header.Content>
+												<Header.Content>User Name</Header.Content>
 											</Header>
 										</Table.Cell>
 										<Table.Cell>43</Table.Cell>
