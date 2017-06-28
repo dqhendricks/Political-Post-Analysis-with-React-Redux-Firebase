@@ -135,7 +135,7 @@ class FacebookScraper {
 			this.callOnScrapeFinished( () => {
 				delete this.posts;
 				databaseAPI.requestPost( 'meta_data', { key: 'newEarliestPostTime', value: this.earliestPostCullDate } ); 
-				databaseAPI.requestPost( 'meta_data', { key: 'newLatestPostTime', value: this.latestPostCullDate } ); 
+				databaseAPI.requestPost( 'meta_data', { key: 'newLatestPostTime', value: this.latestPostDate } ); 
 				console.log( 'scrape finished' );
 			} );
 		} );
