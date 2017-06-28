@@ -52,7 +52,7 @@ class FacebookAPI {
 			if ( this.activeRequestCount <= 2 ) {
 				this.activeRequestCount++;
 				const currentRequest = this.requestQueue.shift();
-				//console.log( currentRequest.options.url );
+				console.log( currentRequest.options.url );
 				var callAnswered = false;
 				request( currentRequest.options, ( err, httpResponse, body ) => {
 					if ( !callAnswered ) {
