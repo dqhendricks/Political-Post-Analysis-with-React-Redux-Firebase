@@ -20,7 +20,7 @@ class DatabaseAPI {
 		this.request( path, callback, null, parameters, 'DELETE' );
 	}
 	
-	request( path, callback, fields = null, parameters = {}, method = 'GET', form = {} ) {
+	request( path, callback, fields = null, parameters = {}, method = 'GET', form = {}, noTimeout = false ) {
 		if ( this.token ) parameters.token = this.token;
 		if ( fields ) parameters.fields = fields.join();
 		parameters = _.values( _.map( parameters, ( value, key ) => {
@@ -34,7 +34,7 @@ class DatabaseAPI {
 			json: true,
 			form: form
 		};
-		this.requestQueue.push( { options, callback } );
+		this.requestQueue.push( { options, callback, noTimeout } );
 	}
 	
 	isBusy() {
@@ -69,14 +69,16 @@ class DatabaseAPI {
 						this.activeRequestCount--;
 					}
 				} );
-				setTimeout( () => {
-					if ( !callAnswered ) {
-						callAnswered = true;
-						console.log( `Retrying call: ${ currentRequest.options.url }` );
-						this.requestQueue.unshift( currentRequest );
-						this.activeRequestCount--;
-					}
-				}, 30 * 1000 );
+				if ( !currentRequest.noTimeout ) {
+					setTimeout( () => {
+						if ( !callAnswered ) {
+							callAnswered = true;
+							console.log( `Retrying call: ${ currentRequest.options.url }` );
+							this.requestQueue.unshift( currentRequest );
+							this.activeRequestCount--;
+						}
+					}, 30 * 1000 );
+				}
 			}
 		}
 	}

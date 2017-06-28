@@ -140,7 +140,7 @@ class FacebookScraper {
 				}
 				databaseAPI.request( 'process', ( response ) => {
 					console.log( response );
-				}, null, parameters, 'POST' ); 
+				}, null, parameters, 'POST', {}, true ); 
 				console.log( 'scrape finished' );
 			} );
 		} );
