@@ -96,6 +96,7 @@ class FacebookScraper {
 					} );
 					if ( 'from' in post ) updateData['page_id'] = post.from.id;
 					if ( 'shares' in post ) updateData['shares'] = post.shares.count;
+					updateData['last_allowed_comment_time'] = post.last_allowed_comment_time;
 					updateData['created_time_mysql'] = this.convertFacebookTimeToDatabaseTime( post.created_time );
 
 					databaseAPI.requestPost( `posts/${ post.id }`, updateData );

@@ -10,7 +10,7 @@ class App extends Component {
 				<Container text>
 					<Header as='h2' textAlign='center'>
 						Facebook Data Analysis
-						<Header.Subheader>This app collects data about Facebook posts made by the pages for Breitbart, CNN, Fox News, and The New York Times, then attempts to derive conclusions from that data.</Header.Subheader>
+						<Header.Subheader>Data collected from the public pages of Breitbart, CNN, Fox News, and The New York Times.</Header.Subheader>
 					</Header>
 				</Container>
 				<Segment raised>
