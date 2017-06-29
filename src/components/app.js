@@ -243,6 +243,9 @@ class App extends Component {
 						</Grid.Row>
 					</Grid>
 				</Segment>
+				<Container text textAlign='center'>
+					Created by Dustin Hendricks
+				</Container>
 			</div>
 		);
 	}
