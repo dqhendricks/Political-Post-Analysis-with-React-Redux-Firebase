@@ -116,7 +116,7 @@ class App extends Component {
 											<Table.HeaderCell>Total Posts</Table.HeaderCell>
 										</Table.Row>
 									</Table.Header>
-									<Table.Body className="scrollingDiv">
+									<Table.Body>
 										<Table.Row>
 											<Table.Cell>
 												<Header as='h5' image>
