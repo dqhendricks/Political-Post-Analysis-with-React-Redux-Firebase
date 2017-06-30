@@ -1,5 +1,6 @@
 .spacingDiv {
 	margin: 20px;
+	min-width: 900px;
 }
 
 .scrollingDiv {
