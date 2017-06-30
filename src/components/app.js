@@ -227,7 +227,7 @@ class App extends Component {
 										<Table.Row>
 											<Table.HeaderCell colSpan='2'>
 												<Menu floated='right' pagination>
-													<Menu.Item as='a' icon>
+													<Menu.Item as='a' icon secondary>
 														<Icon name='left chevron' />
 													</Menu.Item>
 													<Menu.Item as='a' active={true}>1</Menu.Item>
