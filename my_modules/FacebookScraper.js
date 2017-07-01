@@ -6,11 +6,12 @@ class FacebookScraper {
 	
 	constructor() {
 		this.daysToScrape = 1;
-		this.daysOfRecordsToPreserve = 7;
+		this.daysOfRecordsToPreserve = 1;
 	}
 	
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
+		this.iteration();
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
