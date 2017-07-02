@@ -12,12 +12,14 @@ class FacebookScraper {
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
 		this.iteration();
+		/*
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
 				this.iteration();
 			}, 1000 * 60 * 60 * 24 );
 		}, this.millisecondsTillStartTime() );
+		*/
 	}
 	
 	millisecondsTillStartTime() {
