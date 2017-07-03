@@ -21,7 +21,7 @@ class App extends Component {
 							<Header.Subheader>Conclusions made based on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
 						</Header.Content>
 					</Header>
-					<Grid>
+					<Grid stackable>
 						<Grid.Row columns={3}>
 							<Grid.Column>
 								<Segment secondary attached="top">
@@ -94,7 +94,7 @@ class App extends Component {
 							<Header.Subheader>Perform custom searches and sorting on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
 						</Header.Content>
 					</Header>
-					<Grid>
+					<Grid stackable>
 						<Grid.Row columns={3}>
 							<Grid.Column>
 								<Segment attached="top" secondary clearing>
