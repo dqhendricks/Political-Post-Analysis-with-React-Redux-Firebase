@@ -8,7 +8,7 @@ class App extends Component {
 		return (
 			<div className="spacingDiv">
 				<Container text>
-					<Header as='h2' textAlign='center' color='grey'>
+					<Header as='h2' textAlign='center'>
 						Facebook Data Analysis
 						<Header.Subheader>Data collected from the public pages of Breitbart, CNN, Fox News, and The New York Times.</Header.Subheader>
 					</Header>
@@ -32,6 +32,14 @@ class App extends Component {
 								</Segment>
 								<Segment basic attached="bottom" className="scrollingDiv">
 									<Item.Group divided link>
+										<Item>
+											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
+											<Item.Content>
+												<Item.Header>Name + Link</Item.Header>
+												<Item.Meta>Award Name</Item.Meta>
+												<Item.Description>Award Description</Item.Description>
+											</Item.Content>
+										</Item>
 										<Item>
 											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
 											<Item.Content>
@@ -109,7 +117,7 @@ class App extends Component {
 										<Icon name='search' />
 									</Button>
 								</Segment>
-								<Table celled striped selectable attached="bottom">
+								<Table celled selectable unstackable attached="bottom">
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -117,6 +125,15 @@ class App extends Component {
 										</Table.Row>
 									</Table.Header>
 									<Table.Body>
+										<Table.Row>
+											<Table.Cell>
+												<Header as='h5' image>
+													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
+													<Header.Content>Page Name</Header.Content>
+												</Header>
+											</Table.Cell>
+											<Table.Cell>43</Table.Cell>
+										</Table.Row>
 										<Table.Row>
 											<Table.Cell>
 												<Header as='h5' image>
@@ -157,7 +174,7 @@ class App extends Component {
 										<Icon name='search' />
 									</Button>
 								</Segment>
-								<Table celled striped selectable attached="bottom">
+								<Table celled selectable unstackable attached="bottom">
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>
@@ -205,7 +222,7 @@ class App extends Component {
 										<Icon name='search' />
 									</Button>
 								</Segment>
-								<Table celled striped selectable attached="bottom">
+								<Table celled selectable unstackable attached="bottom">
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell>Name</Table.HeaderCell>

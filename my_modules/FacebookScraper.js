@@ -2,24 +2,25 @@ const _ = require( 'lodash' );
 const facebookAPI = require( './FacebookAPI' );
 const databaseAPI = require( './DatabaseAPI' );
 
+/*
+This will cycle through whichever Facebook page IDs are stored in the datastore, update the page data, collect posts from those pages for a 24 hour period, collect comments on those posts created up to 24 hours after post published, collect user data of commenters, collect post reaction data (post processor creates any missing user records out of reaction records since no contact with Facebook needed)
+*/
+
 class FacebookScraper {
 	
 	constructor() {
-		this.daysToScrape = 1;
-		this.daysOfRecordsToPreserve = 1;
+		this.daysToScrape = 1; // scrapes x days at a time
+		this.daysOfRecordsToPreserve = 1; // deletes data over x days old
 	}
 	
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
-		this.iteration();
-		/*
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
 				this.iteration();
 			}, 1000 * 60 * 60 * 24 );
 		}, this.millisecondsTillStartTime() );
-		*/
 	}
 	
 	millisecondsTillStartTime() {
