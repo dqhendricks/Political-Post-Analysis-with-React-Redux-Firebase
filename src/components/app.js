@@ -26,7 +26,7 @@ class App extends Component {
 					<MetaDataList
 						dataRecordType={ list.recordType }
 						dataName={ list.name }
-						dataIcon={ list.feed }
+						dataIcon={ list.icon }
 					/>
 				</Grid.Column>
 			);

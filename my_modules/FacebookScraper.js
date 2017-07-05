@@ -197,7 +197,7 @@ class FacebookScraper {
 	}
 	
 	updatePostComments( key, postID, after = null ) {
-		const fields = [ 'comment_count', 'created_time', 'from', 'id', 'message', 'parent', 'permalink_url', 'like_count' ];
+		const fields = [ 'attachment', 'comment_count', 'created_time', 'from', 'id', 'message', 'parent', 'permalink_url', 'like_count' ];
 		const parameters = { limit: 100 };
 		if ( after ) parameters.after = after;
 		
@@ -212,6 +212,7 @@ class FacebookScraper {
 						if ( field in comment ) updateData[field] = comment[field];
 					} );
 					if ( 'from' in comment ) updateData['user_id'] = comment.from.id;
+					if ( 'attachment' in updateData ) updateData['attachment'] = updateData['attachment'].url;
 					updateData['post_id'] = postID;
 					updateData['page_id'] = pageID;
 					updateData['created_time_mysql'] = this.convertFacebookTimeToDatabaseTime( comment.created_time );
