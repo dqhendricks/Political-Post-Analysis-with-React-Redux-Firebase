@@ -15,15 +15,12 @@ class FacebookScraper {
 	
 	start() {
 		// do first iteration at midnight UTC, then every 24 hours after that
-		this.iteration();
-		/*
 		setTimeout( () => {
 			this.iteration();
 			setInterval( () => {
 				this.iteration();
 			}, 1000 * 60 * 60 * 24 );
 		}, this.millisecondsTillStartTime() );
-		*/
 	}
 	
 	millisecondsTillStartTime() {
@@ -66,11 +63,11 @@ class FacebookScraper {
 		// going through database pages to update page data and add latest posts
 		_.forIn( pages, ( page, id ) => {
 			this.updatePageData( id );
-			//this.addNewPosts( id );
+			this.addNewPosts( id );
 		} );
 		// once finished updating page data, cycle through newly added posts to update data in those
 		this.callOnScrapeFinished( () => {
-			//this.updateAddedPosts();
+			this.updateAddedPosts();
 		} );
 	}
 	
