@@ -15,11 +15,10 @@ class MetaDataList extends Component {
 			<Item.Group divided link>
 				{
 					_.map( this.props.metaData, record => {
-						console.log( record.value );
-						const pictureUrl = ( 'data' in record.value.picture ) ? record.value.picture.data.url : record.value.picture;
+						const pictureUrl = ( typeof record.value.picture == 'string' ) ? record.value.picture : record.value.picture.data.url;
 						return (
 							<Item key={ record.key }>
-								<Item.Image size='tiny' src={ pictureUrl } />
+								<Item.Image size='mini' src={ pictureUrl } />
 								<Item.Content>
 									<Item.Header>{ record.value.name }</Item.Header>
 									<Item.Meta>{ record.name }</Item.Meta>
@@ -52,7 +51,7 @@ class MetaDataList extends Component {
 
 function mapStateToProps( state, ownProps ) {
 	return {
-		metaData: ( ownProps.dataRecordType in state.metaData ) ? state.metaData[ownProps.dataRecordType] : {}
+		metaData: ( ownProps.dataRecordType in state.metaData ) ? state.metaData[ownProps.dataRecordType] : null
 	};
 }
 
