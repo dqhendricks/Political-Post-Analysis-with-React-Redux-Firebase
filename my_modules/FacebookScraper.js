@@ -38,7 +38,7 @@ class FacebookScraper {
 		this.updatePostDateRanges();
 		databaseAPI.request( 'pages', ( pages ) => {
 			facebookAPI.getToken( () => {
-				this.cyclePages( pages.data );
+				this.cyclePages( pages );
 			} );
 		} );
 	}
