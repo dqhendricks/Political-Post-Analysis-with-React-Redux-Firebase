@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-export const FETCH_PAGES = 'fetch_pages';
+export const FETCH_META_DATA = 'fetch_meta_data';
 
-export function fetchPages() {
+const ROOT_URL = 'http://postanalysisapi.dustinhendricks.com/';
+
+export function fetchMetaData() {
+	const request = axios.get( `${ ROOT_URL }meta_data` );
+	
 	return {
-		type: FETCH_PAGES,
-		payload: {}
+		type: FETCH_META_DATA,
+		payload: request
 	}
 }

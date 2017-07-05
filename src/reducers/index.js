@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import PagesReducer from './reducer-pages';
+import MetaDataReducer from './reducer-meta-data';
 
 const rootReducer = combineReducers( {
-	pages: PagesReducer
+	metaData: MetaDataReducer
 } );
 
 export default rootReducer;

@@ -2,9 +2,40 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Header, Segment, Item, Table, Image, Icon, Menu, Button, Grid } from 'semantic-ui-react';
 
+import { fetchMetaData } from '../actions';
+import MetaDataList from './meta-data-list';
+
 class App extends Component {
+	componentDidMount() {
+		this.props.fetchMetaData();
+	}
+	
+	extractDateFromTime( time ) {
+		return time.substr( 0, 10 );
+	}
+	
+	renderMetaDataLists() {
+		const metaDataLists = [
+			{ recordType: 'page', name: 'Pages', icon: 'feed' },
+			{ recordType: 'post', name: 'Posts', icon: 'newspaper' },
+			{ recordType: 'user', name: 'Users', icon: 'users' }
+		];
+		return metaDataLists.map( list => {
+			return (
+				<Grid.Column>
+					<MetaDataList
+						dataRecordType={ list.recordType }
+						dataName={ list.name }
+						dataIcon={ list.feed }
+					/>
+				</Grid.Column>
+			);
+		} );
+	}
 	
 	render() {
+		const earliestPostDate = this.extractDateFromTime( this.props.earliestPostTime );
+		const latestPostDate = this.extractDateFromTime( this.props.latestPostTime );
 		return (
 			<div className="spacingDiv">
 				<Container text>
@@ -18,79 +49,12 @@ class App extends Component {
 						<Icon name='idea' color='grey' />
 						<Header.Content>
 							Conclusions
-							<Header.Subheader>Conclusions made based on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
+							<Header.Subheader>Conclusions made based on data collected from posts published between { earliestPostDate } and { latestPostDate }.</Header.Subheader>
 						</Header.Content>
 					</Header>
 					<Grid stackable>
 						<Grid.Row columns={3}>
-							<Grid.Column>
-								<Segment secondary attached="top">
-									<Header as='h4'>
-										<Icon name='feed' color='grey' />
-										<Header.Content>Pages</Header.Content>
-									</Header>
-								</Segment>
-								<Segment basic attached="bottom" className="scrollingDiv">
-									<Item.Group divided link>
-										<Item>
-											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
-											<Item.Content>
-												<Item.Header>Name + Link</Item.Header>
-												<Item.Meta>Award Name</Item.Meta>
-												<Item.Description>Award Description</Item.Description>
-											</Item.Content>
-										</Item>
-										<Item>
-											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
-											<Item.Content>
-												<Item.Header>Name + Link</Item.Header>
-												<Item.Meta>Award Name</Item.Meta>
-												<Item.Description>Award Description</Item.Description>
-											</Item.Content>
-										</Item>
-									</Item.Group>
-								</Segment>
-							</Grid.Column>
-							<Grid.Column>
-								<Segment secondary attached="top">
-									<Header as='h4'>
-										<Icon name='newspaper' color='grey' />
-										<Header.Content>Posts</Header.Content>
-									</Header>
-								</Segment>
-								<Segment basic attached="bottom" className="scrollingDiv">
-									<Item.Group divided link>
-										<Item>
-											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
-											<Item.Content>
-												<Item.Header>Name + Link</Item.Header>
-												<Item.Meta>Award Name</Item.Meta>
-												<Item.Description>Award Description</Item.Description>
-											</Item.Content>
-										</Item>
-									</Item.Group>
-								</Segment>
-							</Grid.Column>
-							<Grid.Column>
-								<Segment secondary attached="top">
-									<Header as='h4'>
-										<Icon name='users' color='grey' />
-										<Header.Content>Users</Header.Content>
-									</Header>
-								</Segment>
-								<Segment basic attached="bottom" className="scrollingDiv">
-									<Item.Group divided link>
-										<Item>
-											<Item.Image size='tiny' src='/assets/images/wireframe/image.png' />
-											<Item.Content>
-												<Item.Header>Name + Link</Item.Header>
-												<Item.Meta>Award Name</Item.Meta>
-												<Item.Description>Award Description</Item.Description>
-											</Item.Content>
-										</Item>
-									</Item.Group>
-								</Segment>
-							</Grid.Column>
+							{ this.renderMetaDataLists() }
 						</Grid.Row>
 					</Grid>
 				</Segment>
@@ -99,7 +63,7 @@ class App extends Component {
 						<Icon name='lab' color='grey' />
 						<Header.Content>
 							Custom Research
-							<Header.Subheader>Perform custom searches and sorting on data collected from posts published between 2017-06-21 and 2017-06-28.</Header.Subheader>
+							<Header.Subheader>Perform custom searches and sorting on data collected from posts published between { earliestPostDate } and { latestPostDate }.</Header.Subheader>
 						</Header.Content>
 					</Header>
 					<Grid stackable>
@@ -268,4 +232,11 @@ class App extends Component {
 	}
 }
 
-export default App;
+function mapStateToProps( state ) {
+	return {
+		earliestPostTime: ( 'system' in state.metaData ) ? state.metaData['system']['earliestPostTime'].value : 'n/a',
+		latestPostTime: ( 'system' in state.metaData ) ? state.metaData['system']['latestPostTime'].value : 'n/a'
+	};
+}
+
+export default connect( mapStateToProps, { fetchMetaData } )( App );
