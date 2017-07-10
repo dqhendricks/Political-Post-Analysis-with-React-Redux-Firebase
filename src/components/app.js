@@ -1,36 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Segment, Item, Table, Image, Icon, Menu, Button, Grid } from 'semantic-ui-react';
+import { Container, Header, Segment, Icon, Grid } from 'semantic-ui-react';
 
 import { fetchMetaData } from '../actions';
 import MetaDataList from './meta-data-list';
+import SearchableDataList from './searchable-data-list';
+
+const dataLists = [
+	{ table: 'pages', name: 'Pages', icon: 'feed' },
+	{ table: 'posts', name: 'Posts', icon: 'newspaper' },
+	{ table: 'users', name: 'Users', icon: 'users' }
+];
 
 class App extends Component {
+	
 	componentDidMount() {
 		this.props.fetchMetaData();
 	}
 	
 	extractDateFromTime( time ) {
 		return time.substr( 0, 10 );
-	}
-	
-	renderMetaDataLists() {
-		const metaDataLists = [
-			{ recordType: 'page', name: 'Pages', icon: 'feed' },
-			{ recordType: 'post', name: 'Posts', icon: 'newspaper' },
-			{ recordType: 'user', name: 'Users', icon: 'users' }
-		];
-		return metaDataLists.map( list => {
-			return (
-				<Grid.Column>
-					<MetaDataList
-						dataRecordType={ list.recordType }
-						dataName={ list.name }
-						dataIcon={ list.icon }
-					/>
-				</Grid.Column>
-			);
-		} );
 	}
 	
 	render() {
@@ -68,167 +57,43 @@ class App extends Component {
 					</Header>
 					<Grid stackable>
 						<Grid.Row columns={3}>
-							<Grid.Column>
-								<Segment attached="top" secondary clearing>
-									<Header as='h4' floated='left'>
-										<Icon name='feed' color='grey' size='big' />
-										<Header.Content>Pages</Header.Content>
-									</Header>
-									<Button icon floated='right' size="mini">
-										<Icon name='sort' />
-									</Button>
-									<Button icon floated='right' size="mini">
-										<Icon name='search' />
-									</Button>
-								</Segment>
-								<Table celled selectable unstackable attached="bottom">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Posts</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>Page Name</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>Page Name</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-									<Table.Footer>
-										<Table.Row>
-											<Table.HeaderCell colSpan='2'>
-												<Menu floated='right' pagination>
-													<Menu.Item as='a' icon>
-														<Icon name='left chevron' />
-													</Menu.Item>
-													<Menu.Item as='a' active={true}>1</Menu.Item>
-													<Menu.Item as='a' icon>
-														<Icon name='right chevron' />
-													</Menu.Item>
-												</Menu>
-											</Table.HeaderCell>
-										</Table.Row>
-									</Table.Footer>
-								</Table>
-							</Grid.Column>
-							<Grid.Column>
-								<Segment attached="top" secondary clearing>
-									<Header as='h4' floated='left'>
-										<Icon name='newspaper' color='grey' size='big' />
-										<Header.Content>Posts</Header.Content>
-									</Header>
-									<Button icon floated='right' size="mini">
-										<Icon name='sort' />
-									</Button>
-									<Button icon floated='right' size="mini">
-										<Icon name='search' />
-									</Button>
-								</Segment>
-								<Table celled selectable unstackable attached="bottom">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Comments</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>Post Name</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-									<Table.Footer>
-										<Table.Row>
-											<Table.HeaderCell colSpan='2'>
-												<Menu floated='right' pagination>
-													<Menu.Item as='a' icon>
-														<Icon name='left chevron' />
-													</Menu.Item>
-													<Menu.Item as='a' active={true}>1</Menu.Item>
-													<Menu.Item as='a' icon>
-														<Icon name='right chevron' />
-													</Menu.Item>
-												</Menu>
-											</Table.HeaderCell>
-										</Table.Row>
-									</Table.Footer>
-								</Table>
-							</Grid.Column>
-							<Grid.Column>
-								<Segment attached="top" secondary clearing>
-									<Header as='h4' floated='left'>
-										<Icon name='users' color='grey' size='big' />
-										<Header.Content>Users</Header.Content>
-									</Header>
-									<Button icon floated='right' size="mini">
-										<Icon name='sort' />
-									</Button>
-									<Button icon floated='right' size="mini">
-										<Icon name='search' />
-									</Button>
-								</Segment>
-								<Table celled selectable unstackable attached="bottom">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Name</Table.HeaderCell>
-											<Table.HeaderCell>Total Comments</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										<Table.Row>
-											<Table.Cell>
-												<Header as='h5' image>
-													<Image src='/assets/images/avatar/small/lena.png' shape='rounded' size='mini' />
-													<Header.Content>User Name</Header.Content>
-												</Header>
-											</Table.Cell>
-											<Table.Cell>43</Table.Cell>
-										</Table.Row>
-									</Table.Body>
-									<Table.Footer>
-										<Table.Row>
-											<Table.HeaderCell colSpan='2'>
-												<Menu floated='right' pagination>
-													<Menu.Item as='a' icon secondary>
-														<Icon name='left chevron' />
-													</Menu.Item>
-													<Menu.Item as='a' active={true}>1</Menu.Item>
-													<Menu.Item as='a' icon>
-														<Icon name='right chevron' />
-													</Menu.Item>
-												</Menu>
-											</Table.HeaderCell>
-										</Table.Row>
-									</Table.Footer>
-								</Table>
-							</Grid.Column>
+							{ this.renderSearchableDataLists() }
 						</Grid.Row>
 					</Grid>
 				</Segment>
 				<Container text textAlign='center'>
-					Created by Dustin Hendricks
+					Created by <a href='https://github.com/dqhendricks' target='_blank'>Dustin Hendricks</a>
 				</Container>
 			</div>
 		);
+	}
+	
+	renderMetaDataLists() {
+		return dataLists.map( list => {
+			return (
+				<Grid.Column key={ list.table }>
+					<MetaDataList
+						metaType={ list.table }
+						header={ list.name }
+						headerIcon={ list.icon }
+					/>
+				</Grid.Column>
+			);
+		} );
+	}
+	
+	renderSearchableDataLists() {
+		return dataLists.map( list => {
+			return (
+				<Grid.Column key={ list.table }>
+					<SearchableDataList
+						table={ list.table }
+						header={ list.name }
+						headerIcon={ list.icon }
+					/>
+				</Grid.Column>
+			);
+		} );
 	}
 }
 

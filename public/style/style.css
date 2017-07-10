@@ -1,3 +1,9 @@
+@media only screen and (min-width: 768px) {
+    .mobile-show {
+        display: none !important;
+    }
+}
+
 .spacingDiv {
 	margin: 20px;
 }
@@ -5,4 +11,36 @@
 .scrollingDiv {
 	height: 250px;
 	overflow-y: scroll;
+}
+
+.fixedTable {
+	table-layout: fixed;
+}
+
+.tableLeftCells {
+	width: 65%;
+}
+
+.tableCellInnerContainer {
+	overflow: hidden;
+	min-height: 35px;
+}
+
+.noWrap {
+	white-space: nowrap;
+}
+
+.loaderContainer {
+	min-height: 100px;
+}
+
+.singleLineHidden {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.leftImage {
+	margin-left: 0 !important;
 }

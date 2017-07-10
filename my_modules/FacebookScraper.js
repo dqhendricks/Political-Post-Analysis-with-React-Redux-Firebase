@@ -78,6 +78,7 @@ class FacebookScraper {
 			fields.forEach( ( field ) => {
 				if ( field in page ) updateData[field] = page[field];
 			} );
+			if ( 'picture' in updateData ) updateData['picture'] = updateData['picture'].data.url;
 			
 			databaseAPI.requestPost( `pages/${ id }`, updateData );
 		}, fields );
@@ -185,6 +186,7 @@ class FacebookScraper {
 				} );
 				updateData['id'] = reactionID;
 				if ( 'id' in reaction ) updateData['user_id'] = reaction.id;
+				if ( 'picture' in updateData ) updateData['picture'] = updateData['picture'].data.url;
 				updateData['post_id'] = key;
 				updateData['page_id'] = pageID;
 				
@@ -233,10 +235,13 @@ class FacebookScraper {
 	updateUser( key ) {
 		const fields = [ 'id', 'link', 'name', 'picture' ];
 		facebookAPI.request( `${ key }`, ( user ) => {
+			
 			const updateData = {};
 			fields.forEach( ( field ) => {
 				if ( field in user ) updateData[field] = user[field];
 			} );
+			if ( 'picture' in updateData ) updateData['picture'] = updateData['picture'].data.url;
+			
 			databaseAPI.requestPost( `users/${ user.id }`, updateData );
 		}, fields );
 	}
