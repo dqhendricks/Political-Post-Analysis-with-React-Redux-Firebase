@@ -28,7 +28,7 @@ class AlertModal extends Component {
 				actions={ [
 					{
 						key: 'okay',
-						content: 'Okay',
+						content: <span><Icon name='checkmark' color='green' /> Okay</span>,
 						triggerClose: true
 					},
 				] }
