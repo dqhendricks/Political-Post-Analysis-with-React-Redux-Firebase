@@ -18,7 +18,13 @@ class RecordShow extends Component {
 	
 	componentDidMount() {
 		this.props.fetchRecord( this.props.table, this.props.recordID );
-		this.overTimeField = ( this.props.table == 'pages' ) ? 'posts_over_time' : 'comments_over_time';
+		if ( this.props.table == 'pages' ) {
+			this.overTimeField = 'posts_over_time';
+			this.overTimeLabel = 'Posts';
+		} else {
+			this.overTimeField = 'comments_over_time';
+			this.overTimeLabel = 'Comments';
+		}
 	}
 	
 	componentWillUnmount() {
@@ -79,6 +85,16 @@ class RecordShow extends Component {
 		);
 	}
 	
+	generateSparkline( overTimeValues ) {
+		return (
+			<div style={ { maxWidth: '160px', margin: '0 auto' } }>
+				<Sparklines data={ overTimeValues } color='blue' height={ 240 } width={ 240 }>
+					<SparklinesLine color='#7da7d9' style={ { strokeWidth: 2 } } />
+				</Sparklines>
+			</div>
+		);
+	}
+	
 	render() {
 		const { record } = this.props;
 		
@@ -118,11 +134,9 @@ class RecordShow extends Component {
 						<Header sub>Reaction Distribution</Header>
 						{ this.generatePieChart( pieChartData ) }
 					</Grid.Column>
-					<Grid.Column title='Number of posts made each hour between 00 and 23 universal time.'>
-						<Header sub>Posts Over Time</Header>
-						<Sparklines data={ overTimeValues } color='blue'>
-							<SparklinesLine color="blue" />
-						</Sparklines>
+					<Grid.Column title={ `Number of ${ this.overTimeLabel } made each hour between 00 and 23 universal time.` }>
+						<Header sub>{ `${ this.overTimeLabel } Over Time` }</Header>
+						{ this.generateSparkline( overTimeValues ) }
 					</Grid.Column>
 				</Grid.Row>
 				{ this.renderBodyRows( bodyData ) }
