@@ -10,7 +10,7 @@ import OverTimeSparkline from './over-time-sparkline';
 
 /*
 	props
-	table: record's table names
+	table: record's table name
 	recordID: record's ID
 */
 

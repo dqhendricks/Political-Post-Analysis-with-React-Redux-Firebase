@@ -26,6 +26,7 @@
     "redux-form": "^6.6.3",
     "redux-promise": "^0.5.3",
     "request": "^2.81.0",
-    "semantic-ui-react": "^0.68.5"
+    "semantic-ui-react": "^0.68.5",
+    "webpack": "^3.2.0"
   }
 }
