@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Header, Icon, Dimmer, Loader, Grid, Image, Message } from 'semantic-ui-react';
-import PieChart from 'react-svg-piechart';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 import { fetchRecord, clearRecord } from '../actions';
 import fieldData from '../modules/field-data';
+import ReactionsPieChart from './reactions-pie-chart';
+import OverTimeSparkline from './over-time-sparkline';
 
 /*
 	props
@@ -57,44 +57,6 @@ class RecordShow extends Component {
 		return bodyData;
 	}
 	
-	formatPieChartData( record ) {
-		var pieChartData = [];
-		if ( record.total_love_reactions != '0' ) pieChartData.push( { label: 'LOVE', value: parseInt( record.total_love_reactions ), color: '#f49ac1' } );
-		if ( record.total_wow_reactions != '0' ) pieChartData.push( { label: 'WOW', value: parseInt( record.total_wow_reactions ), color: '#7da7d9' } );
-		if ( record.total_haha_reactions != '0' ) pieChartData.push( { label: 'HAHA', value: parseInt( record.total_haha_reactions ), color: '#82ca9c' } );
-		if ( record.total_sad_reactions != '0' ) pieChartData.push( { label: 'SAD', value: parseInt( record.total_sad_reactions ), color: '#fff799' } );
-		if ( record.total_angry_reactions != '0' ) pieChartData.push( { label: 'ANGRY', value: parseInt( record.total_angry_reactions ), color: '#f68e56' } );
-		return pieChartData;
-	}
-	
-	formatOverTimeData( record ) {
-		const overTimeKeys = Object.keys( record[this.overTimeField] ).sort();
-		var overTimeValues = []; 
-		overTimeKeys.forEach( ( key ) => {
-			overTimeValues.push( record[this.overTimeField][key] );
-		} );
-		return overTimeValues;
-	}
-	
-	generatePieChart( pieChartData ) {
-		if ( !pieChartData.length ) return 'No reactions available.';
-		return (
-			<div style={ { maxWidth: '160px', margin: '0 auto' } }>
-				<PieChart data={ pieChartData } />
-			</div>
-		);
-	}
-	
-	generateSparkline( overTimeValues ) {
-		return (
-			<div style={ { maxWidth: '160px', margin: '0 auto' } }>
-				<Sparklines data={ overTimeValues } color='blue' height={ 240 } width={ 240 }>
-					<SparklinesLine color='#7da7d9' style={ { strokeWidth: 2 } } />
-				</Sparklines>
-			</div>
-		);
-	}
-	
 	render() {
 		const { record } = this.props;
 		
@@ -108,8 +70,6 @@ class RecordShow extends Component {
 		
 		const bodyData = this.formatData();
 		const pictureUrl = ( typeof record.picture == 'string' ) ? record.picture : record.picture.data.url;
-		const pieChartData = this.formatPieChartData( record );
-		const overTimeValues = this.formatOverTimeData( record );
 		
 		return (
 			<Grid columns='equal' divided>
@@ -126,17 +86,17 @@ class RecordShow extends Component {
 						{ this.props.record.id }
 						<Header sub>
 							<Icon name='facebook f' color='grey' />
-							<Header.Content>Facebook Page</Header.Content>
+							<Header.Content>Facebook Link</Header.Content>
 						</Header>
 						<a href={ record.link } target='_blank'>{ record.link }</a>
 					</Grid.Column>
 					<Grid.Column title={ 'Pink: LOVE\nBlue: WOW\nGreen: HAHA\nYellow: SAD\nOrange: ANGRY' }>
 						<Header sub>Reaction Distribution</Header>
-						{ this.generatePieChart( pieChartData ) }
+						<ReactionsPieChart record={ record } />
 					</Grid.Column>
 					<Grid.Column title={ `Number of ${ this.overTimeLabel } made each hour between 00 and 23 universal time.` }>
 						<Header sub>{ `${ this.overTimeLabel } Over Time` }</Header>
-						{ this.generateSparkline( overTimeValues ) }
+						<OverTimeSparkline data={ record[this.overTimeField] } />
 					</Grid.Column>
 				</Grid.Row>
 				{ this.renderBodyRows( bodyData ) }
