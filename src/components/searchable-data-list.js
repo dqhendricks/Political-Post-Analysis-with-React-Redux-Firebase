@@ -118,10 +118,10 @@ class SearchableDataList extends Component {
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell className='tableLeftCells' title='Name'>
-							<div className='tableCellInnerContainer'>Name</div>
+							<div style={ { overflow: 'hidden' } }>Name</div>
 						</Table.HeaderCell>
 						<Table.HeaderCell title={ fieldData[this.props.search.orderBy].name }>
-							<div className='tableCellInnerContainer'>{ fieldData[this.props.search.orderBy].name }</div>
+							<div style={ { overflow: 'hidden' } }>{ fieldData[this.props.search.orderBy].name }</div>
 						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>

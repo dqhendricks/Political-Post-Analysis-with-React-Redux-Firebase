@@ -7,6 +7,8 @@ import { fetchRecord, clearRecord } from '../actions';
 import fieldData from '../modules/field-data';
 import ReactionsPieChart from './reactions-pie-chart';
 import OverTimeSparkline from './over-time-sparkline';
+import ListShow from './list-show';
+import AlertModal from './alert-modal';
 
 /*
 	props
@@ -18,12 +20,26 @@ class RecordShow extends Component {
 	
 	componentDidMount() {
 		this.props.fetchRecord( this.props.table, this.props.recordID );
-		if ( this.props.table == 'pages' ) {
-			this.overTimeField = 'posts_over_time';
-			this.overTimeLabel = 'Posts';
-		} else {
-			this.overTimeField = 'comments_over_time';
-			this.overTimeLabel = 'Comments';
+		switch ( this.props.table ) {
+			case 'pages':
+				this.overTimeField = 'posts_over_time';
+				this.overTimeLabel = 'Posts';
+				this.searchByField = 'page_id';
+				break;
+			case 'posts':
+				this.overTimeField = 'comments_over_time';
+				this.overTimeLabel = 'Comments';
+				this.searchByField = 'post_id';
+				break;
+			case 'users':
+				this.overTimeField = 'comments_over_time';
+				this.overTimeLabel = 'Comments';
+				this.searchByField = 'user_id';
+				break;
+		}
+		this.fieldModalMetaData = {
+			'Total Posts': 'posts',
+			'Total Comments': 'comments'
 		}
 	}
 	
@@ -63,7 +79,7 @@ class RecordShow extends Component {
 		if ( !record ) {
 			return (
 				<Dimmer active inverted>
-					<Loader inverted>Loading Page</Loader>
+					<Loader inverted>Loading Record</Loader>
 				</Dimmer>
 			);
 		}
@@ -124,7 +140,9 @@ class RecordShow extends Component {
 			rowData.map( ( columnData, index ) => {
 				if ( !columnData ) return <Grid.Column key={ index }></Grid.Column>
 				
-				const fieldValue = ( columnData.type == 'number' ) ? numberFormat.format( columnData.value ) : columnData.value;
+				var fieldValue = ( columnData.type == 'number' ) ? numberFormat.format( columnData.value ) : columnData.value;
+				fieldValue = ( fieldValue ) ? fieldValue : 'N/A';
+				fieldValue = this.addModals( columnData.name, fieldValue );
 				
 				return(
 					<Grid.Column title={ columnData.description } key={ index }>
@@ -132,11 +150,29 @@ class RecordShow extends Component {
 							<Icon name={ columnData.icon } color='grey' />
 							<Header.Content>{ columnData.name }</Header.Content>
 						</Header>
-						{ ( fieldValue ) ? fieldValue : 'N/A' }
+						{ fieldValue }
 					</Grid.Column>
 				);
 			} )
 		);
+	}
+	
+	addModals( columnName, fieldValue ) {
+		if ( columnName in this.fieldModalMetaData ) {
+			return (
+				<AlertModal
+					header='List'
+					headerIcon='browser'
+					content={ <ListShow table={ this.fieldModalMetaData[columnName] } searchField={ this.searchByField } searchValue={ this.props.recordID } /> }
+				>
+					<a style={ { cursor: 'pointer' } }>
+						{ fieldValue }
+					</a>	
+				</AlertModal>
+			);
+		} else {
+			return fieldValue;
+		}
 	}
 }
 

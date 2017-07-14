@@ -5,6 +5,7 @@ import PagesSearchReducer from './reducer-pages-search';
 import PostsSearchReducer from './reducer-posts-search';
 import UsersSearchReducer from './reducer-users-search';
 import SelectedRecordReducer from './reducer-selected-record';
+import SelectedListReducer from './reducer-selected-list';
 
 // search reducers must follow the naming convention `${ tableName }Search` to work with SearchableDataList component
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers( {
 	pagesSearch: PagesSearchReducer,
 	postsSearch: PostsSearchReducer,
 	usersSearch: UsersSearchReducer,
-	selectedRecord: SelectedRecordReducer
+	selectedRecord: SelectedRecordReducer,
+	selectedList: SelectedListReducer
 } );
 
 export default rootReducer;

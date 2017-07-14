@@ -6,6 +6,8 @@ export const POSTS_SEARCH_CHANGE = 'post_search_change';
 export const USERS_SEARCH_CHANGE = 'user_search_change';
 export const FETCH_RECORD = 'fetch_record';
 export const CLEAR_RECORD = 'clear_record';
+export const FETCH_LIST = 'fetch_list';
+export const CLEAR_LIST = 'clear_list';
 
 const ROOT_URL = 'http://postanalysisapi.dustinhendricks.com/';
 
@@ -71,6 +73,25 @@ export function clearRecord() {
 	
 	return {
 		type: CLEAR_RECORD,
+		payload: null
+	}
+}
+
+export function fetchList( table, orderField, searchField, searchValue, page = 0 ) {
+	const rowCount = 4; // rows per page
+	const offset = page * rowCount;
+	const request = axios.get( `${ ROOT_URL }${ table }?row_count=${ rowCount }&offset=${ offset }&order_by=${ orderField }&order_direction=DESC&where_fields=${ searchField }&where_operators=e&where_values=${ searchValue }` );
+	
+	return {
+		type: FETCH_LIST,
+		payload: request
+	}
+}
+
+export function clearList() {
+	
+	return {
+		type: CLEAR_LIST,
 		payload: null
 	}
 }
