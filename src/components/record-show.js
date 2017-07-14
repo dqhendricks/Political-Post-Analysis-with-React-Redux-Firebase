@@ -25,16 +25,19 @@ class RecordShow extends Component {
 				this.overTimeField = 'posts_over_time';
 				this.overTimeLabel = 'Posts';
 				this.searchByField = 'page_id';
+				this.urlField = 'link';
 				break;
 			case 'posts':
 				this.overTimeField = 'comments_over_time';
 				this.overTimeLabel = 'Comments';
 				this.searchByField = 'post_id';
+				this.urlField = 'permalink_url';
 				break;
 			case 'users':
 				this.overTimeField = 'comments_over_time';
 				this.overTimeLabel = 'Comments';
 				this.searchByField = 'user_id';
+				this.urlField = 'link';
 				break;
 		}
 		this.fieldModalMetaData = {
@@ -104,7 +107,7 @@ class RecordShow extends Component {
 							<Icon name='facebook f' color='grey' />
 							<Header.Content>Facebook Link</Header.Content>
 						</Header>
-						<a href={ record.link } target='_blank'>{ record.link }</a>
+						<a href={ record[this.urlField] } target='_blank'>{ record[this.urlField] }</a>
 					</Grid.Column>
 					<Grid.Column title={ 'Pink: LOVE\nBlue: WOW\nGreen: HAHA\nYellow: SAD\nOrange: ANGRY' }>
 						<Header sub>Reaction Distribution</Header>
