@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Header, Segment, Table, Image, Icon, Button, Dimmer, Loader } from 'semantic-ui-react';
 
-import { searchChange } from '../actions';
+import { searchChange, searchLoading } from '../actions';
 import fieldData from '../modules/field-data';
 import FormModal from './form-modal';
 import SearchForm from './search-form';
@@ -35,6 +35,7 @@ class SearchableDataList extends Component {
 	
 	searchChange( changes = {} ) {
 		// fields not included in the search changes object will default to their current state
+		this.props.searchLoading( this.props.table );
 		const parameters = Object.assign( {
 			terms: this.props.search.terms,
 			orderBy: this.props.search.orderBy,
@@ -67,8 +68,12 @@ class SearchableDataList extends Component {
 	}
 	
 	render() {
+		
 		return (
-			<div>
+			<Dimmer.Dimmable dimmed={ this.props.search.loading }>
+				<Dimmer active={ this.props.search.loading } inverted>
+					<Loader inverted>Loading</Loader>
+				</Dimmer>
 				<Segment attached="top" secondary clearing>
 					<Header as='h4' floated='left'>
 						<Icon name={ this.props.headerIcon } color='grey' size='big' />
@@ -77,7 +82,7 @@ class SearchableDataList extends Component {
 					{ this.renderButtons() }
 				</Segment>
 				{ this.renderTable() }
-			</div>
+			</Dimmer.Dimmable>
 		);
 	}
 	
@@ -106,13 +111,8 @@ class SearchableDataList extends Component {
 	}
 	
 	renderTable() {
-		if ( !this.props.search.data ) return (
-			<Segment attached='bottom' className='loaderContainer'>
-				<Dimmer active inverted>
-					<Loader inverted>Loading</Loader>
-				</Dimmer>
-			</Segment>
-		);
+		if ( !this.props.search.data ) return <Segment attached='bottom' style={ { minHeight: '100px' } } />
+		
 		return (
 			<Table celled selectable unstackable attached='bottom' className='fixedTable'>
 				<Table.Header>
@@ -199,4 +199,4 @@ function mapStateToProps( state, ownProps ) {
 	};
 }
 
-export default connect( mapStateToProps, { searchChange } )( SearchableDataList );
+export default connect( mapStateToProps, { searchChange, searchLoading } )( SearchableDataList );

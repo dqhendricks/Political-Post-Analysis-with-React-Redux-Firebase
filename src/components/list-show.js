@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-import { fetchList, clearList } from '../actions';
+import { fetchList, loadingList, clearList } from '../actions';
 import fieldData from '../modules/field-data';
 import TablePaginatedSimple from './table-paginated-simple';
 
@@ -62,6 +62,7 @@ class ListShow extends Component {
 	}
 	
 	fetchData() {
+		this.props.loadingList();
 		this.props.fetchList( this.props.table, this.tableMetaData[this.props.table].orderField, this.props.searchField, this.props.searchValue, this.page );
 	}
 	
@@ -79,10 +80,11 @@ class ListShow extends Component {
 		return (
 			<TablePaginatedSimple
 				columns={ this.tableMetaData[this.props.table].columnSet }
-				rows={ list }
+				rows={ list.data }
 				page={ this.page + 1 }
 				pageBackwardCallback={ this.pageBackward }
 				pageForwardCallback={ this.pageForward }
+				loading={ list.loading }
 			/>
 		);
 	}
@@ -94,4 +96,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect( mapStateToProps, { fetchList, clearList } )( ListShow );
+export default connect( mapStateToProps, { fetchList, loadingList, clearList } )( ListShow );

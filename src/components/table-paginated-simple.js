@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Table } from 'semantic-ui-react';
+import { Table, Dimmer, Loader } from 'semantic-ui-react';
 
 import PageMenuSimple from './page-menu-simple';
 
@@ -13,33 +13,39 @@ import PageMenuSimple from './page-menu-simple';
 	page: int
 	pageForwardCallback: callback
 	pageBackwardCallback: callback
+	loading: boolean for whether to show dimmer
 */
 
 class TablePaginatedSimple extends Component {
 	
 	render() {
 		return (
-			<Table celled unstackable className='fixedTable'>
-				<Table.Header>
-					<Table.Row>
-						{ this.renderColumnHeaders() }
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
-					{ this.renderRecords() }
-				</Table.Body>
-				<Table.Footer>
-					<Table.Row>
-						<Table.HeaderCell colSpan={ this.props.columns.length }>
-							<PageMenuSimple
-								page={ this.props.page }
-								pageBackwardCallback={ this.props.pageBackwardCallback }
-								pageForwardCallback={ this.props.pageForwardCallback }
-							/>
-						</Table.HeaderCell>
-					</Table.Row>
-				</Table.Footer>
-			</Table>
+			<Dimmer.Dimmable dimmed={ this.props.loading }>
+				<Dimmer active={ this.props.loading } inverted>
+					<Loader inverted>Loading</Loader>
+				</Dimmer>
+				<Table celled unstackable className='fixedTable'>
+					<Table.Header>
+						<Table.Row>
+							{ this.renderColumnHeaders() }
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						{ this.renderRecords() }
+					</Table.Body>
+					<Table.Footer>
+						<Table.Row>
+							<Table.HeaderCell colSpan={ this.props.columns.length }>
+								<PageMenuSimple
+									page={ this.props.page }
+									pageBackwardCallback={ this.props.pageBackwardCallback }
+									pageForwardCallback={ this.props.pageForwardCallback }
+								/>
+							</Table.HeaderCell>
+						</Table.Row>
+					</Table.Footer>
+				</Table>
+			</Dimmer.Dimmable>
 		);
 	}
 	

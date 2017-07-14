@@ -30,10 +30,6 @@
 	white-space: nowrap;
 }
 
-.loaderContainer {
-	min-height: 100px;
-}
-
 .singleLineHidden {
 	text-overflow: ellipsis;
 	white-space: nowrap;

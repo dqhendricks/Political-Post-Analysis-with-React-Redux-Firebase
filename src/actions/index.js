@@ -4,17 +4,21 @@ export const FETCH_META_DATA = 'fetch_meta_data';
 export const PAGES_SEARCH_CHANGE = 'page_search_change';
 export const POSTS_SEARCH_CHANGE = 'post_search_change';
 export const USERS_SEARCH_CHANGE = 'user_search_change';
+export const PAGES_SEARCH_LOADING = 'page_search_loading';
+export const POSTS_SEARCH_LOADING = 'post_search_loading';
+export const USERS_SEARCH_LOADING = 'user_search_loading';
 export const FETCH_RECORD = 'fetch_record';
 export const CLEAR_RECORD = 'clear_record';
 export const FETCH_LIST = 'fetch_list';
+export const LOADING_LIST = 'loading_list';
 export const CLEAR_LIST = 'clear_list';
 
 const ROOT_URL = 'http://postanalysisapi.dustinhendricks.com/';
 
 const tableToActionList = {
-	pages: PAGES_SEARCH_CHANGE,
-	posts: POSTS_SEARCH_CHANGE,
-	users: USERS_SEARCH_CHANGE
+	pages: { change: PAGES_SEARCH_CHANGE, loading: PAGES_SEARCH_LOADING },
+	posts: { change: POSTS_SEARCH_CHANGE, loading: POSTS_SEARCH_LOADING },
+	users: { change: USERS_SEARCH_CHANGE, loading: USERS_SEARCH_LOADING }
 }
 
 export function fetchMetaData() {
@@ -35,7 +39,7 @@ export function searchChange( table, terms, orderBy, orderDirection, page ) {
 	const request = axios.get( `${ ROOT_URL }${ table }?${ fields }&${ where }&${ order }&${ limit }` );
 	
 	return {
-		type: tableToActionList[table],
+		type: tableToActionList[table].change,
 		payload: request,
 		meta: {
 			terms,
@@ -58,6 +62,13 @@ function termsToWhere( terms ) {
 		}
 	} );
 	return `where_fields=${ whereFields.join() }&where_operators=${ whereOperators.join() }&where_values=${ whereValues.join() }`;
+}
+
+export function searchLoading( table ) {
+	return {
+		type: tableToActionList[table].loading,
+		payload: null
+	}
 }
 
 export function fetchRecord( table, recordID ) {
@@ -85,6 +96,14 @@ export function fetchList( table, orderField, searchField, searchValue, page = 0
 	return {
 		type: FETCH_LIST,
 		payload: request
+	}
+}
+
+export function loadingList() {
+	
+	return {
+		type: LOADING_LIST,
+		payload: null
 	}
 }
 
