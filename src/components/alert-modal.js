@@ -23,7 +23,12 @@ class AlertModal extends Component {
 				trigger={ this.trigger }
 				size={ ( 'size' in this.props ) ? this.props.size : 'large' }
 				closeIcon='close'
-				header={ <Header icon={ this.props.headerIcon } content={ this.props.header } /> }
+				header={
+					<Header>
+						<Icon name={ this.props.headerIcon }  color='grey' />
+						<Header.Content>{ this.props.header }</Header.Content>
+					</Header>
+				}
 				content={ <div className='content'>{ this.props.content }</div> }
 				actions={ [
 					{
