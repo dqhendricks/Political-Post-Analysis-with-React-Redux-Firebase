@@ -7,7 +7,7 @@ import PageMenuSimple from './page-menu-simple';
 /*
 	props
 	columns: [
-		{ name, field, type( 'number', 'string', 'time' ) }
+		{ name, field, type( 'number', 'string', 'time' ), ifEmpty }
 	]
 	rows: records object
 	page: int
@@ -88,7 +88,8 @@ class TablePaginatedSimple extends Component {
 		
 		return this.props.columns.map( column => {
 			const textAlign = ( column.type != 'string' ) ? 'right' : 'left';
-			const fieldValue = ( column.type == 'number' ) ? numberFormat.format( record[column.field] ) : record[column.field];
+			var fieldValue = ( column.type == 'number' ) ? numberFormat.format( record[column.field] ) : record[column.field];
+			if ( !fieldValue && 'ifEmpty' in column ) fieldValue = column.ifEmpty;
 			
 			return (
 				<Table.Cell textAlign={ textAlign } key={ column.name } title={ fieldValue }>

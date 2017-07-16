@@ -31,7 +31,7 @@ class ListShow extends Component {
 			},
 			comments: {
 				columnSet: [
-					{ name: 'Comment', field: 'message', type: 'string' },
+					{ name: 'Comment', field: 'message', type: 'string', ifEmpty: 'N/A (Image only comment)' },
 					{ name: 'Link', field: 'permalink_url', type: 'string' },
 					{ name: 'Total Likes', field: 'like_count', type: 'number' }
 				],
