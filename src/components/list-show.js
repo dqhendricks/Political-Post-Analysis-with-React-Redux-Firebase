@@ -69,7 +69,7 @@ class ListShow extends Component {
 	render() {
 		const { list } = this.props;
 		
-		if ( !list ) {
+		if ( list.loading ) {
 			return (
 				<Dimmer active inverted>
 					<Loader inverted>Loading List</Loader>

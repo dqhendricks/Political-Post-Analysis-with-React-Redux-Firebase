@@ -10,7 +10,8 @@ export default function( state = null, action ) {
 				loading: false
 			};
 		case LOADING_LIST:
-			return { ...state, loading: true };
+			if ( state ) return { ...state, loading: true };
+			return state;
 		case CLEAR_LIST:
 			return null;
 		default:
