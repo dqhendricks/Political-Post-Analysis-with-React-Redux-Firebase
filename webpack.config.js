@@ -23,7 +23,7 @@ module.exports = {
     historyApiFallback: true,
     contentBase: './public'
   },
-  plugins = [
+  plugins: [
         new webpack.EnvironmentPlugin(['NODE_ENV'])
     ]
 };
