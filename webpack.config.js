@@ -22,5 +22,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './public'
-  }
+  },
+  plugins = [
+        new webpack.EnvironmentPlugin(['NODE_ENV'])
+    ]
 };
