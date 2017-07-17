@@ -22,12 +22,5 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './public'
-  },
-  plugins: [
-    new webpack.DefinePlugin( {
-      'process.env': {
-        'NODE_ENV': JSON.stringify( 'production' )
-      }
-    } )
-  ]
+  }
 };
