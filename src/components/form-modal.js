@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Header, Icon, Modal } from 'semantic-ui-react'
 import { submit } from 'redux-form';
 
+import ModalAbstract from './modal-abstract';
+
 /*
 	This element can be reused to display any redux-form content in a modal. The element handles all opening and closing of the modal, and waits for successful submit (after client validation passes) before closing the modal. 
 
@@ -17,7 +19,7 @@ import { submit } from 'redux-form';
 	trigger/children: React element that should be clicked to open the modal
 */
 
-class FormModal extends Component {
+class FormModal extends ModalAbstract {
 	
 	constructor( props ) {
 		super( props );
@@ -64,7 +66,7 @@ class FormModal extends Component {
 				open={ this.state.modalOpen }
 				trigger={ this.trigger }
 				onClose={ this.handleClose }
-				size={ ( 'size' in this.props ) ? this.props.size : 'large' }
+				size={ this.props.size }
 				closeIcon='close'
 				header={
 					<Header>
@@ -85,13 +87,16 @@ class FormModal extends Component {
 						onClick: this.handleOkay
 					},
 				] }
+				onOpen={ this.onOpen }
+				onClose={ this. onClose }
 			/>
 		);
 	}
 }
 
 FormModal.defaultProps = {
-	headerIcon: 'edit'
+	headerIcon: 'edit',
+	size: 'large'
 }
 
 export default connect()( FormModal ); // connect needed to map dispatch() to props

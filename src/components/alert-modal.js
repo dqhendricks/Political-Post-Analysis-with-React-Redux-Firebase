@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Header, Icon, Modal } from 'semantic-ui-react'
 
+import ModalAbstract from './modal-abstract';
+
 /*
 	props
 	header: header text for dialog
@@ -10,7 +12,7 @@ import { Header, Icon, Modal } from 'semantic-ui-react'
 	trigger/children: element that should be clicked to open the modal
 */
 
-class AlertModal extends Component {
+class AlertModal extends ModalAbstract {
 	
 	constructor( props ) {
 		super( props );
@@ -21,7 +23,7 @@ class AlertModal extends Component {
 		return (
 			<Modal
 				trigger={ this.trigger }
-				size={ ( 'size' in this.props ) ? this.props.size : 'large' }
+				size={ this.props.size }
 				closeIcon='close'
 				header={
 					<Header>
@@ -37,13 +39,16 @@ class AlertModal extends Component {
 						triggerClose: true
 					},
 				] }
+				onOpen={ this.onOpen }
+				onUnmount={ this.onUnmount }
 			/>
 		);
 	}
 }
 
 AlertModal.defaultProps = {
-	headerIcon: 'exclamation circle'
+	headerIcon: 'exclamation circle',
+	size: 'large'
 }
 
 export default AlertModal;
