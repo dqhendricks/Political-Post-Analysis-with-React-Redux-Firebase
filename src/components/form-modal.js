@@ -88,7 +88,7 @@ class FormModal extends ModalAbstract {
 					},
 				] }
 				onOpen={ this.onOpen }
-				onClose={ this. onClose }
+				onUnmount={ this.onUnmount }
 			/>
 		);
 	}
