@@ -14,15 +14,12 @@ import EnhancedModal from './enhanced-modal';
 
 class AlertModal extends Component {
 	
-	constructor( props ) {
-		super( props );
-		this.trigger = ( ( 'trigger' in this.props ) ? this.props.trigger : this.props.children );
-	}
-	
 	render() {
+		const trigger = ( 'trigger' in this.props ) ? this.props.trigger : this.props.children;
+		
 		return (
 			<EnhancedModal
-				trigger={ this.trigger }
+				trigger={ trigger }
 				size={ this.props.size }
 				closeIcon='close'
 				header={
