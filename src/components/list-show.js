@@ -4,8 +4,8 @@ import _ from 'lodash';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
 import { fetchList, loadingList, clearList } from '../actions';
-import fieldData from '../modules/field-data';
 import TablePaginatedSimple from './table-paginated-simple';
+import tableMetaData from '../modules/table-data';
 
 /*
 	props
@@ -20,24 +20,6 @@ class ListShow extends Component {
 		super( props );
 		
 		this.page = 0;
-		this.tableMetaData = {
-			posts: {
-				columnSet: [
-					{ name: 'Post', field: 'message', type: 'string' },
-					{ name: 'Link', field: 'permalink_url', type: 'string' },
-					{ name: 'Total Likes', field: 'total_like_reactions', type: 'number' }
-				],
-				orderField: 'total_like_reactions'
-			},
-			comments: {
-				columnSet: [
-					{ name: 'Comment', field: 'message', type: 'string', ifEmpty: 'N/A (Image only comment)' },
-					{ name: 'Link', field: 'permalink_url', type: 'string' },
-					{ name: 'Total Likes', field: 'like_count', type: 'number' }
-				],
-				orderField: 'like_count'
-			}
-		};
 		
 		this.pageBackward = this.pageBackward.bind( this );
 		this.pageForward = this.pageForward.bind( this );
@@ -63,7 +45,7 @@ class ListShow extends Component {
 	
 	fetchData() {
 		this.props.loadingList();
-		this.props.fetchList( this.props.table, this.tableMetaData[this.props.table].orderField, this.props.searchField, this.props.searchValue, this.page );
+		this.props.fetchList( this.props.table, tableMetaData[this.props.table].orderField, this.props.searchField, this.props.searchValue, this.page );
 	}
 	
 	render() {
@@ -79,7 +61,7 @@ class ListShow extends Component {
 
 		return (
 			<TablePaginatedSimple
-				columns={ this.tableMetaData[this.props.table].columnSet }
+				columns={ tableMetaData[this.props.table].columnSet }
 				rows={ list.data }
 				page={ this.page + 1 }
 				pageBackwardCallback={ this.pageBackward }

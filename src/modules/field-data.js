@@ -1,5 +1,13 @@
 // links database table field names to each field's meta data
 
+/*
+name: display name
+tables: array of tables this field can be found in
+type: 'number', 'string', 'time'
+description: display description
+openList: table to list when value is clicked in RecordShow component
+*/
+
 export default {
 	id: {
 		name: 'ID',
@@ -47,7 +55,8 @@ export default {
 		},
 		type: 'number',
 		description: 'The total number posts made during the time period scraped.',
-		icon: 'newspaper'
+		icon: 'newspaper',
+		openList: 'posts'
 	},
 	total_comments: {
 		name: 'Total Comments',
@@ -58,7 +67,8 @@ export default {
 		},
 		type: 'number',
 		description: 'The total number comments made during the time period scraped.',
-		icon: 'comments outline'
+		icon: 'comments outline',
+		openList: 'comments'
 	},
 	total_reactions: {
 		name: 'Total Reactions',

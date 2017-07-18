@@ -4,7 +4,8 @@ import _ from 'lodash';
 import { Header, Icon, Dimmer, Loader, Grid, Image, Message } from 'semantic-ui-react';
 
 import { fetchRecord, clearRecord } from '../actions';
-import fieldData from '../modules/field-data';
+import fieldMetaData from '../modules/field-data';
+import tableMetaData from '../modules/table-data';
 import ReactionsPieChart from './reactions-pie-chart';
 import OverTimeSparkline from './over-time-sparkline';
 import ListShow from './list-show';
@@ -20,30 +21,6 @@ class RecordShow extends Component {
 	
 	componentDidMount() {
 		this.props.fetchRecord( this.props.table, this.props.recordID );
-		switch ( this.props.table ) {
-			case 'pages':
-				this.overTimeField = 'posts_over_time';
-				this.overTimeLabel = 'Posts';
-				this.searchByField = 'page_id';
-				this.urlField = 'link';
-				break;
-			case 'posts':
-				this.overTimeField = 'comments_over_time';
-				this.overTimeLabel = 'Comments';
-				this.searchByField = 'post_id';
-				this.urlField = 'permalink_url';
-				break;
-			case 'users':
-				this.overTimeField = 'comments_over_time';
-				this.overTimeLabel = 'Comments';
-				this.searchByField = 'user_id';
-				this.urlField = 'link';
-				break;
-		}
-		this.fieldModalMetaData = {
-			'Total Posts': 'posts',
-			'Total Comments': 'comments'
-		}
 	}
 	
 	componentWillUnmount() {
@@ -56,10 +33,10 @@ class RecordShow extends Component {
 		var bodyData = [];
 		var rowData;
 		
-		_.each( _.omit( fieldData, [ 'id', 'name', 'link', 'picture' ] ), ( fieldMetaData, field ) => {
-			if ( this.props.table in fieldMetaData.tables ) {
+		_.each( _.omit( fieldMetaData, [ 'id', 'name', 'link', 'picture' ] ), ( fieldData, field ) => {
+			if ( this.props.table in fieldData.tables ) {
 				if ( columnIndex == 0 ) rowData = [];
-				rowData.push( Object.assign( fieldMetaData, { value: this.props.record[field] } ) );
+				rowData.push( { field, value: this.props.record[field] } );
 				columnIndex++;
 				if ( columnIndex == totalColumns ) {
 					columnIndex = 0;
@@ -88,14 +65,13 @@ class RecordShow extends Component {
 		}
 		
 		const bodyData = this.formatData();
-		const pictureUrl = ( typeof record.picture == 'string' ) ? record.picture : record.picture.data.url;
 		
 		return (
 			<Grid columns='equal' divided>
 				<Grid.Row>
 					<Grid.Column className='singleLineHidden'>
 						<Header image title={ record.name } className='singleLineHidden'>
-							<Image src={ pictureUrl } shape='rounded' size='mini' />
+							<Image src={ record.picture } shape='rounded' size='mini' />
 							<Header.Content>{ record.name }</Header.Content>
 						</Header>
 						<Header sub>
@@ -107,15 +83,15 @@ class RecordShow extends Component {
 							<Icon name='facebook f' color='grey' />
 							<Header.Content>Facebook Link</Header.Content>
 						</Header>
-						<a href={ record[this.urlField] } target='_blank'>{ record[this.urlField] }</a>
+						<a href={ record[tableMetaData[this.props.table].urlField] } target='_blank'>{ record[tableMetaData[this.props.table].urlField] }</a>
 					</Grid.Column>
 					<Grid.Column title={ 'Pink: LOVE\nBlue: WOW\nGreen: HAHA\nYellow: SAD\nOrange: ANGRY' }>
 						<Header sub>Reaction Distribution</Header>
 						<ReactionsPieChart record={ record } />
 					</Grid.Column>
-					<Grid.Column title={ `Number of ${ this.overTimeLabel } made each hour between 00 and 23 universal time.` }>
-						<Header sub>{ `${ this.overTimeLabel } Over Time` }</Header>
-						<OverTimeSparkline data={ record[this.overTimeField] } />
+					<Grid.Column title={ `Number of ${ tableMetaData[this.props.table].overTimeLabel } made each hour between 00 and 23 universal time.` }>
+						<Header sub>{ `${ tableMetaData[this.props.table].overTimeLabel } Over Time` }</Header>
+						<OverTimeSparkline data={ record[tableMetaData[this.props.table].overTimeField] } />
 					</Grid.Column>
 				</Grid.Row>
 				{ this.renderBodyRows( bodyData ) }
@@ -141,17 +117,20 @@ class RecordShow extends Component {
 		
 		return (
 			rowData.map( ( columnData, index ) => {
+				// for empty column padding
 				if ( !columnData ) return <Grid.Column key={ index }></Grid.Column>
 				
-				var fieldValue = ( columnData.type == 'number' ) ? numberFormat.format( columnData.value ) : columnData.value;
+				const fieldData = fieldMetaData[columnData.field];
+				
+				var fieldValue = ( fieldData.type == 'number' ) ? numberFormat.format( columnData.value ) : columnData.value;
 				fieldValue = ( fieldValue ) ? fieldValue : 'N/A';
-				fieldValue = this.addModals( columnData.name, fieldValue );
+				fieldValue = this.addListModals( columnData.field, fieldValue );
 				
 				return(
-					<Grid.Column title={ columnData.description } key={ index }>
+					<Grid.Column title={ fieldData.description } key={ index }>
 						<Header sub>
-							<Icon name={ columnData.icon } color='grey' />
-							<Header.Content>{ columnData.name }</Header.Content>
+							<Icon name={ fieldData.icon } color='grey' />
+							<Header.Content>{ fieldData.name }</Header.Content>
 						</Header>
 						{ fieldValue }
 					</Grid.Column>
@@ -160,13 +139,15 @@ class RecordShow extends Component {
 		);
 	}
 	
-	addModals( columnName, fieldValue ) {
-		if ( columnName in this.fieldModalMetaData ) {
+	addListModals( field, fieldValue ) {
+		if ( 'openList' in fieldMetaData[field] ) {
+			const { openList } = fieldMetaData[field];
+			
 			return (
 				<AlertModal
-					header='List'
-					headerIcon='browser'
-					content={ <ListShow table={ this.fieldModalMetaData[columnName] } searchField={ this.searchByField } searchValue={ this.props.recordID } /> }
+					header={ tableMetaData[openList].name }
+					headerIcon={ tableMetaData[openList].icon }
+					content={ <ListShow table={ openList } searchField={ tableMetaData[this.props.table].searchByField } searchValue={ this.props.recordID } /> }
 				>
 					<a style={ { cursor: 'pointer' } }>
 						{ fieldValue }

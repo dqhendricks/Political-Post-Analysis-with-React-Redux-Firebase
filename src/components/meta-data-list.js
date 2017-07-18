@@ -5,12 +5,11 @@ import { Header, Segment, Item, Icon, Dimmer, Loader } from 'semantic-ui-react';
 
 import AlertModal from './alert-modal';
 import RecordShow from './record-show';
+import tableMetaData from '../modules/table-data';
 
 /*
 	props
-	metaType: meta data type (correlates with table names)
-	header: header name
-	headerIcon: header icon
+	table: table (correlates with meta data types)
 */
 
 class MetaDataList extends Component {
@@ -20,8 +19,8 @@ class MetaDataList extends Component {
 			<div>
 				<Segment secondary attached="top">
 					<Header as='h4'>
-						<Icon name={ this.props.headerIcon } color='grey' />
-						<Header.Content>{ this.props.header }</Header.Content>
+						<Icon name={ tableMetaData[this.props.table].icon } color='grey' />
+						<Header.Content>{ tableMetaData[this.props.table].name }</Header.Content>
 					</Header>
 				</Segment>
 				<Segment basic attached="bottom" className="scrollingDiv">
@@ -47,17 +46,16 @@ class MetaDataList extends Component {
 	renderRecords() {
 		return (
 			_.map( this.props.metaData, record => {
-				const pictureUrl = ( typeof record.value.picture == 'string' ) ? record.value.picture : record.value.picture.data.url;
 				
 				return (
 					<AlertModal
-						header={ this.props.header }
-						headerIcon={ this.props.headerIcon }
-						content={ <RecordShow table={ this.props.metaType } recordID={ record.value.id } /> }
+						header={ tableMetaData[this.props.table].name }
+						headerIcon={ tableMetaData[this.props.table].icon }
+						content={ <RecordShow table={ this.props.table } recordID={ record.value.id } /> }
 						key={ record.key }
 					>
 						<Item title={ record.value.name }>
-							<Item.Image size='mini' src={ pictureUrl } className='leftImage' />
+							<Item.Image size='mini' src={ record.value.picture } className='leftImage' />
 							<Item.Content>
 								<Item.Header className='singleLineHidden'>{ ( record.value.name == '' ) ? 'N/A' : record.value.name }</Item.Header>
 								<Item.Meta>{ record.name }</Item.Meta>
@@ -73,7 +71,7 @@ class MetaDataList extends Component {
 
 function mapStateToProps( state, ownProps ) {
 	return {
-		metaData: ( ownProps.metaType in state.metaData ) ? state.metaData[ownProps.metaType] : null
+		metaData: ( ownProps.table in state.metaData ) ? state.metaData[ownProps.table] : null
 	};
 }
 

@@ -4,7 +4,8 @@ import _ from 'lodash';
 import { Header, Segment, Table, Image, Icon, Button, Dimmer, Loader } from 'semantic-ui-react';
 
 import { searchChange, searchLoading } from '../actions';
-import fieldData from '../modules/field-data';
+import fieldMetaData from '../modules/field-data';
+import tableMetaData from '../modules/table-data';
 import FormModal from './form-modal';
 import SearchForm from './search-form';
 import SortForm from './sort-form';
@@ -76,8 +77,8 @@ class SearchableDataList extends Component {
 				</Dimmer>
 				<Segment attached="top" secondary clearing>
 					<Header as='h4' floated='left'>
-						<Icon name={ this.props.headerIcon } color='grey' size='big' />
-						<Header.Content>{ this.props.header }</Header.Content>
+						<Icon name={ tableMetaData[this.props.table].icon } color='grey' size='big' />
+						<Header.Content>{ tableMetaData[this.props.table].name }</Header.Content>
 					</Header>
 					{ this.renderButtons() }
 				</Segment>
@@ -120,8 +121,8 @@ class SearchableDataList extends Component {
 						<Table.HeaderCell className='tableLeftCells' title='Name'>
 							<div style={ { overflow: 'hidden' } }>Name</div>
 						</Table.HeaderCell>
-						<Table.HeaderCell title={ fieldData[this.props.search.orderBy].name }>
-							<div style={ { overflow: 'hidden' } }>{ fieldData[this.props.search.orderBy].name }</div>
+						<Table.HeaderCell title={ fieldMetaData[this.props.search.orderBy].name }>
+							<div style={ { overflow: 'hidden' } }>{ fieldMetaData[this.props.search.orderBy].name }</div>
 						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
@@ -145,7 +146,7 @@ class SearchableDataList extends Component {
 	
 	renderRecords() {
 		const numberFormat = new Intl.NumberFormat();
-		const textAlign = ( fieldData[this.props.search.orderBy].type != 'string' ) ? 'right' : 'left';
+		const textAlign = ( fieldMetaData[this.props.search.orderBy].type != 'string' ) ? 'right' : 'left';
 		
 		if ( _.size( this.props.search.data ) == 0 ) {
 			const noResultsMessage = ( this.props.search.page == 0 ) ? 'No results found.' : 'No more results found.'
@@ -159,13 +160,12 @@ class SearchableDataList extends Component {
 		}
 		return (
 			_.map( this.props.search.data, record => {
-				const pictureUrl = ( typeof record.picture == 'string' ) ? record.picture : record.picture.data.url;
-				const orderByFieldValue = ( fieldData[this.props.search.orderBy].type == 'number' ) ? numberFormat.format( record[this.props.search.orderBy] ) : record[this.props.search.orderBy];
+				const orderByFieldValue = ( fieldMetaData[this.props.search.orderBy].type == 'number' ) ? numberFormat.format( record[this.props.search.orderBy] ) : record[this.props.search.orderBy];
 				
 				return (
 					<AlertModal
-						header={ this.props.header }
-						headerIcon={ this.props.headerIcon }
+						header={ tableMetaData[this.props.table].name }
+						headerIcon={ tableMetaData[this.props.table].icon }
 						content={ <RecordShow table={ this.props.table } recordID={ record.id } /> }
 						key={ record.id }
 					>
@@ -173,7 +173,7 @@ class SearchableDataList extends Component {
 							<Table.Cell className='tableLeftCells'>
 								<div className='tableCellInnerContainer noWrap'>
 									<Header as='h5' image>
-										<Image src={ pictureUrl } shape='rounded' size='mini' />
+										<Image src={ record.picture } shape='rounded' size='mini' />
 										<Header.Content>{ ( record.name == '' ) ? 'N/A' : record.name }</Header.Content>
 									</Header>
 								</div>

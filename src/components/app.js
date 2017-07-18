@@ -7,9 +7,9 @@ import MetaDataList from './meta-data-list';
 import SearchableDataList from './searchable-data-list';
 
 const dataLists = [
-	{ table: 'pages', name: 'Pages', icon: 'feed' },
-	{ table: 'posts', name: 'Posts', icon: 'newspaper' },
-	{ table: 'users', name: 'Users', icon: 'users' }
+	'pages',
+	'posts',
+	'users'
 ];
 
 class App extends Component {
@@ -69,28 +69,20 @@ class App extends Component {
 	}
 	
 	renderMetaDataLists() {
-		return dataLists.map( list => {
+		return dataLists.map( table => {
 			return (
-				<Grid.Column key={ list.table }>
-					<MetaDataList
-						metaType={ list.table }
-						header={ list.name }
-						headerIcon={ list.icon }
-					/>
+				<Grid.Column key={ table }>
+					<MetaDataList table={ table } />
 				</Grid.Column>
 			);
 		} );
 	}
 	
 	renderSearchableDataLists() {
-		return dataLists.map( list => {
+		return dataLists.map( table => {
 			return (
-				<Grid.Column key={ list.table }>
-					<SearchableDataList
-						table={ list.table }
-						header={ list.name }
-						headerIcon={ list.icon }
-					/>
+				<Grid.Column key={ table }>
+					<SearchableDataList table={ table } />
 				</Grid.Column>
 			);
 		} );
