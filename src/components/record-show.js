@@ -92,7 +92,7 @@ class RecordShow extends Component {
 					</Grid.Column>
 					<Grid.Column title={ `Number of ${ tableData.overTimeLabel } made each hour between 00 and 23 universal time.` }>
 						<Header sub>{ `${ tableData.overTimeLabel } Over Time` }</Header>
-						<OverTimeSparkline data={ tableData.overTimeField] } />
+						<OverTimeSparkline data={ record[tableData.overTimeField] } />
 					</Grid.Column>
 				</Grid.Row>
 				{ this.renderBodyRows( bodyData ) }
