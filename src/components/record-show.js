@@ -65,6 +65,7 @@ class RecordShow extends Component {
 		}
 		
 		const bodyData = this.formatData();
+		const tableData = tableMetaData[this.props.table];
 		
 		return (
 			<Grid columns='equal' divided>
@@ -83,15 +84,15 @@ class RecordShow extends Component {
 							<Icon name='facebook f' color='grey' />
 							<Header.Content>Facebook Link</Header.Content>
 						</Header>
-						<a href={ record[tableMetaData[this.props.table].urlField] } target='_blank'>{ record[tableMetaData[this.props.table].urlField] }</a>
+						<a href={ record[tableData.urlField] } target='_blank'>{ record[tableData.urlField] }</a>
 					</Grid.Column>
 					<Grid.Column title={ 'Pink: LOVE\nBlue: WOW\nGreen: HAHA\nYellow: SAD\nOrange: ANGRY' }>
 						<Header sub>Reaction Distribution</Header>
 						<ReactionsPieChart record={ record } />
 					</Grid.Column>
-					<Grid.Column title={ `Number of ${ tableMetaData[this.props.table].overTimeLabel } made each hour between 00 and 23 universal time.` }>
-						<Header sub>{ `${ tableMetaData[this.props.table].overTimeLabel } Over Time` }</Header>
-						<OverTimeSparkline data={ record[tableMetaData[this.props.table].overTimeField] } />
+					<Grid.Column title={ `Number of ${ tableData.overTimeLabel } made each hour between 00 and 23 universal time.` }>
+						<Header sub>{ `${ tableData.overTimeLabel } Over Time` }</Header>
+						<OverTimeSparkline data={ tableData.overTimeField] } />
 					</Grid.Column>
 				</Grid.Row>
 				{ this.renderBodyRows( bodyData ) }
