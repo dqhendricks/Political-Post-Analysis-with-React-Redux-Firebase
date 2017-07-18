@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Header, Icon, Modal } from 'semantic-ui-react'
 
-import ModalAbstract from './modal-abstract';
+import EnhancedModal from './enhanced-modal';
 
 /*
 	props
@@ -12,7 +12,7 @@ import ModalAbstract from './modal-abstract';
 	trigger/children: element that should be clicked to open the modal
 */
 
-class AlertModal extends ModalAbstract {
+class AlertModal extends Component {
 	
 	constructor( props ) {
 		super( props );
@@ -21,7 +21,7 @@ class AlertModal extends ModalAbstract {
 	
 	render() {
 		return (
-			<Modal
+			<EnhancedModal
 				trigger={ this.trigger }
 				size={ this.props.size }
 				closeIcon='close'
@@ -39,8 +39,6 @@ class AlertModal extends ModalAbstract {
 						triggerClose: true
 					},
 				] }
-				onOpen={ this.onOpen }
-				onUnmount={ this.onUnmount }
 			/>
 		);
 	}

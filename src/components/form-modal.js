@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Header, Icon, Modal } from 'semantic-ui-react'
 import { submit } from 'redux-form';
 
-import ModalAbstract from './modal-abstract';
+import EnhancedModal from './enhanced-modal';
 
 /*
 	This element can be reused to display any redux-form content in a modal. The element handles all opening and closing of the modal, and waits for successful submit (after client validation passes) before closing the modal. 
@@ -19,7 +19,7 @@ import ModalAbstract from './modal-abstract';
 	trigger/children: React element that should be clicked to open the modal
 */
 
-class FormModal extends ModalAbstract {
+class FormModal extends Component {
 	
 	constructor( props ) {
 		super( props );
@@ -62,7 +62,7 @@ class FormModal extends ModalAbstract {
 	
 	render() {
 		return (
-			<Modal
+			<EnhancedModal
 				open={ this.state.modalOpen }
 				trigger={ this.trigger }
 				onClose={ this.handleClose }
@@ -87,8 +87,6 @@ class FormModal extends ModalAbstract {
 						onClick: this.handleOkay
 					},
 				] }
-				onOpen={ this.onOpen }
-				onUnmount={ this.onUnmount }
 			/>
 		);
 	}
