@@ -4,6 +4,10 @@
     }
 }
 
+body {
+	background-color: #F9F9FF !important;
+}
+
 .spacingDiv {
 	margin: 20px;
 }
