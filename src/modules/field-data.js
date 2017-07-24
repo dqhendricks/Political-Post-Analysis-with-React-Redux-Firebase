@@ -5,7 +5,17 @@ name: display name
 tables: array of tables this field can be found in
 type: 'number', 'string', 'time'
 description: display description
-openList: table to list when value is clicked in RecordShow component
+openList: object representing list to display when value is clicked in RecordShow component
+	{
+		table,
+		columnSet [
+			name,
+			field,
+			type,
+			ifEmpty (optional)
+		],
+		orderField
+	}
 */
 
 export default {
@@ -56,7 +66,15 @@ export default {
 		type: 'number',
 		description: 'The total number posts made during the time period scraped.',
 		icon: 'newspaper',
-		openList: 'posts'
+		openList: {
+			table: 'posts',
+			columnSet: [
+				{ name: 'Post', field: 'message', type: 'string' },
+				{ name: 'Link', field: 'permalink_url', type: 'string' },
+				{ name: 'Total Likes', field: 'total_like_reactions', type: 'number' }
+			],
+			orderField: 'total_like_reactions'
+		}
 	},
 	total_comments: {
 		name: 'Total Comments',
@@ -68,7 +86,15 @@ export default {
 		type: 'number',
 		description: 'The total number comments made during the time period scraped.',
 		icon: 'comments outline',
-		openList: 'comments'
+		openList: {
+			table: 'comments',
+			columnSet: [
+				{ name: 'Comment', field: 'message', type: 'string', ifEmpty: 'N/A (Image only comment)' },
+				{ name: 'Link', field: 'permalink_url', type: 'string' },
+				{ name: 'Total Likes', field: 'like_count', type: 'number' }
+			],
+			orderField: 'like_count'
+		}
 	},
 	total_reactions: {
 		name: 'Total Reactions',

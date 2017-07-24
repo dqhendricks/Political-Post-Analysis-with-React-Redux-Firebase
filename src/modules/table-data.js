@@ -7,8 +7,6 @@ overTimeField: field with data to use for over time graph on RecordShow componen
 overTimeLabel: label to use for over time graph on RecordShow component
 urlField: which field to use as Facebook URL on RecordShow component
 searchByField: foreign key field used for searching other tables for related records
-columnSet: array of column meta data to use for ListShow { name, field, type }
-orderField: which field to sort by for ListShow
 */
 
 export default {
@@ -23,12 +21,6 @@ export default {
 	posts: {
 		name: 'Posts',
 		icon: 'newspaper',
-		columnSet: [
-			{ name: 'Post', field: 'message', type: 'string' },
-			{ name: 'Link', field: 'permalink_url', type: 'string' },
-			{ name: 'Total Likes', field: 'total_like_reactions', type: 'number' }
-		],
-		orderField: 'total_like_reactions',
 		overTimeField: 'comments_over_time',
 		overTimeLabel: 'Comments',
 		searchByField: 'post_id',
@@ -44,12 +36,6 @@ export default {
 	},
 	comments: {
 		name: 'Comments',
-		icon: 'comments outline',
-		columnSet: [
-			{ name: 'Comment', field: 'message', type: 'string', ifEmpty: 'N/A (Image only comment)' },
-			{ name: 'Link', field: 'permalink_url', type: 'string' },
-			{ name: 'Total Likes', field: 'like_count', type: 'number' }
-		],
-		orderField: 'like_count'
+		icon: 'comments outline'
 	}
 }

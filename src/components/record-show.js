@@ -146,9 +146,15 @@ class RecordShow extends Component {
 			
 			return (
 				<AlertModal
-					header={ tableMetaData[openList].name }
-					headerIcon={ tableMetaData[openList].icon }
-					content={ <ListShow table={ openList } searchField={ tableMetaData[this.props.table].searchByField } searchValue={ this.props.recordID } /> }
+					header={ tableMetaData[openList.table].name }
+					headerIcon={ tableMetaData[openList.table].icon }
+					content={
+						<ListShow
+							{ ...openList }
+							searchField={ tableMetaData[this.props.table].searchByField }
+							searchValue={ this.props.recordID }
+						/>
+					}
 				>
 					<a style={ { cursor: 'pointer' } }>
 						{ fieldValue }
