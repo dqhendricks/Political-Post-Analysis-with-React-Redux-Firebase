@@ -2,7 +2,7 @@ Description:
 
 Personal project analyzing facebook political post data. Data is scraped and processed server side using node.js and facebook graph API, then processed and saved each night into a PHP database API I created on another server. The result is displayed in a single page React, Redux, Semantic UI App served using node.js and express.
 
-This is really just a project I thought up to serve as my React/Redux resume.
+This is really just a project I thought up to expand my React/Redux skills.
 
 Notes:
 
